@@ -34,5 +34,23 @@ namespace ClientSide.Models.DAOs
                 return db.Members.Any(m => m.Account == account);
             }
         }
+
+        public void ProcessActiveRegister(int memberId, string confirmCode)
+        {
+            using (var db = new AppDbContext())
+            {
+                //如果用memberId , confirmCode找不到任何紀錄就不做任何事
+                var member =db.Members.FirstOrDefault(m=>m.Id == memberId && m.ConfirmCode == confirmCode && m.IsConfirmed == false);
+                if (member == null) return;
+
+                //Update isConfirmed = true , confirmCode = null
+
+                member.IsConfirmed = true;
+                member.ConfirmCode = null;
+
+                db.SaveChanges();
+                
+            }
+        }
     }
 }

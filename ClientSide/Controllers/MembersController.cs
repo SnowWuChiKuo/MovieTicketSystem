@@ -12,6 +12,10 @@ namespace ClientSide.Controllers
     public class MembersController : Controller
     {
         // GET: Members
+        /// <summary>
+        /// 會員註冊頁面
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Register()
         {
             return View();
@@ -24,7 +28,10 @@ namespace ClientSide.Controllers
             if (!ModelState.IsValid) return View(model);
             try
             {
-                ProcessRegister(model);
+                var service = new MemberService();
+                service.ProcessRegister(model);
+                //todo: 寄送驗證信
+
                 return View("RegisterConfirm");
             }
             catch (Exception ex)
@@ -35,16 +42,33 @@ namespace ClientSide.Controllers
 
         }
 
-        private void ProcessRegister(RegisterVm model)
+        /// <summary>
+        /// 已啟用帳號的通知頁面
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult ActiveRegister(int memberId ,string confirmCode)
         {
-            RegisterDto dto = new RegisterDto
-            {
-                Name = model.Name,
-                Account = model.Account,
-                Password = model.Password,
-                Email = model.Email,
-            };
-            new MemberService().Register(dto);
+            var service = new MemberService();
+
+            service.ProcessActiveRegister(memberId , confirmCode);
+
+            return View();
         }
+
+        public ActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Login(LoginVm model)
+        {
+            if(!ModelState.IsValid) return View(model);
+
+            return View();
+        }
+
+
     }
 }

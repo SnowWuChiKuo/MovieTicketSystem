@@ -1,5 +1,6 @@
 ﻿using ClientSide.Models.DAOs;
 using ClientSide.Models.DTOs;
+using ClientSide.Models.ViewModels;
 using ServerSide.Models.Infra;
 using System;
 using System.Collections.Generic;
@@ -31,5 +32,27 @@ namespace ClientSide.Models.Services
 
         }
 
+        /// <summary>
+        /// 處理會員註冊的函式
+        /// </summary>
+        /// <param name="model"></param>
+        public void ProcessRegister(RegisterVm model)
+        {
+            RegisterDto dto = new RegisterDto
+            {
+                Name = model.Name,
+                Account = model.Account,
+                Password = model.Password,
+                Email = model.Email,
+            };
+            Register(dto);
+        }
+
+        public void ProcessActiveRegister(int memberId, string confirmCode)
+        {
+            MemberEFDao dao = new MemberEFDao();
+
+            dao.ProcessActiveRegister(memberId, confirmCode);
+        }
     }
 }
