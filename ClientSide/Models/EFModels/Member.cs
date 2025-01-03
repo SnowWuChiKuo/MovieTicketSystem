@@ -33,8 +33,6 @@ namespace ClientSide.Models.EFModels
         [StringLength(30)]
         public string Name { get; set; }
 
-        public bool IsAdmin { get; set; }
-
         public bool IsDeleted { get; set; }
 
         public bool IsBlackList { get; set; }

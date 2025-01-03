@@ -13,13 +13,13 @@
 }
 
 /* Set width on the form input elements since they're 100% wide by default */
-input,
+/*input,
 select,
 textarea {
     max-width: 280px;
-}
+}*/
 
-.movie-card-wrapper {
+/*.movie-card-wrapper {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -31,9 +31,9 @@ textarea {
     align-items: center;
     justify-content: center;
     width: 100%;
-    height: 400px;
+    height: 400px;*/
     /* border-radius: 20px; */
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    /*box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
     transition: all 0.4s cubic-bezier(.25,.8,.25,1);
     overflow: hidden;
     background: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0));
@@ -167,13 +167,13 @@ textarea {
     text-align: center;
 }
 
-.navbar {
+.navbar {*/
     /* top: 0;
             left: 0;
             right: 0;
             z-index: 1000; */
     /* height: 70px; */
-    font-family: 'Lexend Deca','Noto Sans TC' !important;
+    /*font-family: 'Lexend Deca','Noto Sans TC' !important;
     border-bottom: 1px solid #000000;
 }
 
@@ -183,8 +183,8 @@ textarea {
     }
 
 .navbar-collapse {
-    background-color: inherit; /* 繼承父元素背景色 */
-}
+    background-color: inherit;*/ /* 繼承父元素背景色 */
+/*}
 
 .mvFooter {
     font-family: 'Lexend Deca','Noto Sans TC' !important;
@@ -202,18 +202,18 @@ html, body {
     padding: 0;
 }
 
-body {
+body {*/
     /* padding-top: 70px; */
-    font-family: 'Noto Sans TC', serif;
+    /*font-family: 'Noto Sans TC', serif;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    min-height: 100vh; /* 撐開整個視窗高度 */
-}
+    min-height: 100vh;*/ /* 撐開整個視窗高度 */
+/*}
 
 main {
-    flex: 1; /* 內容區塊自動撐開 */
-}
+    flex: 1;*/ /* 內容區塊自動撐開 */
+/*}
 
 .movie-card-container {
     position: relative;
@@ -288,9 +288,9 @@ main {
     font-family: 'Lexend Deca','Noto Sans TC' !important;
     color: #000000 !important;
     border: 0px !important;
-}
+}*/
 /*畫面large時navbar功能外距*/
-@media (min-width: 992px) {
+/*@media (min-width: 992px) {
     .userAction {
         margin-right: 8rem !important;
     }
@@ -300,4 +300,4 @@ main {
     .siteName {
         margin-left: 8rem !important;
     }
-}
+}*/
