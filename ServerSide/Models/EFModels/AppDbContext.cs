@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using ServerSide.Models.ViewModels;
 
 namespace ServerSide.Models.EFModels;
 
@@ -298,7 +297,10 @@ public partial class AppDbContext : DbContext
 
         modelBuilder.Entity<Ticket>(entity =>
         {
-            entity.Property(e => e.Name)
+            entity.Property(e => e.SalesType)
+                .IsRequired()
+                .HasMaxLength(50);
+            entity.Property(e => e.TicketType)
                 .IsRequired()
                 .HasMaxLength(50);
 
@@ -346,6 +348,4 @@ public partial class AppDbContext : DbContext
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
-
-public DbSet<ServerSide.Models.ViewModels.MovieVm> MovieVm { get; set; } = default!;
 }

@@ -11,7 +11,9 @@ public partial class Ticket
 
     public int ScreeningId { get; set; }
 
-    public string Name { get; set; }
+    public string SalesType { get; set; }
+
+    public string TicketType { get; set; }
 
     public int Price { get; set; }
 

@@ -25,7 +25,7 @@ namespace ServerSide.Models.Services
 
         public void Edit(MovieDto dto)
         {
-            var movieInDb = _dao.FindByTitle(dto.Title)
+            //var movieInDb = _dao.FindByTitle(dto.Title);
         }
 
         public List<SelectListItem> GetGenresName()
