@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using ServerSide.Models.DAOs;
 using ServerSide.Models.EFModels;
+using ServerSide.Models.Interfaces;
+using ServerSide.Models.Services;
 
 namespace ServerSide
 {
@@ -12,7 +15,12 @@ namespace ServerSide
 			// Add services to the container.
 			builder.Services.AddControllersWithViews();
 
-			var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+			builder.Services.AddScoped<MovieService>();
+            builder.Services.AddScoped<MovieDao>();
+			builder.Services.AddScoped<IMovieService, MovieService>();
+			builder.Services.AddScoped<IMovieDao, MovieDao>();
+
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 			builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
 
 			var app = builder.Build();

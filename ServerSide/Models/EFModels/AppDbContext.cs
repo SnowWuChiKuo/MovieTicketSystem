@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using ServerSide.Models.ViewModels;
 
 namespace ServerSide.Models.EFModels;
 
@@ -345,4 +346,6 @@ public partial class AppDbContext : DbContext
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
+public DbSet<ServerSide.Models.ViewModels.MovieVm> MovieVm { get; set; } = default!;
 }
