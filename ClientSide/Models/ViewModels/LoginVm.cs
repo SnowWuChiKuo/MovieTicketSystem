@@ -10,7 +10,7 @@ namespace ClientSide.Models.ViewModels
     {
         [Required(ErrorMessage = "{0}必填")]
         [Display(Name = "帳號")]
-        [StringLength(30)]
+        [StringLength(30, ErrorMessage = "{0}長度不可超過{1}")]
         public string Account { get; set; }
 
         [Required(ErrorMessage = "{0}必填")]

@@ -12,7 +12,8 @@ namespace ServerSide
 			// Add services to the container.
 			builder.Services.AddControllersWithViews();
 
-			var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+            //µù¥U AppDbContext
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 			builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
 
 			var app = builder.Build();

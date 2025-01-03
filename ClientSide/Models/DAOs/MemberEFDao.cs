@@ -1,5 +1,6 @@
 ﻿using ClientSide.Models.DTOs;
 using ClientSide.Models.EFModels;
+using ClientSide.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,10 @@ namespace ClientSide.Models.DAOs
                     Name = dto.Name,
                     Email = dto.Email,
                     IsConfirmed = false,
-                    ConfirmCode = Guid.NewGuid().ToString("N")
+                    IsDeleted = false,
+                    IsBlackList = false,
+                    ConfirmCode = Guid.NewGuid().ToString("N"),
+                    CreatedAt = DateTime.Now
                 };
                 db.Members.Add(member);
                 db.SaveChanges();
@@ -50,6 +54,28 @@ namespace ClientSide.Models.DAOs
 
                 db.SaveChanges();
                 
+            }
+        }
+
+        public Member Get(string account)
+        {
+            using (var db = new AppDbContext())
+            {
+                return db.Members.FirstOrDefault(m => m.Account == account);
+
+            }
+        }
+
+        public void UpdateProfile(string account, ProfileVm model)
+        {
+            using (var db = new AppDbContext())
+            {
+                var member = db.Members.FirstOrDefault(m => m.Account == account);
+
+                member.Name = model.Name;
+                member.Email = model.Email;
+
+                db.SaveChanges();
             }
         }
     }
