@@ -1,4 +1,5 @@
 - ## ClientSide
+    ### 資料庫
 	- 加入 /Models/EFModels
 	### 會員系統
 	- 加入 註冊新會員
@@ -30,7 +31,17 @@
 		- 加入 Profile view page, 範本: Edit 		
 
 - ## ServerSide
+   ### 資料庫  
 	- 加入 /Models/EFModels
+
+   ### 後台模板
+	- 修改 _Layout.cshtml, 加入後台模板的模板
+	- 新增 模板到 wwwroot/css, wwwroot/js, /img
+	- 新增 測試程式到 /Views/Movies/List.cshtml 當測試面板進行修改。
+	- 修改 /Views/Home/Index.cshtml, 加入後台模板的模板
+	
+   ### 會員系統
 	- 加入 MembersController 和 /Views/Members
 	- 加入 Models/Infra/HashUtility.cs (用來做密碼雜湊的公用函式)
-	- 
+
+	
