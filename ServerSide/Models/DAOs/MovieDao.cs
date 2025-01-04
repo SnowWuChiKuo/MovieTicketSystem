@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using ServerSide.Models.DTOs;
 using ServerSide.Models.EFModels;
 using ServerSide.Models.Interfaces;
+using ServerSide.Models.ViewModels;
 
 namespace ServerSide.Models.DAOs
 {
@@ -19,11 +21,47 @@ namespace ServerSide.Models.DAOs
             _db.SaveChanges();
         }
 
-        public Movie ConvertToEfEntity(MovieDto dto)
+		public void Edit(MovieDto dto)
+		{
+            var movie = _db.Movies.Find(dto.Id);
+			if (movie == null)
+            {
+                throw new Exception("該筆資料不存在或已被刪除!");
+			}
+            
+			movie.GenreId = dto.GenreId;
+			movie.RatingId = dto.RatingId;
+			movie.Title = dto.Title;
+			movie.Description = dto.Description;
+			movie.Director = dto.Director;
+			movie.Cast = dto.Cast;
+			movie.RunTime = dto.RunTime;
+			movie.ReleaseDate = dto.ReleaseDate;
+			movie.PosterUrl = dto.PosterUrl;
+			movie.TrailerUrl = dto.TrailerUrl;
+			movie.Updated = dto.Updated;
+
+			_db.SaveChanges();
+		}
+
+		public void Delete(int id)
+		{
+			var movieInDb = _db.Movies.Find(id);
+            if (movieInDb == null)
+            {
+				throw new Exception("該筆資料不存在或已被刪除!");
+			}
+
+            _db.Movies.Remove(movieInDb);
+            _db.SaveChanges();
+		}
+
+		public Movie ConvertToEfEntity(MovieDto dto)
         {
             return new Movie
             {
-                GenreId = dto.GenreId,
+				Id = dto.Id,
+				GenreId = dto.GenreId,
                 RatingId = dto.RatingId,
                 Title = dto.Title,
                 Description = dto.Description,
@@ -45,6 +83,7 @@ namespace ServerSide.Models.DAOs
         public List<SelectListItem> GetGenresName()
         {
             return _db.Genres
+                .AsNoTracking()
                 .Select(g => new SelectListItem
                     {
                         Value = g.Id.ToString(),
@@ -60,7 +99,8 @@ namespace ServerSide.Models.DAOs
         public List<SelectListItem> GetRatingsName()
         {
             return _db.Ratings
-                .Select(r => new SelectListItem
+				.AsNoTracking()
+				.Select(r => new SelectListItem
                     {
                         Value = r.Id.ToString(),
                         Text = r.Name
@@ -68,15 +108,33 @@ namespace ServerSide.Models.DAOs
                 .ToList();
         }
 
-        public void Edit(MovieDto dto)
+
+        public MovieDto FindByTitle(string title)
         {
-            throw new NotImplementedException();
+            var movieInDb = _db.Movies
+                .AsNoTracking()
+                .Where(m => m.Title == title)
+                .Select(m => new MovieDto
+                {
+                    Id = m.Id,
+                    GenreId = m.GenreId,
+                    RatingId = m.RatingId,
+                    Title = m.Title,
+                    Description = m.Description,
+                    Director = m.Director,
+                    Cast = m.Cast,
+                    RunTime = m.RunTime,
+                    ReleaseDate = m.ReleaseDate,
+                    PosterUrl = m.PosterUrl,
+                    TrailerUrl = m.TrailerUrl,
+                    CreatedAt = m.CreatedAt,
+                    Updated = m.Updated
+                })
+                .FirstOrDefault();
+
+            return movieInDb;
         }
 
-        //public MovieDto FindByTitle(string title)
-        //{
-        //    var movieInDb = _db.Movies.FirstOrDefault(t => t.Title == title);
-        //    return movieInDb;
-        //}
-    }
+
+	}
 }

@@ -85,9 +85,7 @@
                 @Html.DisplayFor(modelItem => item.Updated)
             </td>
             <td nowrap>
-                <a asp-action="Edit" asp-route-id="@item.Id" class="">編輯</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">詳細</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">刪除</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn-sm btn btn-primary rounded-pill"><i class="fa-regular fa-pen-to-square"></i>&nbsp編輯</a>
             </td>
         </tr>
 }

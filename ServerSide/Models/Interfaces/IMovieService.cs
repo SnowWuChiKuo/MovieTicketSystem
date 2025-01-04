@@ -6,9 +6,10 @@ namespace ServerSide.Models.Interfaces
     public interface IMovieService
     {
         void Create(MovieDto dto);
-
         void Edit(MovieDto dto);
-        List<SelectListItem> GetGenresName();
+		void Delete(int id);
+		List<SelectListItem> GetGenresName();
         List<SelectListItem> GetRatingsName();
-    }
+        
+	}
 }

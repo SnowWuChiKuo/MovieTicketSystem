@@ -8,8 +8,8 @@ namespace ServerSide.Models.Services
 {
     public class MovieService : IMovieService
     {
-        private readonly MovieDao _dao;
-        public MovieService(MovieDao dao)
+        private readonly IMovieDao _dao;
+        public MovieService(IMovieDao dao)
         {
             _dao = dao;
         }
@@ -23,10 +23,16 @@ namespace ServerSide.Models.Services
             _dao.Create(dto);
         }
 
-        public void Edit(MovieDto dto)
+		public void Delete(int id)
+		{
+			_dao.Delete(id);
+		}
+
+		public void Edit(MovieDto dto)
         {
-            //var movieInDb = _dao.FindByTitle(dto.Title);
-        }
+            dto.Updated = DateTime.Now;
+			_dao.Edit(dto);
+		}
 
         public List<SelectListItem> GetGenresName()
         {

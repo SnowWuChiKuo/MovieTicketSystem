@@ -118,40 +118,55 @@ namespace ServerSide.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+				//發生錯誤返回view時重新設置下拉選單資料，避免資料消失
+				ViewBag.GenresName = _service.GetGenresName();
+				ViewBag.RatingsName = _service.GetRatingsName();
+				return View(model);
             }
 
-            var movie = new Movie
+            MovieDto dto = ConvertToDTO(model);
+
+            try
             {
-                Id = model.Id,
-                GenreId = model.GenreId,
-                RatingId = model.RatingId,
-                Title = model.Title,
-                Description = model.Description,
-                Director = model.Director,
-                Cast = model.Cast,
-                RunTime = model.RunTime,
-                ReleaseDate = model.ReleaseDate,
-                PosterUrl = model.PosterUrl,
-                TrailerUrl = model.TrailerUrl,
-                CreatedAt = model.CreatedAt,
-                Updated = model.Updated
-            };
-            //告訴 Entity Framework 這個 movie 實體的狀態已被修改
-            _db.Entry(model).State = EntityState.Modified;
-            _db.SaveChanges();
+                _service.Edit(dto);
+			}
+            catch (Exception ex)
+            {
+				ViewBag.GenresName = _service.GetGenresName();
+				ViewBag.RatingsName = _service.GetRatingsName();
+				ModelState.AddModelError("",ex.Message);
+				return View(model);
+			}
             return RedirectToAction("Index");
         }
 
-        /// <summary>
-        /// 轉成DTO給Service、DAO使用
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        private MovieDto ConvertToDTO(MovieVm model)
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public IActionResult Delete(int id)
+		{
+            try
+            {
+                _service.Delete(id);
+
+				return RedirectToAction("Index");
+			}
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+				return View("Edit", new MovieVm { Id = id });
+			}
+		}
+
+		/// <summary>
+		/// 轉成DTO給Service、DAO使用
+		/// </summary>
+		/// <param name="model"></param>
+		/// <returns></returns>
+		private MovieDto ConvertToDTO(MovieVm model)
         {
             return new MovieDto
             {
+                Id = model.Id,
                 GenreId = model.GenreId,
                 RatingId = model.RatingId,
                 Title = model.Title,
