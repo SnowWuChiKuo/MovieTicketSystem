@@ -6,10 +6,10 @@ namespace ClientSide.Models.EFModels
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class Movy
+    public partial class Movie
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Movy()
+        public Movie()
         {
             Prices = new HashSet<Price>();
             Reviews = new HashSet<Review>();

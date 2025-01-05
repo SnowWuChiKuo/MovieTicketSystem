@@ -39,7 +39,20 @@
 	- 新增 模板到 wwwroot/css, wwwroot/js, /img
 	- 新增 測試程式到 /Views/Movies/List.cshtml 當測試面板進行修改。
 	- 修改 /Views/Home/Index.cshtml, 加入後台模板的模板
-	
+   ### 電影管理
+	#### 1 . 電影清單系統
+	- 加入 /Controllers/MoviesController，依賴介面。
+		- 加入ConvertToDto, ConvertToVm方法。
+	- 加入MovieVm跟MovieDto /Models/ViewModels/MovieVm , /Models/Dtos/MovieDto。
+	- 建立Service,Dao介面並實作，並在Program.cs中註冊。
+		- 加入GetGenresName , GetRatingsName方法，透過ViewBag傳遞Name到Index , Edit。
+	- 實作CRUD Action，並建立對應View。
+		- IndexPage可以點擊TableRow導向到EditPage。
+	#### 2 . 電影種類系統
+	- 加入 /Controllers/GenresController，依賴介面。
+		- 實作IndexPage(範本List)、CreatePage(範本Create)、EditPage(範本Edit)。
+	- 加入 GenreVm,GenreDto / IGenreService,IGenreDao並實作、註冊。
+	- 實作CRUD Action，建立對應View。
    ### 會員系統
 	- 加入 MembersController 和 /Views/Members
 	- 加入 Models/Infra/HashUtility.cs (用來做密碼雜湊的公用函式)

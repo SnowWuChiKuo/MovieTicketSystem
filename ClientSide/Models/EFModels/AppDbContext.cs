@@ -17,7 +17,7 @@ namespace ClientSide.Models.EFModels
 		public virtual DbSet<Coupon> Coupons { get; set; }
 		public virtual DbSet<Genre> Genres { get; set; }
 		public virtual DbSet<Member> Members { get; set; }
-		public virtual DbSet<Movy> Movies { get; set; }
+		public virtual DbSet<Movie> Movies { get; set; }
 		public virtual DbSet<OrderItem> OrderItems { get; set; }
 		public virtual DbSet<Order> Orders { get; set; }
 		public virtual DbSet<Price> Prices { get; set; }
@@ -69,21 +69,21 @@ namespace ClientSide.Models.EFModels
 				.WithRequired(e => e.Member)
 				.WillCascadeOnDelete(false);
 
-			modelBuilder.Entity<Movy>()
+			modelBuilder.Entity<Movie>()
 				.HasMany(e => e.Prices)
-				.WithRequired(e => e.Movy)
+				.WithRequired(e => e.Movie)
 				.HasForeignKey(e => e.MovieId)
 				.WillCascadeOnDelete(false);
 
-			modelBuilder.Entity<Movy>()
+			modelBuilder.Entity<Movie>()
 				.HasMany(e => e.Reviews)
-				.WithRequired(e => e.Movy)
+				.WithRequired(e => e.Movie)
 				.HasForeignKey(e => e.MovieId)
 				.WillCascadeOnDelete(false);
 
-			modelBuilder.Entity<Movy>()
+			modelBuilder.Entity<Movie>()
 				.HasMany(e => e.Screenings)
-				.WithRequired(e => e.Movy)
+				.WithRequired(e => e.Movie)
 				.HasForeignKey(e => e.MovieId)
 				.WillCascadeOnDelete(false);
 
