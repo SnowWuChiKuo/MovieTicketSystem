@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using ServerSide.Models.DTOs;
 using ServerSide.Models.EFModels;
+using ServerSide.Models.Interfaces;
 using ServerSide.Models.Services;
 using ServerSide.Models.ViewModels;
 using System.Net;
@@ -11,38 +12,46 @@ namespace ServerSide.Controllers
     public class MoviesController : Controller
     {
         private readonly AppDbContext _db;
-        private readonly MovieService _service;
+        private readonly IMovieService _service;
 
-        public MoviesController(AppDbContext db,MovieService service)
+        public MoviesController(AppDbContext db,IMovieService service)
         {
             _db = db;
             _service = service;
         }
 
         [HttpGet]
+        public IActionResult Search(string title, int? genre, int? rating, DateTime? startDate, DateTime? endDate)
+        {
+            var indexData = _service.GetAll();
+            if (!string.IsNullOrEmpty(title))
+                indexData = indexData.Where(id => id.Title.Contains(title,StringComparison.OrdinalIgnoreCase)).ToList();
+
+            if (genre.HasValue)
+                indexData = indexData.Where(id => id.GenreId == genre.Value).ToList();
+
+            if(rating.HasValue)
+				indexData = indexData.Where(id => id.RatingId == rating.Value).ToList();
+
+			if (startDate.HasValue)
+				indexData = indexData.Where(id => id.ReleaseDate >= startDate.Value).ToList();
+
+			if (endDate.HasValue)
+				indexData = indexData.Where(id => id.ReleaseDate <= endDate.Value).ToList();
+
+			ViewBag.GenresName = _service.GetGenresName();
+			ViewBag.RatingsName = _service.GetRatingsName();
+			return View("Index", indexData);
+		}
+
+
+        [HttpGet]
         public IActionResult Index()
         {
-            var movies = _db.Movies
-                .Include(m => m.Genre).
-                Include(m => m.Prices)
-                .Select(m => new MovieVm
-                {
-                    Id = m.Id,
-                    GenreId = m.GenreId,
-                    RatingId = m.RatingId,
-                    Title = m.Title,
-                    Description = m.Description,
-                    Director = m.Director,
-                    Cast = m.Cast,
-                    RunTime = m.RunTime,
-                    ReleaseDate = m.ReleaseDate,
-                    PosterUrl = m.PosterUrl,
-                    TrailerUrl = m.TrailerUrl,
-                    CreatedAt = m.CreatedAt,
-                    Updated = m.Updated
-                })
-                .ToList();
-            return View(movies);
+			ViewBag.GenresName = _service.GetGenresName();
+			ViewBag.RatingsName = _service.GetRatingsName();
+			var indexData = _service.GetAll();
+			return View(indexData);
         }
 
         public IActionResult Create()
@@ -78,36 +87,23 @@ namespace ServerSide.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult Edit(int? id)
+        [HttpGet]
+		public IActionResult Edit(int? id)
         {
             ViewBag.GenresName = _service.GetGenresName();
             ViewBag.RatingsName = _service.GetRatingsName();
-            if (id == null)
-            {
-                return StatusCode((int)HttpStatusCode.BadRequest);
-            }
-            Movie movie = _db.Movies.Find(id);
-            if (movie == null)
-            {
-                return NotFound();
-            }
+			if (id == null)
+			{
+				return BadRequest("ID 不能為空。");
+			}
 
-            var movieVm = new MovieVm
-            {
-                Id = movie.Id,
-                GenreId = movie.GenreId,
-                RatingId = movie.RatingId,
-                Title = movie.Title,
-                Description = movie.Description,
-                Director = movie.Director,
-                Cast = movie.Cast,
-                RunTime = movie.RunTime,
-                ReleaseDate = movie.ReleaseDate,
-                PosterUrl = movie.PosterUrl,
-                TrailerUrl = movie.TrailerUrl,
-                CreatedAt = movie.CreatedAt,
-                Updated = movie.Updated
-            };
+			var movieDto = _service.FindMovieById(id.Value);
+			if (movieDto == null)
+			{
+				return NotFound("找不到指定的電影。");
+			}
+
+            var movieVm = ConvertToVm(movieDto);
 
             return View(movieVm);
         }
@@ -155,6 +151,39 @@ namespace ServerSide.Controllers
                 ModelState.AddModelError("", ex.Message);
 				return View("Edit", new MovieVm { Id = id });
 			}
+		}
+
+        public IActionResult List()
+        {
+			ViewBag.GenresName = _service.GetGenresName();
+			ViewBag.RatingsName = _service.GetRatingsName();
+			var indexData = _service.GetAll();
+			return View(indexData);
+		}
+
+		/// <summary>
+		/// 把傳回的DTO轉成ViewModel給ViewPage用
+		/// </summary>
+		/// <param name="dto"></param>
+		/// <returns></returns>
+		private MovieVm ConvertToVm(MovieDto dto)
+		{
+			return new MovieVm
+			{
+				Id = dto.Id,
+				GenreId = dto.GenreId,
+				RatingId = dto.RatingId,
+				Title = dto.Title,
+				Description = dto.Description,
+				Director = dto.Director,
+				Cast = dto.Cast,
+				RunTime = dto.RunTime,
+				ReleaseDate = dto.ReleaseDate,
+				PosterUrl = dto.PosterUrl,
+				TrailerUrl = dto.TrailerUrl,
+				CreatedAt = dto.CreatedAt,
+				Updated = dto.Updated
+			};
 		}
 
 		/// <summary>

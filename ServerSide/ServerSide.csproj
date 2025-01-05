@@ -21,6 +21,25 @@
 
   <ItemGroup>
     <Folder Include="Models\EFModels\" />
+    <Folder Include="wwwroot\js\js\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\js\js\demo\datatables-demo.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\js\vendor\datatables\dataTables.bootstrap4.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\js\vendor\datatables\dataTables.bootstrap4.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\js\vendor\datatables\dataTables.bootstrap4.min.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\js\vendor\datatables\jquery.dataTables.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

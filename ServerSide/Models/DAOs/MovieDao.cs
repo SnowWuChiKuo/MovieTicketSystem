@@ -7,14 +7,40 @@ using ServerSide.Models.ViewModels;
 
 namespace ServerSide.Models.DAOs
 {
-    public class MovieDao : IMovieDao
+	public class MovieDao : IMovieDao
     {
         private readonly AppDbContext _db;
         public MovieDao(AppDbContext db)
         {
             _db = db;
         }
-        public void Create(MovieDto dto)
+
+		public List<MovieVm> GetAll()
+		{
+            var indexData =
+			_db.Movies.Include(m => m.Genre)
+                .Include(m => m.Prices)
+                .Select(m => new MovieVm
+			    {
+				    Id = m.Id,
+				    GenreId = m.GenreId,
+				    RatingId = m.RatingId,
+				    Title = m.Title,
+				    Description = m.Description,
+				    Director = m.Director,
+				    Cast = m.Cast,
+				    RunTime = m.RunTime,
+				    ReleaseDate = m.ReleaseDate,
+				    PosterUrl = m.PosterUrl,
+				    TrailerUrl = m.TrailerUrl,
+				    CreatedAt = m.CreatedAt,
+				    Updated = m.Updated
+			    })
+                .ToList();
+            return indexData;
+		}
+
+		public void Create(MovieDto dto)
         {
             var movie = ConvertToEfEntity(dto);
             _db.Movies.Add(movie);
@@ -108,32 +134,67 @@ namespace ServerSide.Models.DAOs
                 .ToList();
         }
 
+		public MovieDto FindMovieById(int id)
+		{
+			var movieInDb = _db.Movies.Find(id);
+			if (movieInDb == null)
+			{
+				throw new Exception("該筆資料不存在或已被刪除!");
+			}
+			var movieDto = ConvertToDTO(movieInDb);
+			return movieDto;
+		}
 
-        public MovieDto FindByTitle(string title)
-        {
-            var movieInDb = _db.Movies
-                .AsNoTracking()
-                .Where(m => m.Title == title)
-                .Select(m => new MovieDto
-                {
-                    Id = m.Id,
-                    GenreId = m.GenreId,
-                    RatingId = m.RatingId,
-                    Title = m.Title,
-                    Description = m.Description,
-                    Director = m.Director,
-                    Cast = m.Cast,
-                    RunTime = m.RunTime,
-                    ReleaseDate = m.ReleaseDate,
-                    PosterUrl = m.PosterUrl,
-                    TrailerUrl = m.TrailerUrl,
-                    CreatedAt = m.CreatedAt,
-                    Updated = m.Updated
-                })
-                .FirstOrDefault();
+		public MovieDto ConvertToDTO(Movie movieInDb)
+		{
+			if (movieInDb == null)
+			{
+				throw new ArgumentNullException(nameof(movieInDb));
+			}
+			return new MovieDto
+			{
+				Id = movieInDb.Id,
+				GenreId = movieInDb.GenreId,
+				RatingId = movieInDb.RatingId,
+				Title = movieInDb.Title,
+				Description = movieInDb.Description,
+				Director = movieInDb.Director,
+				Cast = movieInDb.Cast,
+				RunTime = movieInDb.RunTime,
+				ReleaseDate = movieInDb.ReleaseDate,
+				PosterUrl = movieInDb.PosterUrl,
+				TrailerUrl = movieInDb.TrailerUrl,
+				CreatedAt = movieInDb.CreatedAt,
+				Updated = movieInDb.Updated
+			};
+		}
 
-            return movieInDb;
-        }
+
+		//public MovieDto FindByTitle(string title)
+		//{
+		//    var movieInDb = _db.Movies
+		//        .AsNoTracking()
+		//        .Where(m => m.Title == title)
+		//        .Select(m => new MovieDto
+		//        {
+		//            Id = m.Id,
+		//            GenreId = m.GenreId,
+		//            RatingId = m.RatingId,
+		//            Title = m.Title,
+		//            Description = m.Description,
+		//            Director = m.Director,
+		//            Cast = m.Cast,
+		//            RunTime = m.RunTime,
+		//            ReleaseDate = m.ReleaseDate,
+		//            PosterUrl = m.PosterUrl,
+		//            TrailerUrl = m.TrailerUrl,
+		//            CreatedAt = m.CreatedAt,
+		//            Updated = m.Updated
+		//        })
+		//        .FirstOrDefault();
+
+		//    return movieInDb;
+		//}
 
 
 	}

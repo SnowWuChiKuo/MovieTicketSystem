@@ -4,104 +4,110 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1 class="fw-bolder">電影資料編輯</h1>
+<h1 class="fw-bolder mx-5">電影資料編輯</h1>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            @Html.AntiForgeryToken()
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="mb-3">
-                <label class="form-label">Id</label>
-                <p class="form-control-plaintext">@Model.Id</p>
-                <input type="hidden" asp-for="Id" />
-            </div>
-            <div class="mb-3">
-                <label asp-for="GenreId" class="form-label"></label>
-                <select asp-for="GenreId" class="form-select">
-                    <option value="">
-                        請選擇分類
-                    </option>
-                    @foreach (var genres in ViewBag.GenresName)
-                    {
-                        <option value="@genres.Value">
-                            @genres.Text
-                        </option>
-                    }
-                </select>
-                <span asp-validation-for="GenreId" class="text-danger"></span>
-            </div>
-            <div class="mb-3">
-                <label asp-for="RatingId" class="form-label"></label>
-                <select asp-for="RatingId" class="form-select">
-                    <option value="">
-                        請選擇分級
-                    </option>
-                    @foreach (var genres in ViewBag.RatingsName)
-                    {
-                        <option value="@genres.Value">
-                            @genres.Text
-                        </option>
-                    }
-                </select>
-                <span asp-validation-for="RatingId" class="text-danger"></span>
-            </div>
-            <div class="mb-3">
-                <label asp-for="Title" class="form-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="mb-3">
-                <label asp-for="Description" class="form-label"></label>
-                <textarea asp-for="Description" class="form-control"> </textarea>
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="mb-3">
-                <label asp-for="Director" class="form-label"></label>
-                <input asp-for="Director" class="form-control" />
-                <span asp-validation-for="Director" class="text-danger"></span>
-            </div>
-            <div class="mb-3">
-                <label asp-for="Cast" class="form-label"></label>
-                <textarea asp-for="Cast" class="form-control"></textarea>
-                <span asp-validation-for="Cast" class="text-danger"></span>
-            </div>
-            <div class="mb-3">
-                <label asp-for="RunTime" class="form-label"></label>
-                <input asp-for="RunTime" class="form-control" />
-                <span asp-validation-for="RunTime" class="text-danger"></span>
-            </div>
-            <div class="mb-3">
-                <label asp-for="ReleaseDate" class="form-label"></label>
-                <input asp-for="ReleaseDate" class="form-control" />
-                <span asp-validation-for="ReleaseDate" class="text-danger"></span>
-            </div>
-            <div class="mb-3">
-                <label asp-for="PosterUrl" class="form-label"></label>
-                <input asp-for="PosterUrl" class="form-control" />
-                <span asp-validation-for="PosterUrl" class="text-danger"></span>
-            </div>
-            <div class="mb-3">
-                <label asp-for="TrailerUrl" class="form-label"></label>
-                <input asp-for="TrailerUrl" class="form-control" />
-                <span asp-validation-for="TrailerUrl" class="text-danger"></span>
-            </div>
+<div class="card m-5">
+    <div class="card-body">
+        <div class="row mx-5">
+            <div class="col-md-12">
+                <form asp-action="Edit">
+                    @Html.AntiForgeryToken()
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="Id" />
+                    <div class="mb-3">
+                        <label class="form-label fw-bolder">Id</label>
+                        <p class="form-control-plaintext">@Model.Id</p>
+                        <input type="hidden" asp-for="Id" />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="GenreId" class="form-label fw-bolder"></label>
+                        <select asp-for="GenreId" class="custom-select">
+                            <option value="">
+                                請選擇分類
+                            </option>
+                            @foreach (var genres in ViewBag.GenresName)
+                            {
+                                <option value="@genres.Value">
+                                    @genres.Text
+                                </option>
+                            }
+                        </select>
+                        <span asp-validation-for="GenreId" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="RatingId" class="form-label fw-bolder"></label>
+                        <select asp-for="RatingId" class="custom-select">
+                            <option value="">
+                                請選擇分級
+                            </option>
+                            @foreach (var genres in ViewBag.RatingsName)
+                            {
+                                <option value="@genres.Value">
+                                    @genres.Text
+                                </option>
+                            }
+                        </select>
+                        <span asp-validation-for="RatingId" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Title" class="form-label fw-bolder"></label>
+                        <input asp-for="Title" class="form-control" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Description" class="form-label fw-bolder"></label>
+                        <textarea asp-for="Description" class="form-control" rows="6"> </textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Director" class="form-label fw-bolder"></label>
+                        <input asp-for="Director" class="form-control" />
+                        <span asp-validation-for="Director" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Cast" class="form-label fw-bolder"></label>
+                        <textarea asp-for="Cast" class="form-control" rows="6"></textarea>
+                        <span asp-validation-for="Cast" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="RunTime" class="form-label fw-bolder"></label>
+                        <input asp-for="RunTime" class="form-control" />
+                        <span asp-validation-for="RunTime" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="ReleaseDate" class="form-label fw-bolder"></label>
+                        <input asp-for="ReleaseDate" class="form-control" />
+                        <span asp-validation-for="ReleaseDate" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="PosterUrl" class="form-label fw-bolder"></label>
+                        <input asp-for="PosterUrl" class="form-control" />
+                        <span asp-validation-for="PosterUrl" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="TrailerUrl" class="form-label fw-bolder"></label>
+                        <input asp-for="TrailerUrl" class="form-control" />
+                        <span asp-validation-for="TrailerUrl" class="text-danger"></span>
+                    </div>
 
-            <div class="mb-3">
-                <a asp-action="Index" class="btn btn-secondary me-4">回到電影清單</a>
-                <input type="submit" value="保存變更" class="btn btn-primary me-4" />
+                    <div class="mb-3">
+                        <a asp-action="Index" class="btn btn-secondary me-4">回到電影清單</a>
+                        <input type="submit" value="保存變更" class="btn btn-primary me-4" />
+
+                    </div>
+                </form>
+                <form asp-action="Delete" asp-controller="Movies" method="post" onsubmit="return confirm('確定要刪除嗎？');" style="display:inline;">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="id" value="@Model.Id" />
+                    <button type="submit" class="btn btn-danger">
+                        刪除
+                    </button>
+                </form>
             </div>
-        </form>
-        <form asp-action="Delete" asp-controller="Movies" method="post" onsubmit="return confirm('確定要刪除嗎？');" style="display:inline;">
-            @Html.AntiForgeryToken()
-            <input type="hidden" name="id" value="@Model.Id" />
-            <button type="submit" class="btn btn-danger">
-                <i class="fa-regular fa-trash-can"></i>&nbsp刪除
-            </button>
-        </form>
+        </div>
     </div>
 </div>
+
 
 
 @section Scripts {
