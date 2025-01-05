@@ -57,4 +57,18 @@
 	- 加入 MembersController 和 /Views/Members
 	- 加入 Models/Infra/HashUtility.cs (用來做密碼雜湊的公用函式)
 
+   ### 票種系統
+    - 加入 TicketsController ， 未加入依賴介面
+	- 加入 TicketVm、TicketDto、TicketDao
+	- 在 program.cs 中註冊
+	- 在 TicketsController 寫入 CRUD ，並顯示其 View
+	- View 的 Index頁(範本List)、Create頁(範本Create)、Edit頁(範本Edit)
+	- 刪除部分在 Edit 頁， List 頁僅可編輯
 	
+   ### 票務座位系統
+	- 加入 TicketSeatsController ， 未加入依賴介面
+	- 加入 TicketVm、TicketDto、TicketDao
+	- 在 program.cs 中註冊
+	- 在 TicketsController 寫入 CRUD ，並顯示其 View
+	- View 的 Index頁(範本List)、Create頁(範本Create)、Edit頁(範本Edit)
+	- 刪除部分在 Edit 頁， List 頁僅可編輯
