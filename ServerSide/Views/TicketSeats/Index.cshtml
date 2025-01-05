@@ -1,14 +1,15 @@
-﻿@model IEnumerable<ServerSide.Models.ViewModels.TicketVm>
+﻿@model IEnumerable<ServerSide.Models.ViewModels.TicketSeatVm>
 
 @{
-    ViewData["Title"] = "票種資料維護";
+    ViewData["Title"] = "票務座位資料維護";
 }
+
 
 <div class="container-fluid">
 
-    <h1 class="fw-bolder mb-3">票種資料維護</h1>
+    <h1 class="fw-bolder mb-3">票務座位資料維護</h1>
     <div class="d-flex justify-content-end mb-3">
-        <a asp-action="Create" class="btn btn-lg btn-success">新增票種資料</a>
+        <a asp-action="Create" class="btn btn-lg btn-success">新增票務座位資料</a>
     </div>
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
@@ -18,16 +19,10 @@
                     <thead>
                         <tr>
                             <th>
-                                @Html.DisplayNameFor(model => model.ScreeningId)
+                                @Html.DisplayNameFor(model => model.TicketId)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.SalesType)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.TicketType)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Price)
+                                @Html.DisplayNameFor(model => model.SeatId)
                             </th>
                             <th></th>
                         </tr>
@@ -37,16 +32,10 @@
                         {
                             <tr>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.ScreeningId)
+                                    @Html.DisplayFor(modelItem => item.TicketId)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.SalesType)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.TicketType)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Price)
+                                    @Html.DisplayFor(modelItem => item.SeatId)
                                 </td>
                                 <td>
                                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary"><i class="fa-solid fa-pen-to-square"></i>編輯</a>

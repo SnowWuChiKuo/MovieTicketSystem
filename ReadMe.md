@@ -44,4 +44,7 @@
 	- 加入 MembersController 和 /Views/Members
 	- 加入 Models/Infra/HashUtility.cs (用來做密碼雜湊的公用函式)
 
+   ### 訂票系統
+    - 加入 TicketsController 以及 Service、dto、Dao 還有 View ， CRUD 功能完善
+	- 加入 TicketSeatsController 以及 Service、dto、Dao 還有 View， CR 功能完善
 	

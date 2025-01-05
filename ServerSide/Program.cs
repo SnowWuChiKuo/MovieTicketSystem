@@ -24,7 +24,11 @@ namespace ServerSide
 			builder.Services.AddScoped<TicketService>();
 			builder.Services.AddScoped<TicketDao>();
 
-            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+			// 新增 TicketSeat 相關服務
+			builder.Services.AddScoped<TicketSeatService>();
+			builder.Services.AddScoped<TicketSeatDao>();
+
+			var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 			builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
 
 			var app = builder.Build();
