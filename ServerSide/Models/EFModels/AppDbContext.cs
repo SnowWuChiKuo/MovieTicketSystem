@@ -317,8 +317,8 @@ public partial class AppDbContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_TicketSeats_Seats");
 
-            entity.HasOne(d => d.SeatNavigation).WithMany(p => p.TicketSeats)
-                .HasForeignKey(d => d.SeatId)
+            entity.HasOne(d => d.Ticket).WithMany(p => p.TicketSeats)
+                .HasForeignKey(d => d.TicketId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_TicketSeats_Tickets");
         });

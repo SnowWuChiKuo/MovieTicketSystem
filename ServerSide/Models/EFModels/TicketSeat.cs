@@ -15,5 +15,5 @@ public partial class TicketSeat
 
     public virtual Seat Seat { get; set; }
 
-    public virtual Ticket SeatNavigation { get; set; }
+    public virtual Ticket Ticket { get; set; }
 }

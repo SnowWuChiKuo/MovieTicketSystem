@@ -143,7 +143,7 @@
     <Compile Include="Models\EFModels\Coupon.cs" />
     <Compile Include="Models\EFModels\Genre.cs" />
     <Compile Include="Models\EFModels\Member.cs" />
-    <Compile Include="Models\EFModels\Movy.cs" />
+    <Compile Include="Models\EFModels\Movie.cs" />
     <Compile Include="Models\EFModels\Order.cs" />
     <Compile Include="Models\EFModels\OrderItem.cs" />
     <Compile Include="Models\EFModels\Price.cs" />

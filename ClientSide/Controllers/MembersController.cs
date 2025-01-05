@@ -56,6 +56,10 @@ namespace ClientSide.Controllers
             return View();
         }
 
+        /// <summary>
+        /// 登入頁
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Login()
         {
             return View();
@@ -85,6 +89,12 @@ namespace ClientSide.Controllers
                 return View(model);
             }
         }
+
+        /// <summary>
+        /// 登出頁(登入才可看)
+        /// </summary>
+        /// <returns></returns>
+        [Authorize]
         public ActionResult Logout()
         {
             FormsAuthentication.SignOut();

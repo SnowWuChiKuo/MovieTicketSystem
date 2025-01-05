@@ -8,9 +8,7 @@ namespace ClientSide.Models.ViewModels
 {
     public class ProfileVm
     {
-        //[Display(Name = "帳號")]
-        //[Required(ErrorMessage = "{0}必填")]
-        //[StringLength(30, ErrorMessage = "{0}長度不可超過{1}")]
+        [Display(Name = "帳號")]
         public string Account { get; set; }
 
         [Display(Name = "電子郵件")]

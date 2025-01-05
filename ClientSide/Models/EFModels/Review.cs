@@ -25,6 +25,6 @@ namespace ClientSide.Models.EFModels
 
         public virtual Member Member { get; set; }
 
-        public virtual Movy Movy { get; set; }
+        public virtual Movie Movy { get; set; }
     }
 }
