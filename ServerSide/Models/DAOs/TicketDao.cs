@@ -29,5 +29,26 @@ namespace ServerSide.Models.DAOs
 				Price = dto.Price
 			};
 		}
+
+		public Ticket GetTicketById(int id)
+		{
+			var data = _db.Tickets.FirstOrDefault(d => d.Id == id);
+
+			if (data == null) throw new Exception("找不到此票種!");
+
+			return data;
+		}
+
+		public void Edit(Ticket ticket)
+		{
+			_db.Tickets.Update(ticket);
+			_db.SaveChanges();
+		}
+
+		public void Delete(Ticket ticket) 
+		{
+			_db.Tickets.Remove(ticket);
+			_db.SaveChanges();
+		}
 	}
 }
