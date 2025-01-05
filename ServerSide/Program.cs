@@ -20,6 +20,10 @@ namespace ServerSide
 			builder.Services.AddScoped<IMovieService, MovieService>();
 			builder.Services.AddScoped<IMovieDao, MovieDao>();
 
+			// 新增 Ticket 相關服務
+			builder.Services.AddScoped<TicketService>();
+			builder.Services.AddScoped<TicketDao>();
+
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 			builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
 

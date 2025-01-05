@@ -1,0 +1,79 @@
+﻿@model IEnumerable<ServerSide.Models.ViewModels.TicketVm>
+
+@{
+    ViewData["Title"] = "票種資料維護";
+}
+
+<div class="container-fluid">
+
+    <h1 class="fw-bolder mb-3">票種資料維護</h1>
+    <div class="d-flex justify-content-end mb-3">
+        <a asp-action="Create" class="btn btn-lg btn-success">新增票種資料</a>
+    </div>
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ScreeningId)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.SalesType)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.TicketType)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Price)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ScreeningId)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.SalesType)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TicketType)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Price)
+                                </td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary"><i class="fa-solid fa-pen-to-square"></i>編輯</a> |
+                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger"><i class="fa-solid fa-trash"></i>刪除</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section styles
+{
+    <!-- Custom styles for this page -->
+    <link href="~/js/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+}
+
+@section scripts
+{
+    <!-- Page level plugins -->
+    <script src="~/js/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/js/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="~/js/js/demo/datatables-demo.js"></script>
+}

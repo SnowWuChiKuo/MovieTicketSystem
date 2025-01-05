@@ -1,0 +1,47 @@
+﻿@model ServerSide.Models.ViewModels.TicketVm
+
+@{
+    ViewData["Title"] = "新增票種";
+}
+
+<div class="container">
+    <h1 class="fw-bolder">新增票種</h1>
+
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="ScreeningId" class="form-label"></label>
+                    <input asp-for="ScreeningId" class="form-control form-control-sm" />
+                    <span asp-validation-for="ScreeningId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="SalesType" class="form-label"></label>
+                    <input asp-for="SalesType" class="form-control form-control-sm" />
+                    <span asp-validation-for="SalesType" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="TicketType" class="form-label"></label>
+                    <input asp-for="TicketType" class="form-control form-control-sm" />
+                    <span asp-validation-for="TicketType" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Price" class="form-label"></label>
+                    <input asp-for="Price" class="form-control form-control-sm" />
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="新增" class="btn btn-primary btn-sm" />
+                    <a asp-action="Index" class="btn btn-secondary btn-sm">回清單頁</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
