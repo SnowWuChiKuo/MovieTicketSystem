@@ -27,5 +27,26 @@ namespace ServerSide.Models.DAOs
 				SeatId = dto.SeatId,
 			};
 		}
+
+		public TicketSeat GetTicketSeatById(int id)
+		{
+			var data = _db.TicketSeats.FirstOrDefault(d => d.Id == id);
+
+			if (data == null) throw new Exception("找不到此票種座位Id");
+
+			return data;
+		}
+
+		public void Edit(TicketSeat ticketSeat)
+		{
+			_db.TicketSeats.Update(ticketSeat);
+			_db.SaveChanges();
+		}
+
+		public void Delete(TicketSeat ticketSeat) 
+		{
+			_db.TicketSeats.Remove(ticketSeat);
+			_db.SaveChanges();
+		}
 	}
 }

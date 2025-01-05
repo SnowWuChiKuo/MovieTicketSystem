@@ -69,5 +69,61 @@ namespace ServerSide.Controllers
 				TicketId = model.TicketId,
 			};
 		}
+
+		[HttpGet]
+		public IActionResult Edit(int id)
+		{ 
+			var ticketSeatInDb = _db.TicketSeats.AsNoTracking()
+												.Include(d => d.Ticket)
+												.Include(d => d.Seat)
+												.FirstOrDefault(d => d.Id == id);
+			if (ticketSeatInDb == null) return NotFound();
+
+			var model = new TicketSeatVm
+			{
+				Id = ticketSeatInDb.Id,
+				TicketId = ticketSeatInDb.TicketId,
+				SeatId = ticketSeatInDb.SeatId,
+			};
+
+			return View(model);
+		}
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public IActionResult Edit(TicketSeatVm model)
+		{
+			if (!ModelState.IsValid) return View(model);
+
+			TicketSeatDto dto = ConverToDTO(model);
+
+			try
+			{
+				_service.Edit(dto);
+				return RedirectToAction("Index");
+			}
+			catch (Exception ex)
+			{
+				ModelState.AddModelError("", ex.Message);
+				return View(model);
+			}
+		}
+
+		[HttpGet]
+		public IActionResult Delete(int? id) 
+		{
+			if (id == null) return NotFound();
+
+			try
+			{
+				_service.Delete(id.Value);
+				return RedirectToAction("Index");
+			}
+			catch (Exception ex) 
+			{
+				ViewBag.ErrorMessage = ex.Message;
+				return View();
+			}
+		}
 	}
 }
