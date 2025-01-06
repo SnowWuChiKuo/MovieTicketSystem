@@ -124,6 +124,12 @@ namespace ClientSide.Models.Services
             dao.UpdateProfile(account, model);
         }
 
+        public void Delete(string account)
+        {
+            var dao = new MemberEFDao();
+            dao.Delete(account);
+        }
+
         //public void ChangePassword(string account, ChangePasswordVm model)
         //{
         //    try
@@ -131,7 +137,7 @@ namespace ClientSide.Models.Services
         //        var dao = new MemberEFDao();
         //        dao.ChangePassword(account, model);
 
-                
+
 
         //            TempData["Message"] = "更改密碼成功";
 
@@ -145,10 +151,10 @@ namespace ClientSide.Models.Services
         //    }
         //    catch (Exception ex)
         //    {
-                
+
         //    }
-            
-            
+
+
         //}
     }
 }
