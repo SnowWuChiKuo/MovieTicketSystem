@@ -1,0 +1,43 @@
+﻿@model ServerSide.Models.ViewModels.SeatStatusVm
+
+@{
+    ViewData["Title"] = "新增場次座位狀態";
+}
+
+<div class="container">
+    <h1>新增場次座位狀態</h1>
+
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="mb-3">
+                    <label asp-for="ScreeningId" class="form-label"></label>
+                    <input asp-for="ScreeningId" class="form-control form-control-sm" />
+                    <span asp-validation-for="ScreeningId" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="SeatId" class="form-label"></label>
+                    <input asp-for="SeatId" class="form-control form-control-sm" />
+                    <span asp-validation-for="SeatId" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Status" class="form-label"></label>
+                    <input asp-for="Status" class="form-control form-control-sm" />
+                    <span asp-validation-for="Status" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <input type="submit" value="新增" class="btn btn-primary btn-sm" />
+                    <a asp-action="Index" class="btn btn-sm btn-secondary">回清單頁</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -35,6 +35,10 @@ namespace ServerSide
             builder.Services.AddScoped<SeatService>();
             builder.Services.AddScoped<SeatDao>();
 
+            // 新增 SeatStatus 相關服務
+            builder.Services.AddScoped<SeatStatusService>();
+            builder.Services.AddScoped<SeatStatusDao>();
+
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 			builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
 
