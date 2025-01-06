@@ -71,19 +71,19 @@ namespace ClientSide.Models.EFModels
 
             modelBuilder.Entity<Movie>()
                 .HasMany(e => e.Prices)
-                .WithRequired(e => e.Movy)
+                .WithRequired(e => e.Movie)
                 .HasForeignKey(e => e.MovieId)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Movie>()
                 .HasMany(e => e.Reviews)
-                .WithRequired(e => e.Movy)
+                .WithRequired(e => e.Movie)
                 .HasForeignKey(e => e.MovieId)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Movie>()
                 .HasMany(e => e.Screenings)
-                .WithRequired(e => e.Movy)
+                .WithRequired(e => e.Movie)
                 .HasForeignKey(e => e.MovieId)
                 .WillCascadeOnDelete(false);
 
