@@ -11,7 +11,6 @@
 }
 
 <div class="container-fluid">
-
     <h1 class="fw-bolder mb-3">電影資料維護</h1>
     <div class="d-flex mb-3 justify-content-between">
         <!-- 搜尋表單 -->
@@ -124,9 +123,26 @@
                                     @ratingName
                                 </td>
                                 <td>@Html.DisplayFor(modelItem => item.Title)</td>
-                                <td class="description-column">@Html.DisplayFor(modelItem => item.Description)</td>
+                                <td class="description-column" rows="6">
+                                    @{
+                                        var description = item.Description;
+                                        if (description != null && description.Length > 40)
+                                        {
+                                            description = description.Substring(0, 40) + " ...";
+                                        }
+                                    }
+                                    @description
+                                </td>
                                 <td>@Html.DisplayFor(modelItem => item.Director)</td>
-                                <td class="cast-column">@Html.DisplayFor(modelItem => item.Cast)</td>
+                                <td class="cast-column">
+                                    @{
+                                        var cast = item.Cast;
+                                        if(cast != null && cast.Length > 30)
+                                        {
+                                            cast = cast.Substring(0, 30) + " ...";
+                                        }
+                                    }
+                                </td>
                                 <td>@Html.DisplayFor(modelItem => item.RunTime)分鐘</td>
                                 <td>@Html.DisplayFor(modelItem => item.ReleaseDate)</td>
                                 <td>@Html.DisplayFor(modelItem => item.PosterUrl)</td>

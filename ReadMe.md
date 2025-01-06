@@ -2,7 +2,7 @@
     ### 資料庫
 	- 加入 /Models/EFModels
 	### 會員系統
-	- 加入 註冊新會員
+	-實作 註冊新會員功能
 		- 加入 /Controllers/MembersController.cs 
 		- 加入 /Models/Infra/HashUtility class
 		- 在 Web.config 中加入 appSetting , key="salt"
@@ -33,7 +33,7 @@
 		- 在/Members/Index(partial view)加入變更密碼的連結
 		- 加入 /Models/ViewModels/ChangePasswordVm
 		- 加入 /Members/ChangePassword action , 加入[Authorize]
-		- 加入 ChangePassword view page , 範本: Create(不必使用Edit，不需要事先load資料進去)
+		- 加入 ChangePassword view page , 範本: Create(不使用Edit，不需要事先load資料進去)
 	- 實作忘記密碼/重設密碼
 		- 加入 /Models/ViewModels/ForgotPasswordVm class
 		- 加入 /Members/ForgotPassword action
@@ -46,7 +46,7 @@
 		- 判斷memberId , confirmCode是否正確，若正確就update password , confirmCode = null
 	- 實作取消會員功能
 		- 在 ProfileVm加入 public bool IsDeleted { get; set; }
-		- 修改既有的EditProfile action 以及 EditProfile view page
+		- 加入的DeleteMember action 以及 修改 EditProfile view page，使得該頁 httppost 提交表單使用兩個不同的 action
 		- 按下取消會員後導到 Logout action
 - ## ServerSide
    ### 資料庫  
@@ -71,6 +71,9 @@
 		- 實作IndexPage(範本List)、CreatePage(範本Create)、EditPage(範本Edit)。
 	- 加入 GenreVm,GenreDto / IGenreService,IGenreDao並實作、註冊。
 	- 實作CRUD Action，建立對應View。
+	#### 3. 電影評論系統
+	- 加入 /Controllers/ReviewsController，依賴介面。
+	- 加入 ReviewVm,ReviewDto / IReviewService,IReviewDao並實作、註冊。
    ### 會員系統
 	- 加入 MembersController 和 /Views/Members
 	- 加入 Models/Infra/HashUtility.cs (用來做密碼雜湊的公用函式)

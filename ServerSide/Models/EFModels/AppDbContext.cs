@@ -354,6 +354,10 @@ public partial class AppDbContext : DbContext
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+public DbSet<ServerSide.Models.ViewModels.GenreVm> GenreVm { get; set; } = default!;
+
+
+public DbSet<ServerSide.Models.ViewModels.TicketVm> TicketVm { get; set; } = default!;
 
 public DbSet<ServerSide.Models.ViewModels.SeatStatusVm> SeatStatusVm { get; set; } = default!;
 }
