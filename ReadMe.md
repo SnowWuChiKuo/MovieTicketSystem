@@ -2,13 +2,13 @@
     ### 資料庫
 	- 加入 /Models/EFModels
 	### 會員系統
-	- 加入 註冊新會員
+	-實作 註冊新會員功能
 		- 加入 /Controllers/MembersController.cs 
 		- 加入 /Models/Infra/HashUtility class
 		- 在 Web.config 中加入 appSetting , key="salt"
 		- 加入 /Models/ViewModels/RegisterVm class
 		- 加入 RegisterConfirm View Page
-	- 實作會員確認功能(未做發送email信驗證)
+	- 實作會員確認功能   (未做發送email信驗證)
 		- 加入 /Members/ActiveRegister, url是 /Members/ActiveRegister?memberId=&confirmCode=
 		- 加入 ActiveRegister view page , 範本: empty
 	- 實作登入/登出功能
@@ -19,17 +19,35 @@
 			<forms name="mySite" loginUrl="~/Members/Login" defaultUrl="~/Members/Index/" />
 			</authentication>
 		- 加入 /Models/ViewModels/LoginVm class
-		- 修改 MembersController , add Login action
+		- 修改 MembersController , 加入 Login action
 		- 加入 Login view page, 範本: create
 		- 暫時做一個簡單的會員中心頁 /Members/Index
-		- 修改 MemberControler, add Logout action
+		- 修改 MemberControler, 加入 Logout action
 		- 修改 _Layout.csthml, add登入/登出的連結(沒登入與已登入，要顯示不同連結)
 	- 實作修改個資
 		- 在 /Members/Index(會員中心) 加入修改個資的連結
 		- 加入 /Models/ViewModels/ProfileVm class
 		- 加入 /Members/Profile action
 		- 加入 Profile view page, 範本: Edit 		
-
+	- 實作變更密碼
+		- 在/Members/Index(partial view)加入變更密碼的連結
+		- 加入 /Models/ViewModels/ChangePasswordVm
+		- 加入 /Members/ChangePassword action , 加入[Authorize]
+		- 加入 ChangePassword view page , 範本: Create(不使用Edit，不需要事先load資料進去)
+	- 實作忘記密碼/重設密碼
+		- 加入 /Models/ViewModels/ForgotPasswordVm class
+		- 加入 /Members/ForgotPassword action
+		- 加入 ForgotPassword view page，範本: Create
+		- 比對account , email ，若正確就 update confirmCode = guid ，並寄送Email (未做)
+		- postback 成功後，return View("ConfirmForgotPassword")
+		- 加入 /Models/ViewModels/ResetPasswordVm class,包括 update , confirmPassword
+		- 加入 /Models/ResetPassword action ,  url = /Members/ResetPassword?memberId=99&confirmCode=XXXXXXXXXXX
+		- 加入 ResetPassword view page , 範本: Create
+		- 判斷memberId , confirmCode是否正確，若正確就update password , confirmCode = null
+	- 實作取消會員功能
+		- 在 ProfileVm加入 public bool IsDeleted { get; set; }
+		- 加入的DeleteMember action 以及 修改 EditProfile view page，使得該頁 httppost 提交表單使用兩個不同的 action
+		- 按下取消會員後導到 Logout action
 - ## ServerSide
    ### 資料庫  
 	- 加入 /Models/EFModels
@@ -70,8 +88,16 @@
 	
    ### 票務座位系統
 	- 加入 TicketSeatsController ， 未加入依賴介面
-	- 加入 TicketVm、TicketDto、TicketDao
+	- 加入 TicketSeatVm、TicketSeatDto、TicketSeatDao
 	- 在 program.cs 中註冊
-	- 在 TicketsController 寫入 CRUD ，並顯示其 View
+	- 在 TicketSeatsController 寫入 CRUD ，並顯示其 View
+	- View 的 Index頁(範本List)、Create頁(範本Create)、Edit頁(範本Edit)
+	- 刪除部分在 Edit 頁， List 頁僅可編輯
+
+	### 座位系統
+	- 加入 SeatsController ， 未加入依賴介面
+	- 加入 SeatVm、SeatDto、SeatDao
+	- 在 program.cs 中註冊
+	- 在 SeatsController 寫入 CRUD ，並顯示其 View
 	- View 的 Index頁(範本List)、Create頁(範本Create)、Edit頁(範本Edit)
 	- 刪除部分在 Edit 頁， List 頁僅可編輯

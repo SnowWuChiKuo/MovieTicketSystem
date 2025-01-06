@@ -143,7 +143,7 @@
     <Compile Include="Models\EFModels\Coupon.cs" />
     <Compile Include="Models\EFModels\Genre.cs" />
     <Compile Include="Models\EFModels\Member.cs" />
-    <Compile Include="Models\EFModels\Movy.cs" />
+    <Compile Include="Models\EFModels\Movie.cs" />
     <Compile Include="Models\EFModels\Order.cs" />
     <Compile Include="Models\EFModels\OrderItem.cs" />
     <Compile Include="Models\EFModels\Price.cs" />
@@ -158,9 +158,12 @@
     <Compile Include="Models\EFModels\User.cs" />
     <Compile Include="Models\Infra\HashUtility.cs" />
     <Compile Include="Models\Services\MemberService.cs" />
+    <Compile Include="Models\ViewModels\ChangePasswordVm.cs" />
+    <Compile Include="Models\ViewModels\ForgotPasswordVm.cs" />
     <Compile Include="Models\ViewModels\LoginVm.cs" />
     <Compile Include="Models\ViewModels\ProfileVm.cs" />
     <Compile Include="Models\ViewModels\RegisterVm.cs" />
+    <Compile Include="Models\ViewModels\ResetPasswordVm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -193,6 +196,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="Content\dropdown-style.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -315,6 +319,11 @@
     <Content Include="Views\Members\Login.cshtml" />
     <Content Include="Views\Members\Index.cshtml" />
     <Content Include="Views\Members\EditProfile.cshtml" />
+    <Content Include="Views\Members\ChangePassword.cshtml" />
+    <Content Include="Views\Members\ConfirmForgotPassword.cshtml" />
+    <Content Include="Views\Members\ErrorResetPassword.cshtml" />
+    <Content Include="Views\Members\ResetPassword.cshtml" />
+    <Content Include="Views\Members\ForgotPassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
