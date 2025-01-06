@@ -123,5 +123,32 @@ namespace ClientSide.Models.Services
             var dao = new MemberEFDao();
             dao.UpdateProfile(account, model);
         }
+
+        //public void ChangePassword(string account, ChangePasswordVm model)
+        //{
+        //    try
+        //    {
+        //        var dao = new MemberEFDao();
+        //        dao.ChangePassword(account, model);
+
+                
+
+        //            TempData["Message"] = "更改密碼成功";
+
+        //            return RedirectToAction("Index");
+        //        }
+        //        else
+        //        {
+        //            ModelState.AddModelError("PasswordOrigin", "原始密碼錯誤");
+        //            return View(model);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+                
+        //    }
+            
+            
+        //}
     }
 }

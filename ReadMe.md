@@ -29,6 +29,11 @@
 		- 加入 /Models/ViewModels/ProfileVm class
 		- 加入 /Members/Profile action
 		- 加入 Profile view page, 範本: Edit 		
+	- 實作變更密碼
+		- 在/Members/Index(partial view)加入變更密碼的連結
+		- 加入 /Models/ViewModels/ChangePasswordVm
+		- 加入 /Members/ChangePassword action , 加入[Authorize]
+		- 加入 ChangePassword view page , 範本: Create(不必使用Edit，不需要事先load資料進去)
 
 - ## ServerSide
    ### 資料庫  

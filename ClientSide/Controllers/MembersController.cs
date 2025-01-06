@@ -1,4 +1,5 @@
-﻿using ClientSide.Models.DTOs;
+﻿using ClientSide.Models.DAOs;
+using ClientSide.Models.DTOs;
 using ClientSide.Models.Services;
 using ClientSide.Models.ViewModels;
 using System;
@@ -143,7 +144,37 @@ namespace ClientSide.Controllers
 
         }
 
+        public ActionResult ChangePassword()
+        {
+            return View();
+        }
 
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ChangePassword(ChangePasswordVm model)
+        {
+            if (!ModelState.IsValid) return View(model);
+
+            string account = User.Identity.Name;
+
+            //直接叫用 MemberEFDao ，無透過service
+            var dao = new MemberEFDao();
+
+            try
+            {
+                dao.ChangePassword(account, model);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("PasswordOrigin", ex.Message);
+                return View(model);
+            }
+
+            TempData["Message"] = "密碼已變更";
+
+            return RedirectToAction("Index");
+        }
 
     }
 }

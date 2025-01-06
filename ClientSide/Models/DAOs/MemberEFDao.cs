@@ -1,6 +1,7 @@
 ﻿using ClientSide.Models.DTOs;
 using ClientSide.Models.EFModels;
 using ClientSide.Models.ViewModels;
+using ServerSide.Models.Infra;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -76,6 +77,33 @@ namespace ClientSide.Models.DAOs
                 member.Email = model.Email;
 
                 db.SaveChanges();
+            }
+        }
+
+        public void ChangePassword(string account, ChangePasswordVm model)
+        {
+            using (var db = new AppDbContext())
+            {
+                var member = db.Members.First(m => m.Account == account);
+
+                if (HashUtility.ToSHA256(model.PasswordOrigin, HashUtility.GetSalt()) == member.PasswordHash)
+                {
+                    string hashedPassword = HashUtility.ToSHA256(model.PasswordNew, HashUtility.GetSalt());
+
+                    member.PasswordHash = hashedPassword;
+
+                    db.SaveChanges();
+
+                    //TempData["Message"] = "更改密碼成功";
+
+                    //return RedirectToAction("Index");
+                }
+                else
+                {
+                    //ModelState.AddModelError("PasswordOrigin", "原始密碼錯誤");
+                    //return View(model);
+                    throw new Exception("原始密碼錯誤");
+                }
             }
         }
     }
