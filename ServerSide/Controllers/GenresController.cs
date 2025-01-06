@@ -20,7 +20,7 @@ namespace ServerSide.Controllers
 		public IActionResult Search(string name)
 		{
 			var indexData = _service.GetAll();
-			if (!string.IsNullOrEmpty(name)) indexData = indexData.Where(i => i.Name.Contains(name)).ToList();
+			if (!string.IsNullOrEmpty(name)) indexData = indexData.Where(i => i.Name.Contains(name,StringComparison.OrdinalIgnoreCase)).ToList();
 			return View("Index", indexData);
 		}
 

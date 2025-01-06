@@ -1,0 +1,66 @@
+﻿@model ServerSide.Models.ViewModels.ReviewVm
+
+@{
+    ViewData["Title"] = "評論編輯";
+}
+
+<div class="container-fluid">
+    <h1 class="fw-bolder mx-5">評論編輯</h1>
+    <div class="card m-5">
+        <div class="card-body">
+            <div class="row mx-5">
+                <div class="col-md-12">
+                    <form asp-action="Edit" method="post">
+                        @Html.AntiForgeryToken()
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="Id" />
+                        <div class="mb-3">
+                            <label class="form-label fw-bolder">會員Id</label>
+                            <p class="form-control-plaintext">-@Model.MemberId</p>
+                            <input type="hidden" asp-for="MemberId" />
+                        </div>
+@*                         <div class="mb-3">
+                            <label class="form-label fw-bolder">會員名稱</label>
+                            <p class="form-control-plaintext">-@Model.MemberName</p>
+                        </div> *@
+                        <div class="mb-3">
+                            <label class="form-label fw-bolder">電影Id</label>
+                            <p class="form-control-plaintext">-@Model.MovieId</p>
+                            <input type="hidden" asp-for="MovieId" />
+                        </div>
+@*                         <div class="mb-3">
+                            <label class="form-label fw-bolder">電影名稱</label>
+                            <p class="form-control-plaintext">-@Model.MovieTitle</p>
+                        </div> *@
+                        <div class="mb-3">
+                            <label asp-for="Rating" class="form-label fw-bolder"></label>
+                            <input asp-for="Rating" class="form-control" />
+                            <span asp-validation-for="Rating" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Comment" class="form-label fw-bolder"></label>
+                            <input asp-for="Comment" class="form-control" />
+                            <span asp-validation-for="Comment" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <a asp-action="Index" class="btn btn-secondary me-4">回到電影清單</a>
+                            <input type="submit" value="保存變更" class="btn btn-primary me-4" />
+                        </div>
+                    </form>
+                    <form asp-action="Delete" asp-controller="Movies" method="post" onsubmit="return confirm('確定要刪除嗎？');" style="display:inline;">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <button type="submit" class="btn btn-danger">
+                            刪除
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

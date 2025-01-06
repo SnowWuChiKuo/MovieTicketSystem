@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using ServerSide.Models.DTOs;
 using ServerSide.Models.EFModels;
 using ServerSide.Models.Interfaces;
-using ServerSide.Models.Services;
 using ServerSide.Models.ViewModels;
 using System.Net;
 
@@ -11,12 +10,10 @@ namespace ServerSide.Controllers
 {
     public class MoviesController : Controller
     {
-        private readonly AppDbContext _db;
         private readonly IMovieService _service;
 
-        public MoviesController(AppDbContext db,IMovieService service)
+        public MoviesController(IMovieService service)
         {
-            _db = db;
             _service = service;
         }
 
@@ -94,7 +91,7 @@ namespace ServerSide.Controllers
             ViewBag.RatingsName = _service.GetRatingsName();
 			if (id == null)
 			{
-				return BadRequest("ID 不能為空。");
+				return BadRequest("請求錯誤，資料Id不能為空，請檢查資料是否存在。");
 			}
 
 			var movieDto = _service.FindMovieById(id.Value);

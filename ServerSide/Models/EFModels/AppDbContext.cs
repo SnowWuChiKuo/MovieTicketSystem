@@ -232,6 +232,11 @@ public partial class AppDbContext : DbContext
                 .HasForeignKey(d => d.MovieId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Reviews_Movies");
+
+            entity.HasOne(d => d.Order).WithMany(p => p.Reviews)
+                .HasForeignKey(d => d.OrderId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Reviews_Orders");
         });
 
         modelBuilder.Entity<Screening>(entity =>
@@ -350,8 +355,5 @@ public partial class AppDbContext : DbContext
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 
-public DbSet<ServerSide.Models.ViewModels.TicketSeatVm> TicketSeatVm { get; set; } = default!;
-public DbSet<ServerSide.Models.ViewModels.GenreVm> GenreVm { get; set; } = default!;
-
-public DbSet<ServerSide.Models.ViewModels.TicketVm> TicketVm { get; set; } = default!;
+public DbSet<ServerSide.Models.ViewModels.ReviewVm> ReviewVm { get; set; } = default!;
 }

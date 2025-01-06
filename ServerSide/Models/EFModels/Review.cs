@@ -13,6 +13,8 @@ public partial class Review
 
     public int MovieId { get; set; }
 
+    public int OrderId { get; set; }
+
     public int Rating { get; set; }
 
     public string Comment { get; set; }
@@ -24,4 +26,6 @@ public partial class Review
     public virtual Member Member { get; set; }
 
     public virtual Movie Movie { get; set; }
+
+    public virtual Order Order { get; set; }
 }
