@@ -1,0 +1,53 @@
+﻿@model ServerSide.Models.ViewModels.GenreVm
+
+@{
+    ViewData["Title"] = "電影分類編輯";
+}
+
+<h1>電影分類編輯</h1>
+
+<hr />
+<div class="card m-5">
+    <div class="card-body">
+        <div class="row mx-5">
+            <div class="col-md-12">
+                <form asp-action="Edit">
+                    @Html.AntiForgeryToken()
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="Id" />
+                    <div class="mb-3">
+                        <label class="form-label fw-bolder">Id</label>
+                        <p class="form-control-plaintext">@Model.Id</p>
+                        <input type="hidden" asp-for="Id" />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Name" class="form-label fw-bolder"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="DisplayOrder" class="form-label fw-bolder"></label>
+                        <input asp-for="DisplayOrder" class="form-control" />
+                        <span asp-validation-for="DisplayOrder" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <a asp-action="Index" class="btn btn-secondary me-4">回到電影清單</a>
+                        <input type="submit" value="保存變更" class="btn btn-primary me-4" />
+
+                    </div>
+                </form>
+                <form asp-action="Delete" asp-controller="Movies" method="post" onsubmit="return confirm('確定要刪除嗎？');" style="display:inline;">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="id" value="@Model.Id" />
+                    <button type="submit" class="btn btn-danger">
+                        刪除
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

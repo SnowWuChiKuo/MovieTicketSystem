@@ -2,94 +2,205 @@
 
 @{
     ViewData["Title"] = "電影資料維護";
+    //把ViewBag資料存成字典，避免每次一直搜尋
+    var genresDict = 
+        (ViewBag.GenresName as List<SelectListItem>)?.ToDictionary(g => g.Value, g => g.Text) ?? new Dictionary<string, string>();
+    var ratingsDict = 
+        (ViewBag.RatingsName as List<SelectListItem>)?.ToDictionary(r => r.Value, r => r.Text) ?? new Dictionary<string, string>();
+
 }
 
-<h1 class="fw-bolder mb-3">電影資料維護</h1>
+<div class="container-fluid">
 
-<div class="d-flex justify-content-end mb-3">
-        <a asp-action="Create" class="btn btn-lg btn-success">新增電影資料</a>
+    <h1 class="fw-bolder mb-3">電影資料維護</h1>
+    <div class="d-flex mb-3 justify-content-between">
+        <!-- 搜尋表單 -->
+        <form asp-action="Search" method="get" class="flex-grow-1 me-3">
+            <div class="row mb-3 justify-content-start">
+                <div class="col-2">
+                    <input type="text" name="Title" placeholder="Title" class="form-control" />
+                </div>
+                <div class="col-2">
+                    <select name="Genre" class="custom-select">
+                        <option value="">類型</option>
+                        @foreach (var genre in ViewBag.GenresName)
+                        {
+                            <option value="@genre.Value">@genre.Text</option>
+                        }
+                    </select>
+
+                </div>
+                <div class="col-2">
+                    <select name="Rating" class="custom-select">
+                        <option value="">分級</option>
+                        @foreach (var rating in ViewBag.RatingsName)
+                        {
+                            <option value="@rating.Value">@rating.Text</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-3">
+                    <input type="date" name="StartDate" class="form-control" />
+                </div>
+                <div class="col-3">
+                    <input type="date" name="EndDate" class="form-control" />
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa fa-search"></i> &nbsp 搜尋
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <!-- 新增按鈕 -->
+        <div class="align-self-end" style="margin-bottom:16px">
+            <a asp-action="Create" class="btn btn-success">
+                <i class="fa fa-pen-fancy"></i>&nbsp 新增電影資料
+            </a>
+        </div>
+    </div>
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover" width="100%" cellspacing="0" id="myTable">
+                    <thead>
+                        <tr style="background-color:skyblue">
+                            <th>
+                                @Html.DisplayNameFor(model => model.GenreId)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.RatingId)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Title)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Description)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Director)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Cast)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.RunTime)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ReleaseDate)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.PosterUrl)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.CreatedAt)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Updated)
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            //在table row加上onclick事件、改滑鼠懸停狀態，點擊後觸發JavaScript函數，跳轉到Edit
+                            <tr onclick="navigateToEdit('@item.Id')" style="cursor: pointer;">
+                                <td>
+                                    @{
+                                        var genreName = 
+                                        genresDict.ContainsKey(item.GenreId.ToString()) ? genresDict[item.GenreId.ToString()] : "未知分類";
+                                    }
+                                    @genreName
+                                </td>
+                                <td>
+                                    @{
+                                        var ratingName = 
+                                        ratingsDict.ContainsKey(item.RatingId.ToString()) ? ratingsDict[item.RatingId.ToString()] : "未知分級";
+                                    }
+                                    @ratingName
+                                </td>
+                                <td>@Html.DisplayFor(modelItem => item.Title)</td>
+                                <td class="description-column">@Html.DisplayFor(modelItem => item.Description)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Director)</td>
+                                <td class="cast-column">@Html.DisplayFor(modelItem => item.Cast)</td>
+                                <td>@Html.DisplayFor(modelItem => item.RunTime)分鐘</td>
+                                <td>@Html.DisplayFor(modelItem => item.ReleaseDate)</td>
+                                <td>@Html.DisplayFor(modelItem => item.PosterUrl)</td>
+                                <td>@Html.DisplayFor(modelItem => item.CreatedAt)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Updated)</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
 </div>
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.GenreId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RatingId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Director)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Cast)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RunTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ReleaseDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PosterUrl)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedAt)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Updated)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.GenreId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RatingId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Director)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Cast)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RunTime)分鐘
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReleaseDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PosterUrl)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedAt)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Updated)
-            </td>
-            <td nowrap>
-                <a asp-action="Edit" asp-route-id="@item.Id" class="">編輯</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">詳細</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">刪除</a>
-            </td>
-        </tr>
+
+@section Styles
+{
+    <!-- Custom styles for this page -->
+    <link href="~/js/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <!-- Custom styles for this template-->
+    <link href="~/css/sb-admin-2.min.css" rel="stylesheet">
 }
-    </tbody>
-</table>
+
+@section Scripts
+{
+    <!-- jQuery -->
+    <script src="~/js/vendor/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="~/js/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="~/js/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Page level plugins -->
+    <script src="~/js/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/js/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- SBAdmin scripts -->
+    <script src="~/js/js/sb-admin-2.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="~/js/js/demo/datatables-demo.js"></script>
+    <script>
+        //初始化DataTable套件 設置屬性、id對應body裡Table的id
+        $(document).ready(function () {
+            $('#myTable').DataTable({
+                "paging": true,
+                "lengthChange": true,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "language": 
+                {
+                    "lengthMenu": "每頁顯示筆數 _MENU_ ",
+                    "zeroRecords": "沒有找到對應的資料",
+                    "info": "顯示第 _START_ 到 _END_ 筆，共 _TOTAL_ 筆",
+                    "infoEmpty": "顯示第 0 到 0 筆，共 0 筆",
+                    "infoFiltered": "(從 _MAX_ 筆資料中過濾)",
+                    "paginate": 
+                    {
+                        "previous": "上一頁",
+                        "next": "下一頁"
+                    }
+                }
+            });
+
+            $('#myTable_filter').hide();
+        });
+        //點擊表格Row跳轉到Edit頁面
+        function navigateToEdit(id) {
+            window.location.href = '/Movies/Edit/' + id;
+        }
+    </script>
+}
+
+

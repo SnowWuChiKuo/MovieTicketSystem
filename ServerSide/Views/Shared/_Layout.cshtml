@@ -18,6 +18,10 @@
 
     <!-- Custom styles for this template-->
     <link href="~/css/sb-admin-2.min.css" rel="stylesheet">
+
+    <!-- font-awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" />
+
     @RenderSection("Styles", required: false)
 </head>
 
@@ -63,7 +67,7 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">電影細項:</h6>
-                        <a class="collapse-item" href="#">電影種類清單</a>
+                        <a class="collapse-item" href="~/Genres/Index">電影種類清單</a>
                         <a class="collapse-item" href="#">電影分級清單</a>
                         <a class="collapse-item" href="~/Movies/Index">電影清單</a>
                         <a class="collapse-item" href="#">電影票務清單</a>
@@ -91,7 +95,7 @@
 
             <!-- Nav Item - 票種管理 -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" aria-expanded="true" aria-controls="collapseUtilities">
+                <a class="nav-link collapsed" href="~/Tickets/Index" aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fas fa-fw fa-wrench"></i>
                     票種清單
                 </a>
@@ -108,7 +112,7 @@
                 <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">座位細項:</h6>
-                        <a class="collapse-item" href="#">票務座位清單</a>
+                        <a class="collapse-item" href="~/TicketSeats/Index">票務座位清單</a>
                         <a class="collapse-item" href="#">座位清單</a>
                         <a class="collapse-item" href="~/Movies/List">座位狀態清單</a>
                     </div>
@@ -244,7 +248,8 @@
     <!-- Custom scripts for all pages-->
     <script src="~/js/js/sb-admin-2.min.js"></script>
 
-    
+    <!-- Sweet Alert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     @RenderSection("Scripts", required: false)
 </body>

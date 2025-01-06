@@ -1,0 +1,69 @@
+﻿@model IEnumerable<ServerSide.Models.ViewModels.TicketSeatVm>
+
+@{
+    ViewData["Title"] = "票務座位資料維護";
+}
+
+
+<div class="container-fluid">
+
+    <h1 class="fw-bolder mb-3">票務座位資料維護</h1>
+    <div class="d-flex justify-content-end mb-3">
+        <a asp-action="Create" class="btn btn-lg btn-success">新增票務座位資料</a>
+    </div>
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.TicketId)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.SeatId)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TicketId)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.SeatId)
+                                </td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary"><i class="fa-solid fa-pen-to-square"></i>編輯</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+@section styles
+{
+    <!-- Custom styles for this page -->
+    <link href="~/js/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+}
+
+@section scripts
+{
+    <!-- Page level plugins -->
+    <script src="~/js/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/js/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="~/js/js/demo/datatables-demo.js"></script>
+}

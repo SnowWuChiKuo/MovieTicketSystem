@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using ServerSide.Models.ViewModels;
 
 namespace ServerSide.Models.EFModels;
 
@@ -348,4 +349,9 @@ public partial class AppDbContext : DbContext
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
+public DbSet<ServerSide.Models.ViewModels.TicketSeatVm> TicketSeatVm { get; set; } = default!;
+public DbSet<ServerSide.Models.ViewModels.GenreVm> GenreVm { get; set; } = default!;
+
+public DbSet<ServerSide.Models.ViewModels.TicketVm> TicketVm { get; set; } = default!;
 }
