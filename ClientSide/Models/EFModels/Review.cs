@@ -14,6 +14,8 @@ namespace ClientSide.Models.EFModels
 
         public int MovieId { get; set; }
 
+        public int OrderId { get; set; }
+
         public int Rating { get; set; }
 
         [StringLength(2000)]
@@ -25,6 +27,8 @@ namespace ClientSide.Models.EFModels
 
         public virtual Member Member { get; set; }
 
-        public virtual Movie Movie { get; set; }
+        public virtual Movie Movy { get; set; }
+
+        public virtual Order Order { get; set; }
     }
 }
