@@ -55,6 +55,9 @@ namespace ClientSide.Controllers
 
             service.ProcessActiveRegister(memberId , confirmCode);
 
+            // 設定一個 ViewBag 變數，表示要顯示 SweetAlert，進到ActiveRegister頁面跳出SweetAlert視窗
+            ViewBag.ShowSweetAlert = true; 
+
             return View();
         }
 
@@ -143,9 +146,11 @@ namespace ClientSide.Controllers
             
             service.UpdateProfile(account, model);
 
-            TempData["Message"] = "個人資料已更新";
+            TempData["ShowSuccessAlert"] = true; // 設定一個 ViewBag 變數，表示要顯示 SweetAlert
 
-            return RedirectToAction("Index");
+            //TempData["Message"] = "個人資料已更新";
+
+            return RedirectToAction("EditProfile");
 
         }
 
@@ -161,13 +166,19 @@ namespace ClientSide.Controllers
             {
                 //有勾 checkbox
                 service.Delete(account);
-                TempData["Message"] = "會員資料已取消";
+                TempData["ShowSuccessAlert"] = true;
+                TempData["SweetAlertTitle"] = "會員資料已取消";
+                TempData["SweetAlertText"] = "您的會員帳號已成功取消。";
+                TempData["SweetAlertIcon"] = "success";
                 return RedirectToAction("Logout", "Members");
 
             }
             else
             {
-                TempData["Message"] = "請勾選取消會員身分";
+                TempData["ShowSuccessAlert"] = true;
+                TempData["SweetAlertTitle"] = "取消會員身分失敗";
+                TempData["SweetAlertText"] = "請勾選取消會員身分。";
+                TempData["SweetAlertIcon"] = "error";
                 return RedirectToAction("EditProfile");
             }
         }

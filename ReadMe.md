@@ -48,6 +48,8 @@
 		- 在 ProfileVm加入 public bool IsDeleted { get; set; }
 		- 加入的DeleteMember action 以及 修改 EditProfile view page，使得該頁 httppost 提交表單使用兩個不同的 action
 		- 按下取消會員後導到 Logout action
+	- 其他 
+		- 使用sweetalert : 帳號開通， 編輯資料
 - ## ServerSide
    ### 資料庫  
 	- 加入 /Models/EFModels

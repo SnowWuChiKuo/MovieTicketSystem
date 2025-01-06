@@ -1,10 +1,10 @@
 ﻿@model ClientSide.Models.ViewModels.ProfileVm
 
 @{
-    ViewBag.Title = "個人資訊編輯";
+    ViewBag.Title = "個人資料編輯";
 }
 
-<h2 class="fw-bolder">個人資訊編輯</h2>
+<h2 class="fw-bolder">個人資料編輯</h2>
 
 
 @using (Html.BeginForm("EditProfile", "Members", FormMethod.Post, new { id = "editForm" }))
@@ -71,4 +71,49 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    @if (TempData.Peek("ShowSuccessAlert") != null && (bool)TempData.Peek("ShowSuccessAlert") == true)
+    {
+        <script>
+            $(function () {
+                Swal.fire({
+                    title: '個人資料編輯成功',
+                    text: '您的個人資料已成功更新。',
+                    icon: 'success',
+                    confirmButtonText: '確認'
+                }).then((result) => {
+                     if (result.isConfirmed) {
+                        window.location.href = '@Url.Action("EditProfile", "Members")';
+                    }
+                 })
+            });
+        </script>
+        TempData.Remove("ShowSuccessAlert");
+    }
+    @if (TempData.Peek("SweetAlertTitle") != null)
+    {
+        <script>
+            $(function () {
+                Swal.fire({
+                    title: '@TempData.Peek("SweetAlertTitle")',
+                    text: '@TempData.Peek("SweetAlertText")',
+                    icon: '@TempData.Peek("SweetAlertIcon")',
+                    confirmButtonText: '確認'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                       @if(TempData.Peek("SweetAlertTitle").ToString() == "會員資料已取消")
+                       {
+                         @:window.location.href = '@Url.Action("Logout", "Members")';
+                       }
+                       else
+                       {
+                          @:window.location.href = '@Url.Action("EditProfile", "Members")';
+                       }
+                    }
+                 })
+            });
+        </script>
+        TempData.Remove("SweetAlertTitle");
+        TempData.Remove("SweetAlertText");
+        TempData.Remove("SweetAlertIcon");
+    }
 }
