@@ -1,0 +1,116 @@
+﻿@model ServerSide.Models.ViewModels.SeatVm
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="container">
+    <h1>Edit</h1>
+
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
+                <div class="mb-3">
+                    <label asp-for="TheaterId" class="form-label"></label>
+                    <select asp-for="TheaterId" class="custom-select" asp-items="ViewBag.TheatersName">
+                        <option value="">
+                            請選擇分類
+                        </option>
+                    </select>
+                    <span asp-validation-for="TheaterId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Row" class="control-label"></label>
+                    <input asp-for="Row" class="form-control" />
+                    <span asp-validation-for="Row" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Number" class="control-label"></label>
+                    <input asp-for="Number" class="form-control" />
+                    <span asp-validation-for="Number" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="IsDisabled" class="form-label">是否是殘障座位</label>
+                    <div>
+                        <label class="form-check-label">
+                            @Html.RadioButtonFor(model => model.IsDisabled, true) 是
+                        </label>
+                    </div>
+                    <div>
+                        <label class="form-check-label">
+                            @Html.RadioButtonFor(model => model.IsDisabled, false) 否
+                        </label>
+                    </div>
+                    <span asp-validation-for="IsDisabled" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="更新" class="btn btn-primary btn-sm" />
+                    <input type="button" value="刪除" class="btn btn-danger btn-sm" onclick="confirmDelete()" />
+                    <a asp-action="Index" class="btn btn-sm btn-secondary">回清單頁</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+<script>
+    function confirmDelete() {
+        Swal.fire({
+            title: "確定要刪除嗎？",
+            text: "刪除後將無法恢復！",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "是的，刪除！",
+            cancelButtonText: "取消"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                deleteItem();
+            }
+        });
+    }
+
+    function deleteItem() {
+        const id = document.querySelector('input[name="Id"]').value;
+        fetch(`/Seats/Delete/${id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+            }
+        })
+            .then(response => {
+                if (response.ok) {
+                    Swal.fire({
+                        title: "已刪除！",
+                        text: "座位已成功刪除。",
+                        icon: "success"
+                    }).then(() => {
+                        window.location.href = '/Seats/Index';
+                    });
+                } else {
+                    Swal.fire({
+                        title: "刪除失敗！",
+                        text: "請稍後再試。",
+                        icon: "error"
+                    });
+                }
+            })
+            .catch(error => {
+                Swal.fire({
+                    title: "錯誤！",
+                    text: "無法連接到伺服器。",
+                    icon: "error"
+                });
+            });
+    }
+</script>

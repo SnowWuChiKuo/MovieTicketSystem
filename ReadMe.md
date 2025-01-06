@@ -85,8 +85,16 @@
 	
    ### 票務座位系統
 	- 加入 TicketSeatsController ， 未加入依賴介面
-	- 加入 TicketVm、TicketDto、TicketDao
+	- 加入 TicketSeatVm、TicketSeatDto、TicketSeatDao
 	- 在 program.cs 中註冊
-	- 在 TicketsController 寫入 CRUD ，並顯示其 View
+	- 在 TicketSeatsController 寫入 CRUD ，並顯示其 View
+	- View 的 Index頁(範本List)、Create頁(範本Create)、Edit頁(範本Edit)
+	- 刪除部分在 Edit 頁， List 頁僅可編輯
+
+	### 座位系統
+	- 加入 SeatsController ， 未加入依賴介面
+	- 加入 SeatVm、SeatDto、SeatDao
+	- 在 program.cs 中註冊
+	- 在 SeatsController 寫入 CRUD ，並顯示其 View
 	- View 的 Index頁(範本List)、Create頁(範本Create)、Edit頁(範本Edit)
 	- 刪除部分在 Edit 頁， List 頁僅可編輯

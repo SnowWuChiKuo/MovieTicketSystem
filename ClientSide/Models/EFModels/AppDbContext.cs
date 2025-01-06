@@ -12,24 +12,24 @@ namespace ClientSide.Models.EFModels
         {
         }
 
-		public virtual DbSet<CartItem> CartItems { get; set; }
-		public virtual DbSet<Cart> Carts { get; set; }
-		public virtual DbSet<Coupon> Coupons { get; set; }
-		public virtual DbSet<Genre> Genres { get; set; }
-		public virtual DbSet<Member> Members { get; set; }
-		public virtual DbSet<Movie> Movies { get; set; }
-		public virtual DbSet<OrderItem> OrderItems { get; set; }
-		public virtual DbSet<Order> Orders { get; set; }
-		public virtual DbSet<Price> Prices { get; set; }
-		public virtual DbSet<Rating> Ratings { get; set; }
-		public virtual DbSet<Review> Reviews { get; set; }
-		public virtual DbSet<Screening> Screenings { get; set; }
-		public virtual DbSet<Seat> Seats { get; set; }
-		public virtual DbSet<SeatStatu> SeatStatus { get; set; }
-		public virtual DbSet<Theater> Theaters { get; set; }
-		public virtual DbSet<Ticket> Tickets { get; set; }
-		public virtual DbSet<TicketSeat> TicketSeats { get; set; }
-		public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<CartItem> CartItems { get; set; }
+        public virtual DbSet<Cart> Carts { get; set; }
+        public virtual DbSet<Coupon> Coupons { get; set; }
+        public virtual DbSet<Genre> Genres { get; set; }
+        public virtual DbSet<Member> Members { get; set; }
+        public virtual DbSet<Movie> Movies { get; set; }
+        public virtual DbSet<OrderItem> OrderItems { get; set; }
+        public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<Price> Prices { get; set; }
+        public virtual DbSet<Rating> Ratings { get; set; }
+        public virtual DbSet<Review> Reviews { get; set; }
+        public virtual DbSet<Screening> Screenings { get; set; }
+        public virtual DbSet<Seat> Seats { get; set; }
+        public virtual DbSet<SeatStatu> SeatStatus { get; set; }
+        public virtual DbSet<Theater> Theaters { get; set; }
+        public virtual DbSet<Ticket> Tickets { get; set; }
+        public virtual DbSet<TicketSeat> TicketSeats { get; set; }
+        public virtual DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -69,26 +69,31 @@ namespace ClientSide.Models.EFModels
                 .WithRequired(e => e.Member)
                 .WillCascadeOnDelete(false);
 
-			modelBuilder.Entity<Movie>()
-				.HasMany(e => e.Prices)
-				.WithRequired(e => e.Movie)
-				.HasForeignKey(e => e.MovieId)
-				.WillCascadeOnDelete(false);
+            modelBuilder.Entity<Movie>()
+                .HasMany(e => e.Prices)
+                .WithRequired(e => e.Movie)
+                .HasForeignKey(e => e.MovieId)
+                .WillCascadeOnDelete(false);
 
-			modelBuilder.Entity<Movie>()
-				.HasMany(e => e.Reviews)
-				.WithRequired(e => e.Movie)
-				.HasForeignKey(e => e.MovieId)
-				.WillCascadeOnDelete(false);
+            modelBuilder.Entity<Movie>()
+                .HasMany(e => e.Reviews)
+                .WithRequired(e => e.Movie)
+                .HasForeignKey(e => e.MovieId)
+                .WillCascadeOnDelete(false);
 
-			modelBuilder.Entity<Movie>()
-				.HasMany(e => e.Screenings)
-				.WithRequired(e => e.Movie)
-				.HasForeignKey(e => e.MovieId)
-				.WillCascadeOnDelete(false);
+            modelBuilder.Entity<Movie>()
+                .HasMany(e => e.Screenings)
+                .WithRequired(e => e.Movie)
+                .HasForeignKey(e => e.MovieId)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Order>()
                 .HasMany(e => e.OrderItems)
+                .WithRequired(e => e.Order)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Order>()
+                .HasMany(e => e.Reviews)
                 .WithRequired(e => e.Order)
                 .WillCascadeOnDelete(false);
 

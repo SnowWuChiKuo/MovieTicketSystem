@@ -12,6 +12,7 @@ namespace ClientSide.Models.EFModels
         public Order()
         {
             OrderItems = new HashSet<OrderItem>();
+            Reviews = new HashSet<Review>();
         }
 
         public int Id { get; set; }
@@ -34,5 +35,8 @@ namespace ClientSide.Models.EFModels
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrderItem> OrderItems { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Review> Reviews { get; set; }
     }
 }
