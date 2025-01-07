@@ -1,0 +1,164 @@
+﻿@model IEnumerable<ServerSide.Models.ViewModels.MemberIndexVm>
+
+@{
+    ViewData["Title"] = "會員資料維護";
+}
+
+<div class="container-fluid">
+    <h1 class="fw-bolder mb-3">會員資料維護</h1>
+    <div class="d-flex justify-content-end mb-3">
+        <a asp-action="Create" class="btn btn-lg btn-success">新增會員資料</a>
+    </div>
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="myTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Id)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Account)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Email)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.PasswordHash)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Name)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.IsDeleted)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.IsBlackList)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.IsConfirmed)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ConfirmCode)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.CreatedAt)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.UpdatedAt)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                        //在table row加上onclick事件、改滑鼠懸停狀態，點擊後觸發JavaScript函數，跳轉到Edit
+                            <tr onclick="navigateToEdit('@item.Id')" style="cursor: pointer;">
+                                <th>
+                                    @Html.DisplayFor(modelItem => item.Id)
+                                </th>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Account)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Email)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PasswordHash)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.IsDeleted)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.IsBlackList)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.IsConfirmed)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ConfirmCode)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CreatedAt)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.UpdatedAt)
+                                </td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary"><i class="fa-solid fa-pen-to-square"></i>編輯</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles
+{
+<!-- Custom styles for this page -->
+<link href="~/js/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+<!-- Custom styles for this template-->
+<link href="~/css/sb-admin-2.min.css" rel="stylesheet">
+}
+
+@section Scripts
+{
+    <!-- jQuery -->
+    <script src="~/js/vendor/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="~/js/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="~/js/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Page level plugins -->
+    <script src="~/js/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/js/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- SBAdmin scripts -->
+    <script src="~/js/js/sb-admin-2.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="~/js/js/demo/datatables-demo.js"></script>
+    <script>
+        //初始化DataTable套件 設置屬性、id對應body裡Table的id
+        $(document).ready(function () {
+            $('#myTable').DataTable({
+                "paging": true,
+                "lengthChange": true,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "language":
+                {
+                    "lengthMenu": "每頁顯示筆數 _MENU_ ",
+                    "zeroRecords": "沒有找到對應的資料",
+                    "info": "顯示第 _START_ 到 _END_ 筆，共 _TOTAL_ 筆",
+                    "infoEmpty": "顯示第 0 到 0 筆，共 0 筆",
+                    "infoFiltered": "(從 _MAX_ 筆資料中過濾)",
+                    "paginate":
+                    {
+                        "previous": "上一頁",
+                        "next": "下一頁"
+                    }
+                }
+            });
+
+            $('#myTable_filter').hide();
+        });
+        //點擊表格Row跳轉到Edit頁面
+        function navigateToEdit(id) {
+            window.location.href = '/Members/Edit/' + id;
+        }
+    </script>
+}

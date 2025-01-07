@@ -17,7 +17,7 @@ public partial class Order
 
     public bool Status { get; set; }
 
-    public int? CouponAmount { get; set; }
+    public int? DiscountPrice { get; set; }
 
     public DateTime CreatedAt { get; set; }
 

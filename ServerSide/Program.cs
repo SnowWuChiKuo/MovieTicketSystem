@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using ServerSide.Models.DAOs;
 using ServerSide.Models.DTOs;
 using ServerSide.Models.EFModels;
+using ServerSide.Models.Infra;
 using ServerSide.Models.Interfaces;
 using ServerSide.Models.Services;
 
@@ -13,8 +15,12 @@ namespace ServerSide
 		{
 			var builder = WebApplication.CreateBuilder(args);
 
-			// Add services to the container.
-			builder.Services.AddControllersWithViews();
+            // Configure App Configuration
+            var configuration = builder.Configuration;
+            HashUtility.SetConfiguration(configuration);
+
+            // Add services to the container.
+            builder.Services.AddControllersWithViews();
 
 			//註冊MovieController介面跟它的實作
 			builder.Services.AddScoped<IMovieDao, MovieDao>();
@@ -28,6 +34,9 @@ namespace ServerSide
 			builder.Services.AddScoped<IReviewDao, ReviewDao>();
 			builder.Services.AddScoped<IReviewService, ReviewService>();
 
+            // 新增 Member 相關服務
+            builder.Services.AddScoped<MemberService>();
+            builder.Services.AddScoped<MemberDao>();
 
             // 新增 Ticket 相關服務
             builder.Services.AddScoped<TicketService>();
@@ -71,5 +80,17 @@ namespace ServerSide
 
 			app.Run();
 		}
-	}
+
+   //     public static IHostBuilder CreateHostBuilder(string[] args) =>
+			//Host.CreateDefaultBuilder(args)
+   //        .ConfigureAppConfiguration((hostingContext, config) =>
+   //        {
+   //            var configuration = config.Build();
+   //            HashUtility.SetConfiguration(configuration);
+   //        })
+   //        .ConfigureWebHostDefaults(webBuilder =>
+   //        {
+   //            webBuilder.UseStartup<Startup>();
+   //        });
+    }
 }

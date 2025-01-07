@@ -18,6 +18,7 @@
 			<authentication mode="Forms">
 			<forms name="mySite" loginUrl="~/Members/Login" defaultUrl="~/Members/Index/" />
 			</authentication>
+			 ```
 		- 加入 /Models/ViewModels/LoginVm class
 		- 修改 MembersController , 加入 Login action
 		- 加入 Login view page, 範本: create
@@ -49,7 +50,7 @@
 		- 加入的DeleteMember action 以及 修改 EditProfile view page，使得該頁 httppost 提交表單使用兩個不同的 action
 		- 按下取消會員後導到 Logout action
 	- 其他 
-		- 使用sweetalert : 帳號開通， 編輯資料
+		- 使用sweetalert : 帳號開通頁， 編輯資料頁
 - ## ServerSide
    ### 資料庫  
 	- 加入 /Models/EFModels
@@ -79,8 +80,18 @@
 	- 加入 ReviewVm,ReviewDto / IReviewService,IReviewDao並實作、註冊。
 	- 實作CRUD Action，建立對應View。
    ### 會員系統
-	- 加入 MembersController 和 /Views/Members
 	- 加入 Models/Infra/HashUtility.cs (用來做密碼雜湊的公用函式)
+	- 註冊hashutility的salt值，並在DI中註冊 => 
+	 ```
+      Configure App Configuration
+            var configuration = builder.Configuration;
+            HashUtility.SetConfiguration(configuration); 
+	```
+    - MemberService , MemberDao , MemberIndexVm , MemberCreateVm ,MemberDto 
+	- 加入 MembersController Index action , /Views/Members/Index page , 未加入依賴介面
+	- 加入 MembersController Edit action , view page
+	- 加入 MembersController Create action, view page
+	- 加入 sweetalert
 
    ### 票種系統
     - 加入 TicketsController ， 未加入依賴介面
