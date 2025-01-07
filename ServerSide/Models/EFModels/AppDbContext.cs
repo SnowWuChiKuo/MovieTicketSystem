@@ -14,6 +14,10 @@ public partial class AppDbContext : DbContext
     {
     }
 
+    public AppDbContext()
+    {
+    }
+
     public virtual DbSet<Cart> Carts { get; set; }
 
     public virtual DbSet<CartItem> CartItems { get; set; }
@@ -358,4 +362,10 @@ public partial class AppDbContext : DbContext
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 
 public DbSet<ServerSide.Models.ViewModels.MemberCreateVm> MemberCreateVm { get; set; } = default!;
+
+public DbSet<ServerSide.Models.ViewModels.UserIndexVm> UserIndexVm { get; set; } = default!;
+
+public DbSet<ServerSide.Models.ViewModels.UserCreateVm> UserCreateVm { get; set; } = default!;
+
+public DbSet<ServerSide.Models.ViewModels.UserLoginVm> UserLoginVm { get; set; } = default!;
 }

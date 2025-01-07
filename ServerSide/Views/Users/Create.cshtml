@@ -1,0 +1,72 @@
+﻿@model ServerSide.Models.ViewModels.UserCreateVm
+
+@{
+    ViewData["Title"] = "新增員工";
+}
+
+<div class="container-fluid">
+    <h1 class="fw-bolder mb-3 mx-4">新增員工</h1>
+    <div class="card m-4">
+        <div class="card-body">
+            <div class="col-md-12">
+                <form asp-action="Create" id="createUserForm">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="mb-3">
+                        <label asp-for="Account" class="form-label"></label>
+                        <input asp-for="Account" class="form-control" />
+                        <span asp-validation-for="Account" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label"></label>
+                        <input asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Password" class="form-label"></label>
+                        <input asp-for="Password" class="form-control" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Name" class="form-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3 form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" asp-for="IsAdmin" /> @Html.DisplayNameFor(model => model.IsAdmin)
+                        </label>
+                    </div>
+                    <div class="mb-3">
+                        <a asp-action="Index" class="btn btn-secondary me-4">回到員工清單</a>
+                        <input type="submit" value="新增" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $(function () {
+            $('#createUserForm').submit(function (e) {
+                e.preventDefault(); // Prevent default form submission
+                Swal.fire({
+                    title: '確認新增員工',
+                    text: '您確定要新增此員工嗎？',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: '是的，新增員工',
+                    cancelButtonText: '取消'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.submit(); // Manually submit form if confirmed
+                    }
+                });
+            });
+        });
+    </script>
+}

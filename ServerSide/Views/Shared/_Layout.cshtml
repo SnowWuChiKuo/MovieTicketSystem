@@ -56,6 +56,14 @@
                 </a>
 
             </li>
+            <!-- Nav Item - 員工管理 -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="~/Users/Index" aria-expanded="true" aria-controls="collapseUtilities">
+                    <i class="fas fa-fw fa-wrench"></i>
+                    員工清單
+                </a>
+
+            </li>
 
             <!-- Nav Item - 電影管理 -->
             <li class="nav-item">
@@ -169,7 +177,7 @@
                         <li class="nav-item dropdown no-arrow">
                             <!-- Dropdown - User Information -->
                             <div class="d-flex">
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="@Url.Action("Create", "Users")">
                                     註冊
                                 </a>
                                 <div class="dropdown-divider"></div>

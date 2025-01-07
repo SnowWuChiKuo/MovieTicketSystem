@@ -19,7 +19,7 @@ namespace ServerSide.Models.ViewModels
         [Display(Name = "名稱")]
         public string Name { get; set; }
 
-        [Display(Name = "是否是管理員")]
+        [Display(Name = "是否為管理員")]
         public bool IsAdmin { get; set; }
 
     }

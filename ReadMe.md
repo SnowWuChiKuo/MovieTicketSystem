@@ -92,6 +92,8 @@
 	- 加入 MembersController Edit action , view page
 	- 加入 MembersController Create action, view page
 	- 加入 sweetalert
+   ### 員工系統
+	-	 
 
    ### 票種系統
     - 加入 TicketsController ， 未加入依賴介面

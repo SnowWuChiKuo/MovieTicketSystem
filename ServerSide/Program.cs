@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using ServerSide.Models.DAOs;
@@ -38,6 +39,10 @@ namespace ServerSide
             builder.Services.AddScoped<MemberService>();
             builder.Services.AddScoped<MemberDao>();
 
+            // 新增 User 相關服務
+            builder.Services.AddScoped<UserService>();
+            builder.Services.AddScoped<UserDao>();
+
             // 新增 Ticket 相關服務
             builder.Services.AddScoped<TicketService>();
 			builder.Services.AddScoped<TicketDao>();
@@ -57,7 +62,20 @@ namespace ServerSide
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 			builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
 
-			var app = builder.Build();
+            // 設定 Cookie 表單驗證 ---------------------
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.Cookie.Name = "mySite";
+                    options.LoginPath = "/Users/Login";
+                    options.AccessDeniedPath = "/Users/Login"; // 如果需要設定拒絕訪問頁面
+                    options.ReturnUrlParameter = "returnUrl";
+                    options.SlidingExpiration = true;
+                    options.ExpireTimeSpan = TimeSpan.FromMinutes(30); // 設定 cookie 有效時間
+                });
+            // ---------------------------------------
+
+            var app = builder.Build();
 
 			// Configure the HTTP request pipeline.
 			if (!app.Environment.IsDevelopment())
@@ -72,25 +90,15 @@ namespace ServerSide
 
 			app.UseRouting();
 
-			app.UseAuthorization();
+            app.UseAuthentication(); // 啟用驗證
+            app.UseAuthorization(); // 啟用授權
 
-			app.MapControllerRoute(
+            app.MapControllerRoute(
 				name: "default",
 				pattern: "{controller=Home}/{action=Index}/{id?}");
 
 			app.Run();
 		}
 
-   //     public static IHostBuilder CreateHostBuilder(string[] args) =>
-			//Host.CreateDefaultBuilder(args)
-   //        .ConfigureAppConfiguration((hostingContext, config) =>
-   //        {
-   //            var configuration = config.Build();
-   //            HashUtility.SetConfiguration(configuration);
-   //        })
-   //        .ConfigureWebHostDefaults(webBuilder =>
-   //        {
-   //            webBuilder.UseStartup<Startup>();
-   //        });
     }
 }
