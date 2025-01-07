@@ -47,8 +47,14 @@ namespace ServerSide.Models.DAOs
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
-        }
+            var priceInDb = _db.Prices.Find(id);
+            if(priceInDb == null)
+			{
+				throw new Exception("該筆資料不存在或已被刪除!");
+			};
+			_db.Prices.Remove(priceInDb);
+			_db.SaveChanges();
+		}
 
         public void Edit(PriceDto dto)
         {

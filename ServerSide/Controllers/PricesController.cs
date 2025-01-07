@@ -122,12 +122,12 @@ namespace ServerSide.Controllers
             try
             {
                 _service.Delete(id);
-                return RedirectToAction("Details", new {movieId,movieTitle});
+                return RedirectToAction("Details", new { movieId, movieTitle });
 			}
             catch (Exception ex)
             {
                 ModelState.AddModelError("", ex.Message);
-                return View("Edit", new{ movieId,movieTitle });
+                return View("Details", new { movieId, movieTitle });
 			}
         }
 

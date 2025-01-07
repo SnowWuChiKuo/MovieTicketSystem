@@ -56,6 +56,8 @@
 
 <script>
     function confirmDelete() {
+        const movieId = "@ViewBag.MovieId";
+        const movieTitle = "@ViewBag.MovieTitle";
         Swal.fire({
             title: "確定要刪除嗎？",
             text: "刪除後將無法恢復！",
@@ -67,14 +69,14 @@
             cancelButtonText: "取消"
         }).then((result) => {
             if (result.isConfirmed) {
-                deleteItem();
+                deleteItem(movieId, movieTitle);
             }
         });
     }
 
-    function deleteItem() {
+    function deleteItem(movieId, movieTitle) {
         const id = document.querySelector('input[name="Id"]').value;
-        fetch(`/Genres/Delete/${id}`, {
+        fetch(`/Prices/Delete/${id}?movieId=${movieId}&movieTitle=${encodeURIComponent(movieTitle)}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -88,7 +90,7 @@
                         text: "評論已成功刪除。",
                         icon: "success"
                     }).then(() => {
-                        window.location.href = '/Genres/Index';
+                        window.location.href = '/Prices/Details?movieId=' + movieId + '&movieTitle=' + encodeURIComponent(movieTitle);;
                     });
                 } else {
                     Swal.fire({
