@@ -362,4 +362,6 @@ public DbSet<ServerSide.Models.ViewModels.TicketVm> TicketVm { get; set; } = def
 public DbSet<ServerSide.Models.ViewModels.SeatStatusVm> SeatStatusVm { get; set; } = default!;
 
 public DbSet<ServerSide.Models.ViewModels.ReviewVm> ReviewVm { get; set; } = default!;
+
+public DbSet<ServerSide.Models.ViewModels.CouponVm> CouponVm { get; set; } = default!;
 }

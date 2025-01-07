@@ -9,27 +9,17 @@ namespace ServerSide.Controllers
 {
 	public class TicketSeatsController : Controller
 	{
-		private readonly AppDbContext _db;
-
 		private readonly TicketSeatService _service;
 
-		public TicketSeatsController(AppDbContext db, TicketSeatService service)
+		public TicketSeatsController(TicketSeatService service)
 		{
-			_db = db;
 			_service = service;
 		}
 
 		[HttpGet]
 		public IActionResult Index()
 		{
-			var data = _db.TicketSeats.Include(d => d.Seat)
-										.Include(d => d.Ticket)
-										.Select(d => new TicketSeatVm
-										{
-											Id = d.Id,
-											SeatId = d.SeatId,
-											TicketId = d.TicketId,
-										}).ToList();
+			var data = _service.GetAll();
 
 			return View(data);
 		}
@@ -72,21 +62,10 @@ namespace ServerSide.Controllers
 
 		[HttpGet]
 		public IActionResult Edit(int id)
-		{ 
-			var ticketSeatInDb = _db.TicketSeats.AsNoTracking()
-												.Include(d => d.Ticket)
-												.Include(d => d.Seat)
-												.FirstOrDefault(d => d.Id == id);
-			if (ticketSeatInDb == null) return NotFound();
+		{
+			var data = _service.Get(id);
 
-			var model = new TicketSeatVm
-			{
-				Id = ticketSeatInDb.Id,
-				TicketId = ticketSeatInDb.TicketId,
-				SeatId = ticketSeatInDb.SeatId,
-			};
-
-			return View(model);
+			return View(data);
 		}
 
 		[HttpPost]

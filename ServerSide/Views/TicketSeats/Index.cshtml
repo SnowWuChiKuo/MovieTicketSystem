@@ -19,6 +19,9 @@
                     <thead>
                         <tr>
                             <th>
+                                @Html.DisplayNameFor(model => model.Id)
+                            </th>
+                            <th>
                                 @Html.DisplayNameFor(model => model.TicketId)
                             </th>
                             <th>
@@ -31,6 +34,9 @@
                         @foreach (var item in Model)
                         {
                             <tr onclick="navigateToEdit('@item.Id')" style="cursor: pointer;">
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Id)
+                                </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.TicketId)
                                 </td>

@@ -4,9 +4,10 @@ namespace ServerSide.Models.ViewModels
 {
     public class SeatStatusVm
     {
+        [Display(Name = "場次座位狀態Id")]
         public int Id { get; set; }
         
-        [Display(Name = "場次")]
+        [Display(Name = "場次Id")]
         [Required]
         public int ScreeningId { get; set; }
         

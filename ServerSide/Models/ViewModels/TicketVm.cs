@@ -4,6 +4,7 @@ namespace ServerSide.Models.ViewModels
 {
 	public class TicketVm
 	{
+		[Display(Name = "票種Id")]
 		public int Id { get; set; }
 
 		[Required]

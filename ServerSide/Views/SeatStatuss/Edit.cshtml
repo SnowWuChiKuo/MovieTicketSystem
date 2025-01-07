@@ -67,7 +67,7 @@
 
     function deleteItem() {
         const id = document.querySelector('input[name="Id"]').value;
-        fetch(`/Seats/Delete/${id}`, {
+        fetch(`/SeatStatuss/Delete/${id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -81,7 +81,7 @@
                         text: "座位已成功刪除。",
                         icon: "success"
                     }).then(() => {
-                        window.location.href = '/Seats/Index';
+                        window.location.href = '/SeatStatuss/Index';
                     });
                 } else {
                     Swal.fire({
