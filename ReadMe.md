@@ -73,6 +73,11 @@
 		- 實作IndexPage(範本List)、CreatePage(範本Create)、EditPage(範本Edit)。
 	- 加入 GenreVm,GenreDto / IGenreService,IGenreDao並實作、註冊。
 	- 實作CRUD Action，建立對應View。
+	#### 3. 電影評論系統
+	- 加入 /Controllers/ReviewsController，依賴介面。
+		- 實作IndexPage(範本List)、EditPage(範本Edit)、CreatePage(範本Create)。
+	- 加入 ReviewVm,ReviewDto / IReviewService,IReviewDao並實作、註冊。
+	- 實作CRUD Action，建立對應View。
    ### 會員系統
 	- 加入 MembersController 和 /Views/Members
 	- 加入 Models/Infra/HashUtility.cs (用來做密碼雜湊的公用函式)
@@ -98,5 +103,13 @@
 	- 加入 SeatVm、SeatDto、SeatDao
 	- 在 program.cs 中註冊
 	- 在 SeatsController 寫入 CRUD ，並顯示其 View
+	- View 的 Index頁(範本List)、Create頁(範本Create)、Edit頁(範本Edit)
+	- 刪除部分在 Edit 頁， List 頁僅可編輯
+
+	### 座位狀態系統
+	- 加入 SeatStatusController ， 未加入依賴介面
+	- 加入 SeatStatusVm、SeatStatusDto、SeatStatusDao
+	- 在 program.cs 中註冊
+	- 在 SeatStatussController 寫入 CRUD ，並顯示其 View
 	- View 的 Index頁(範本List)、Create頁(範本Create)、Edit頁(範本Edit)
 	- 刪除部分在 Edit 頁， List 頁僅可編輯

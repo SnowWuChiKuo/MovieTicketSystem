@@ -1,13 +1,12 @@
-﻿@model ServerSide.Models.ViewModels.GenreVm
+﻿@model ServerSide.Models.ViewModels.ReviewVm
 
 @{
-    ViewData["Title"] = "電影分類編輯";
+    ViewData["Title"] = "評論編輯";
 }
 
 
-<hr />
 <div class="container-fluid">
-    <h1 class="fw-bolder mx-5">電影分類編輯</h1>
+    <h1 class="fw-bolder mx-5">評論編輯</h1>
     <div class="card m-5">
         <div class="card-body">
             <div class="row mx-5">
@@ -16,24 +15,33 @@
                         @Html.AntiForgeryToken()
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="MemberId" />
+                        <input type="hidden" asp-for="MovieId" />
+
+                        @* 顯示會員名稱 *@
                         <div class="mb-3">
-                            <label class="form-label fw-bolder">Id</label>
-                            <p class="form-control-plaintext">@Model.Id</p>
-                            <input type="hidden" asp-for="Id" />
+                            <label asp-for="MemberAccount" class="form-label"></label>
+                            <p class="form-control-plaintext">@Model.MemberAccount</p>
                         </div>
+
+                        @* 顯示電影名稱 *@
                         <div class="mb-3">
-                            <label asp-for="Name" class="form-label fw-bolder"></label>
-                            <input asp-for="Name" class="form-control" />
-                            <span asp-validation-for="Name" class="text-danger"></span>
-                        </div>
-                        <div class="mb-3">
-                            <label asp-for="DisplayOrder" class="form-label fw-bolder"></label>
-                            <input asp-for="DisplayOrder" class="form-control" />
-                            <span asp-validation-for="DisplayOrder" class="text-danger"></span>
+                            <label asp-for="MovieTitle" class="form-label"></label>
+                            <p class="form-control-plaintext">@Model.MovieTitle</p>
                         </div>
 
                         <div class="mb-3">
-                            <a asp-action="Index" class="btn btn-secondary me-4">回到評論清單</a>
+                            <label asp-for="Rating" class="form-label"></label>
+                            <input asp-for="Rating" class="form-control" />
+                            <span asp-validation-for="Rating" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Comment" class="form-label"></label>
+                            <input asp-for="Comment" class="form-control" />
+                            <span asp-validation-for="Comment" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <a asp-action="Index" class="btn btn-secondary me-4">回到電影清單</a>
                             <input type="submit" value="保存變更" class="btn btn-primary me-4" />
                             <input type="button" value="刪除" class="btn btn-danger" onclick="confirmDelete()" />
                         </div>
@@ -42,8 +50,7 @@
                     @*     @Html.AntiForgeryToken() *@
                     @*     <input type="hidden" name="id" value="@Model.Id" /> *@
                     @*     <button type="submit" class="btn btn-danger"> *@
-                    @*         <i class="fa fa-trash"></i> *@
-                    @*         &nbsp 刪除 *@
+                    @*         刪除 *@
                     @*     </button> *@
                     @* </form> *@
                 </div>
@@ -51,7 +58,6 @@
         </div>
     </div>
 </div>
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
@@ -76,7 +82,7 @@
 
     function deleteItem() {
         const id = document.querySelector('input[name="Id"]').value;
-        fetch(`/Genres/Delete/${id}`, {
+        fetch(`/Reviews/Delete/${id}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -90,7 +96,7 @@
                         text: "評論已成功刪除。",
                         icon: "success"
                     }).then(() => {
-                        window.location.href = '/Genres/Index';
+                        window.location.href = '/Reviews/Index';
                     });
                 } else {
                     Swal.fire({
