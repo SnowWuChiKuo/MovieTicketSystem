@@ -18,7 +18,7 @@ namespace ServerSide.Models.DTOs
         public DateTime CreatedAt { get; set; }
 
         public DateTime? UpdatedAt { get; set; }
-        public string MemberName { get; set; }
+        public string MemberAccount { get; set; }
         public string MovieTitle { get; set; }
     }
 }

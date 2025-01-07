@@ -24,7 +24,7 @@ namespace ServerSide.Models.DAOs
                         MovieId = r.MovieId,
                         MovieTitle = r.Movie.Title,
                         MemberId = r.MemberId,
-                        MemberName = r.Member.Name,
+						MemberAccount = r.Member.Account,
                         OrderId = r.OrderId,
                         Rating = r.Rating,
                         Comment = r.Comment,
@@ -39,14 +39,16 @@ namespace ServerSide.Models.DAOs
         {
             //先關聯其他表格，再找出id相符的資料，並用FirstOrDefault取出第一筆
             var dbReviewToDto =
-                _db.Reviews.Include(r => r.Movie).Include(r => r.Member).Where(r => r.Id == id)
+                _db.Reviews.Include(r => r.Movie)
+                .Include(r => r.Member)
+                .Where(r => r.Id == id)
                 .Select(r => new ReviewDto
                 {
                     Id = r.Id,
                     MovieId = r.MovieId,
                     MovieTitle = r.Movie.Title,
                     MemberId = r.MemberId,
-                    MemberName = r.Member.Name,
+					MemberAccount = r.Member.Account,
                     OrderId = r.OrderId,
                     Rating = r.Rating,
                     Comment = r.Comment,
@@ -68,8 +70,11 @@ namespace ServerSide.Models.DAOs
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
-        }
+            var reviewInDb = _db.Reviews.Find(id);
+            if(reviewInDb == null) throw new Exception("該筆資料不存在或已被刪除!");
+            _db.Reviews.Remove(reviewInDb);
+            _db.SaveChanges();
+		}
 
         public void Edit(ReviewDto dto)
         {
@@ -77,7 +82,8 @@ namespace ServerSide.Models.DAOs
             if(review == null) throw new Exception("該筆資料不存在或已被刪除!");
             review.Rating = dto.Rating;
             review.Comment = dto.Comment;
-            _db.SaveChanges();
+            review.UpdatedAt = dto.UpdatedAt;
+			_db.SaveChanges();
         }
 
         public ReviewDto ConvertToDto(Review reviewInDb)

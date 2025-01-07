@@ -10,13 +10,13 @@ namespace ServerSide.Models.ViewModels
         public int MemberId { get; set; }
 
         [Display(Name = "會員名稱")]
-        public string MemberName { get; set; }
+        public string? MemberAccount { get; set; }
 
         [Display(Name = "電影Id")]
         public int MovieId { get; set; }
 
         [Display(Name = "電影名稱")]
-        public string MovieTitle { get; set; }
+        public string? MovieTitle { get; set; }
 
         [Display(Name = "觀影訂單Id")]
         public int OrderId { get; set; }

@@ -20,11 +20,11 @@ namespace ServerSide.Controllers
         }
 
         [HttpGet]
-        public IActionResult Search(string name,string title,string keyword, DateTime? startDate, DateTime? endDate)
+        public IActionResult Search(string account,string title,string keyword, DateTime? startDate, DateTime? endDate)
         {
             var indexData = _service.GetAllReview();
-            if(!string.IsNullOrEmpty(name))
-                indexData = indexData.Where(i => i.MemberName == name).ToList();
+            if(!string.IsNullOrEmpty(account))
+                indexData = indexData.Where(i => i.MemberAccount == account).ToList();
 
             if(!string.IsNullOrEmpty(title))
                 indexData = indexData.Where(i => i.MovieTitle.Contains(title,StringComparison.OrdinalIgnoreCase)).ToList();
@@ -97,7 +97,24 @@ namespace ServerSide.Controllers
             return RedirectToAction("Index");
         }
 
-        private ReviewVm ConvertToVm(ReviewDto dto)
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public IActionResult Delete(int id)
+		{
+			try
+            {
+                _service.Delete(id);
+                return RedirectToAction("Index");
+			}
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+				return View("Edit", new ReviewVm{Id = id});
+			}
+
+		}
+
+		private ReviewVm ConvertToVm(ReviewDto dto)
         {
             return new ReviewVm
             {
@@ -105,7 +122,7 @@ namespace ServerSide.Controllers
                 MovieId = dto.MovieId,
                 MovieTitle = dto.MovieTitle,
                 MemberId = dto.MemberId,
-                MemberName = dto.MemberName,
+				MemberAccount = dto.MemberAccount,
                 OrderId = dto.OrderId,
                 Rating = dto.Rating,
                 Comment = dto.Comment,
