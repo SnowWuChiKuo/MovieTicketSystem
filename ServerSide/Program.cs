@@ -48,6 +48,11 @@ namespace ServerSide
             builder.Services.AddScoped<SeatStatusService>();
             builder.Services.AddScoped<SeatStatusDao>();
 
+            // 新增 Coupon 相關服務
+            builder.Services.AddScoped<CouponService>();
+            builder.Services.AddScoped<CouponDao>();
+
+
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 			builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
 

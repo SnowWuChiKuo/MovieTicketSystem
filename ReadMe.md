@@ -108,9 +108,17 @@
 	- 刪除部分在 Edit 頁， List 頁僅可編輯
 
 	### 座位狀態系統
-	- 加入 SeatStatusController ， 未加入依賴介面
+	- 加入 SeatStatussController ， 未加入依賴介面
 	- 加入 SeatStatusVm、SeatStatusDto、SeatStatusDao
 	- 在 program.cs 中註冊
 	- 在 SeatStatussController 寫入 CRUD ，並顯示其 View
+	- View 的 Index頁(範本List)、Create頁(範本Create)、Edit頁(範本Edit)
+	- 刪除部分在 Edit 頁， List 頁僅可編輯
+
+	### 優惠卷系統
+	- 加入 CouponsController ， 未加入依賴介面
+	- 加入 CouponVm、CouponDto、CouponDao
+	- 在 program.cs 中註冊
+	- 在 CouponsController 寫入 CRUD ，並顯示其 View
 	- View 的 Index頁(範本List)、Create頁(範本Create)、Edit頁(範本Edit)
 	- 刪除部分在 Edit 頁， List 頁僅可編輯

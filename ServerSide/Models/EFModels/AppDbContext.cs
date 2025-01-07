@@ -363,5 +363,7 @@ public DbSet<ServerSide.Models.ViewModels.SeatStatusVm> SeatStatusVm { get; set;
 
 public DbSet<ServerSide.Models.ViewModels.ReviewVm> ReviewVm { get; set; } = default!;
 
+public DbSet<ServerSide.Models.ViewModels.CouponVm> CouponVm { get; set; } = default!;
+
 public DbSet<ServerSide.Models.ViewModels.PriceVm> PriceVm { get; set; } = default!;
 }

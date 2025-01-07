@@ -1,5 +1,6 @@
 ﻿using ServerSide.Models.DAOs;
 using ServerSide.Models.DTOs;
+using ServerSide.Models.ViewModels;
 
 namespace ServerSide.Models.Services
 {
@@ -12,9 +13,19 @@ namespace ServerSide.Models.Services
 			_dao = dao;
 		}
 
+		public List<TicketVm> GetAll()
+		{
+			return _dao.GetAll();
+		}
+
 		public void Create(TicketDto dto)
 		{
 			_dao.Create(dto);
+		}
+
+		public TicketVm Get(int id)
+		{
+			return _dao.Get(id);
 		}
 
 		public void Edit(TicketDto dto)
