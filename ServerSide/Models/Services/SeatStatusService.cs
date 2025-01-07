@@ -36,7 +36,6 @@ namespace ServerSide.Models.Services
             if (seatStatusInDb == null) throw new Exception("找不到座位狀態!");
 
             if (dto.Status == null) throw new Exception("請選擇座位狀態!");
-            if (dto.Status != "可以用" || dto.Status != "不可用") throw new Exception("請選擇可以用或不可用");
 
             seatStatusInDb.ScreeningId =  dto.ScreeningId;
             seatStatusInDb.SeatId = dto.SeatId;

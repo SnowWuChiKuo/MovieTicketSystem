@@ -1,6 +1,4 @@
-﻿using Humanizer;
-using Microsoft.EntityFrameworkCore;
-using ServerSide.Models.DTOs;
+﻿using ServerSide.Models.DTOs;
 using ServerSide.Models.EFModels;
 using ServerSide.Models.ViewModels;
 
@@ -18,15 +16,16 @@ namespace ServerSide.Models.DAOs
         public List<CouponVm> GetAll()
         {
             var data = _db.Coupons.Select(d => new CouponVm
-                                        {
-                                            Id = d.Id,      
-                                            Code = d.Code,
-                                            DiscountType = d.DiscountType,
-                                            DiscountValue = d.DiscountValue,
-                                            ExpirationDate = d.ExpirationDate,
-                                            CreatedAt = d.CreatedAt,
-                                            UpdatedAt = d.UpdatedAt
-                                        }).ToList();
+            {
+                Id = d.Id,
+                Name = d.Name,
+                Code = d.Code,
+                DiscountType = d.DiscountType,
+                DiscountValue = d.DiscountValue,
+                ExpirationDate = d.ExpirationDate,
+                CreatedAt = d.CreatedAt,
+                UpdatedAt = d.UpdatedAt
+            }).ToList();
 
             return data;
         }
@@ -44,6 +43,7 @@ namespace ServerSide.Models.DAOs
             return new Coupon
             {
                 Id = dto.Id,
+                Name = dto.Name,
                 Code = dto.Code,
                 DiscountType = dto.DiscountType,
                 DiscountValue = dto.DiscountValue,
@@ -73,6 +73,7 @@ namespace ServerSide.Models.DAOs
             return new CouponVm
             {
                 Id = coupon.Id,
+                Name = coupon.Name,
                 Code = coupon.Code,
                 DiscountType = coupon.DiscountType,
                 DiscountValue = coupon.DiscountValue,

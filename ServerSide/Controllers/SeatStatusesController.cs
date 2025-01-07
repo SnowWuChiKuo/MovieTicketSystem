@@ -5,11 +5,11 @@ using ServerSide.Models.ViewModels;
 
 namespace ServerSide.Controllers
 {
-    public class SeatStatussController : Controller
+    public class SeatStatusesController : Controller
     {
         private readonly SeatStatusService _service;
 
-        public SeatStatussController(SeatStatusService service)
+        public SeatStatusesController(SeatStatusService service)
         {
             _service = service;
         }
@@ -36,7 +36,7 @@ namespace ServerSide.Controllers
                 return View(model);
             }
 
-            SeatStatusDto dto = ConverToDTO(model);
+            SeatStatusDto dto = ConvertToDTO(model);
 
             try
             {
@@ -50,7 +50,7 @@ namespace ServerSide.Controllers
             }
         }
 
-        private SeatStatusDto ConverToDTO(SeatStatusVm model)
+        private SeatStatusDto ConvertToDTO(SeatStatusVm model)
         {
             return new SeatStatusDto
             {
@@ -78,7 +78,7 @@ namespace ServerSide.Controllers
                 return View(model);
             }
 
-            SeatStatusDto dto = ConverToDTO(model);
+            SeatStatusDto dto = ConvertToDTO(model);
 
             try
             {

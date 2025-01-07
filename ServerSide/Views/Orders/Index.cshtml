@@ -1,14 +1,14 @@
-﻿@model IEnumerable<ServerSide.Models.ViewModels.CouponVm>
+﻿@model IEnumerable<ServerSide.Models.ViewModels.OrderVm>
 
 @{
-    ViewData["Title"] = "優惠卷資料維護";
+    ViewData["Title"] = "訂單資料維護";
 }
 
 <div class="container-fluid">
 
-    <h1 class="fw-bolder mb-3">優惠卷資料維護</h1>
+    <h1 class="fw-bolder mb-3">訂單資料維護</h1>
     <div class="d-flex justify-content-end mb-3">
-        <a asp-action="Create" class="btn btn-lg btn-success">新增優惠卷</a>
+        <a asp-action="Create" class="btn btn-lg btn-success">新增訂單</a>
     </div>
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
@@ -21,25 +21,25 @@
                                 @Html.DisplayNameFor(model => model.Id)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Name)
+                                @Html.DisplayNameFor(model => model.MemberId)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Code)
+                                @Html.DisplayNameFor(model => model.MemberAccount)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.DiscountType)
+                                @Html.DisplayNameFor(model => model.CouponId)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.DiscountValue)
+                                @Html.DisplayNameFor(model => model.TotalAmount)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.ExpirationDate)
+                                @Html.DisplayNameFor(model => model.IsStatusDisplay)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.DiscountPrice)
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.CreatedAt)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.UpdatedAt)
                             </th>
                             <th></th>
                         </tr>
@@ -52,25 +52,25 @@
                                     @Html.DisplayFor(modelItem => item.Id)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Name)
+                                    @Html.DisplayFor(modelItem => item.MemberId)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Code)
+                                    @Html.DisplayFor(modelItem => item.MemberAccount)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.DiscountType)
+                                    @Html.DisplayFor(modelItem => item.CouponId)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.DiscountValue)
+                                    @Html.DisplayFor(modelItem => item.TotalAmount)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.ExpirationDate)
+                                    @Html.DisplayFor(modelItem => item.IsStatusDisplay)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DiscountPrice)
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.CreatedAt)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.UpdatedAt)
                                 </td>
                                 <td>
                                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary"><i class="fa-solid fa-pen-to-square"></i>編輯</a>
@@ -140,7 +140,7 @@
         });
         //點擊表格Row跳轉到Edit頁面
         function navigateToEdit(id) {
-            window.location.href = '/Coupons/Edit/' + id;
+            window.location.href = '/Orders/Edit/' + id;
         }
     </script>
 }

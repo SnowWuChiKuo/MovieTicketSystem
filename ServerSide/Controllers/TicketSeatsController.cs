@@ -36,7 +36,7 @@ namespace ServerSide.Controllers
 		{
 			if (!ModelState.IsValid) return View(model);
 
-			TicketSeatDto dto = ConverToDTO(model);
+			TicketSeatDto dto = ConvertToDTO(model);
 
 			try
 			{
@@ -51,7 +51,7 @@ namespace ServerSide.Controllers
 
 		}
 
-		private TicketSeatDto ConverToDTO(TicketSeatVm model)
+		private TicketSeatDto ConvertToDTO(TicketSeatVm model)
 		{
 			return new TicketSeatDto{
 				Id = model.Id,
@@ -74,7 +74,7 @@ namespace ServerSide.Controllers
 		{
 			if (!ModelState.IsValid) return View(model);
 
-			TicketSeatDto dto = ConverToDTO(model);
+			TicketSeatDto dto = ConvertToDTO(model);
 
 			try
 			{

@@ -1,0 +1,67 @@
+﻿@model ServerSide.Models.ViewModels.OrderVm
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="container">
+
+    <h1>新增訂單</h1>
+
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="mb-3">
+                    <label asp-for="MemberId" class="form-label"></label>
+                    <select asp-for="MemberId" class="custom-select" asp-items="ViewBag.MemberAccount">
+                        <option value="">
+                            請選擇分類
+                        </option>
+                    </select>
+                    <span asp-validation-for="MemberId" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="CouponId" class="form-label"></label>
+                    <select asp-for="CouponId" class="custom-select" asp-items="ViewBag.CouponName">
+                        <option value="">
+                            請選擇分類
+                        </option>
+                    </select>
+                    <span asp-validation-for="CouponId" class="text-danger"></span>
+                </div>
+                
+                <div class="mb-3">
+                    <label asp-for="TotalAmount" class="form-label"></label>
+                    <input asp-for="TotalAmount" class="form-control form-control-sm" />
+                    <span asp-validation-for="TotalAmount" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Status" class="form-label"></label>
+                    <select asp-for="Status" class="form-control form-control-sm">
+                        <option value="">請選擇</option>
+                        <option value="true">已付款</option>
+                        <option value="false">未付款</option>
+                    </select>
+                    <span asp-validation-for="Status" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="DiscountPrice" class="form-label"></label>
+                    <input asp-for="DiscountPrice" class="form-control form-control-sm" />
+                    <span asp-validation-for="DiscountPrice" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <input type="submit" value="新增" class="btn btn-primary btn-sm" />
+                    <a asp-action="Index" class="btn btn-secondary btn-sm">回清單頁</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

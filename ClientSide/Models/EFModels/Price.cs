@@ -8,7 +8,6 @@ namespace ClientSide.Models.EFModels
 
     public partial class Price
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
 
         public int MovieId { get; set; }

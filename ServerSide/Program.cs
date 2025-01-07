@@ -45,6 +45,10 @@ namespace ServerSide
             builder.Services.AddScoped<SeatStatusService>();
             builder.Services.AddScoped<SeatStatusDao>();
 
+            // 新增 Order 相關服務
+            builder.Services.AddScoped<OrderService>();
+            builder.Services.AddScoped<OrderDao>();
+
             // 新增 Coupon 相關服務
             builder.Services.AddScoped<CouponService>();
             builder.Services.AddScoped<CouponDao>();

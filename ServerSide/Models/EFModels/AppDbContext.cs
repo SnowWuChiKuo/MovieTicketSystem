@@ -85,6 +85,9 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.DiscountType)
                 .IsRequired()
                 .HasMaxLength(50);
+            entity.Property(e => e.Name)
+                .IsRequired()
+                .HasMaxLength(50);
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
         });
 
@@ -98,6 +101,8 @@ public partial class AppDbContext : DbContext
         modelBuilder.Entity<Member>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK_Users");
+
+            entity.HasIndex(e => e.Account, "IX_Members").IsUnique();
 
             entity.Property(e => e.Account)
                 .IsRequired()
@@ -193,7 +198,6 @@ public partial class AppDbContext : DbContext
 
         modelBuilder.Entity<Price>(entity =>
         {
-            entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.Price1).HasColumnName("Price");
             entity.Property(e => e.SalesType)
                 .IsRequired()
@@ -333,6 +337,8 @@ public partial class AppDbContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PK_Users_1");
 
+            entity.HasIndex(e => e.Account, "IX_Users").IsUnique();
+
             entity.Property(e => e.Account)
                 .IsRequired()
                 .HasMaxLength(30)
@@ -354,14 +360,6 @@ public partial class AppDbContext : DbContext
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
-public DbSet<ServerSide.Models.ViewModels.GenreVm> GenreVm { get; set; } = default!;
 
-
-public DbSet<ServerSide.Models.ViewModels.TicketVm> TicketVm { get; set; } = default!;
-
-public DbSet<ServerSide.Models.ViewModels.SeatStatusVm> SeatStatusVm { get; set; } = default!;
-
-public DbSet<ServerSide.Models.ViewModels.ReviewVm> ReviewVm { get; set; } = default!;
-
-public DbSet<ServerSide.Models.ViewModels.CouponVm> CouponVm { get; set; } = default!;
+public DbSet<ServerSide.Models.ViewModels.OrderVm> OrderVm { get; set; } = default!;
 }

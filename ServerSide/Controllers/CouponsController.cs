@@ -34,7 +34,7 @@ namespace ServerSide.Controllers
         {
             if (!ModelState.IsValid) return View(model);
 
-            CouponDto dto = ConvertTODTO(model);
+            CouponDto dto = ConvertToDTO(model);
 
             try
             {
@@ -49,11 +49,12 @@ namespace ServerSide.Controllers
 
         }
 
-        private CouponDto ConvertTODTO(CouponVm model)
+        private CouponDto ConvertToDTO(CouponVm model)
         {
             return new CouponDto
             {
                 Id = model.Id,
+                Name = model.Name,
                 Code = model.Code,
                 DiscountType = model.DiscountType,
                 DiscountValue = model.DiscountValue,
@@ -80,7 +81,7 @@ namespace ServerSide.Controllers
                 return View(model);
             }
 
-            CouponDto dto = ConvertTODTO(model);
+            CouponDto dto = ConvertToDTO(model);
 
             try
             {

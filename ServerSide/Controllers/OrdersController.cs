@@ -1,17 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using ServerSide.Models.DTOs;
-using ServerSide.Models.EFModels;
 using ServerSide.Models.Services;
 using ServerSide.Models.ViewModels;
 
 namespace ServerSide.Controllers
 {
-    public class SeatsController : Controller
+    public class OrdersController : Controller
     {
-        private readonly SeatService _service;
-        public SeatsController(SeatService service)
+        private readonly OrderService _service;
+        public OrdersController(OrderService service)
         {
             _service = service;
         }
@@ -20,62 +17,63 @@ namespace ServerSide.Controllers
         public IActionResult Index()
         {
             var data = _service.GetAll();
+
             return View(data);
         }
 
         [HttpGet]
         public IActionResult Create()
         {
-            ViewBag.TheatersName = _service.GetTheatersName();
-            ViewBag.IsDisabledOptions = _service.IsDisabledOptions();
+            ViewBag.MemberAccount = _service.GetMemberAccount();
+            ViewBag.CouponName = _service.GetCouponName();
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(SeatVm model)
+        public IActionResult Create(OrderVm model)
         {
             if (!ModelState.IsValid)
             {
-                ViewBag.TheatersName = _service.GetTheatersName();
-                ViewBag.IsDisabledOptions = _service.IsDisabledOptions();
+                ViewBag.MemberAccount = _service.GetMemberAccount();
+                ViewBag.CouponName = _service.GetCouponName();
                 return View(model);
             }
 
-            SeatDto dto = ConvertToDTO(model);
+            OrderDto dto = ConvertToDTO(model);
 
             try
             {
                 _service.Create(dto);
                 return RedirectToAction("Index");
             }
-            catch (Exception ex)
+            catch (Exception ex) 
             {
                 ModelState.AddModelError("", ex.Message);
-                ViewBag.TheatersName = _service.GetTheatersName();
-                ViewBag.IsDisabledOptions = _service.IsDisabledOptions();
+                ViewBag.TheatersName = _service.GetMemberAccount();
+                ViewBag.TheatersName = _service.GetCouponName();
                 return View(model);
             }
         }
 
-        private SeatDto ConvertToDTO(SeatVm model)
+        private OrderDto ConvertToDTO(OrderVm model)
         {
-            return new SeatDto
+            return new OrderDto
             {
                 Id = model.Id,
-                TheaterId = model.TheaterId,
-                Row = model.Row,
-                Number = model.Number,
-                IsDisabled = model.IsDisabled,
+                MemberId = model.MemberId,
+                CouponId = model.CouponId,
+                TotalAmount = model.TotalAmount,
+                Status = model.Status,
+                DiscountPrice = model.DiscountPrice,
             };
         }
 
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            ViewBag.TheatersName = _service.GetTheatersName();
-            ViewBag.IsDisabledOptions = _service.IsDisabledOptions();
-
+            ViewBag.MemberAccount = _service.GetMemberAccount();
+            ViewBag.CouponName = _service.GetCouponName();
             var data = _service.Get(id);
 
             return View(data);
@@ -83,24 +81,26 @@ namespace ServerSide.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(SeatVm model)
+        public IActionResult Edit(OrderVm model)
         {
             if (!ModelState.IsValid)
             {
-                ViewBag.TheatersName = _service.GetTheatersName();
-                ViewBag.IsDisabledOptions = _service.IsDisabledOptions();
+                ViewBag.MemberAccount = _service.GetMemberAccount();
+                ViewBag.CouponName = _service.GetCouponName();
                 return View(model);
             }
 
-            SeatDto dto = ConvertToDTO(model);
-            
+            OrderDto dto = ConvertToDTO(model);
+
             try
             {
                 _service.Edit(dto);
                 return RedirectToAction("Index");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
+                ViewBag.TheatersName = _service.GetMemberAccount();
+                ViewBag.TheatersName = _service.GetCouponName();
                 ModelState.AddModelError("", ex.Message);
                 return View(model);
             }
@@ -108,8 +108,8 @@ namespace ServerSide.Controllers
 
         [HttpGet]
         public IActionResult Delete(int? id) 
-        { 
-            if (!ModelState.IsValid) return View();
+        {
+            if (id == null) return BadRequest("找不到此Id");
 
             try
             {
@@ -121,7 +121,6 @@ namespace ServerSide.Controllers
                 ViewBag.ErrorMessage = ex.Message;
                 return View();
             }
-
         }
     }
 }

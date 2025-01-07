@@ -11,27 +11,27 @@
         <div class="col-md-4">
             <form asp-action="Create">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group">
+                <div class="mb-3">
                     <label asp-for="ScreeningId" class="form-label"></label>
                     <input asp-for="ScreeningId" class="form-control form-control-sm" />
                     <span asp-validation-for="ScreeningId" class="text-danger"></span>
                 </div>
-                <div class="form-group">
+                <div class="mb-3">
                     <label asp-for="SalesType" class="form-label"></label>
                     <input asp-for="SalesType" class="form-control form-control-sm" />
                     <span asp-validation-for="SalesType" class="text-danger"></span>
                 </div>
-                <div class="form-group">
+                <div class="mb-3">
                     <label asp-for="TicketType" class="form-label"></label>
                     <input asp-for="TicketType" class="form-control form-control-sm" />
                     <span asp-validation-for="TicketType" class="text-danger"></span>
                 </div>
-                <div class="form-group">
+                <div class="mb-3">
                     <label asp-for="Price" class="form-label"></label>
                     <input asp-for="Price" class="form-control form-control-sm" />
                     <span asp-validation-for="Price" class="text-danger"></span>
                 </div>
-                <div class="form-group">
+                <div class="mb-3">
                     <input type="submit" value="新增" class="btn btn-primary btn-sm" />
                     <a asp-action="Index" class="btn btn-secondary btn-sm">回清單頁</a>
                 </div>

@@ -4,7 +4,10 @@ namespace ServerSide.Models.ViewModels
 {
     public class CouponVm
     {
+        [Display(Name = "優惠碼Id")]
         public int Id { get; set; }
+        [Display(Name = "優惠碼名稱")]
+        public string Name { get; set; }
         [Display(Name = "優惠碼")]
         [Required]
         public string Code { get; set; }

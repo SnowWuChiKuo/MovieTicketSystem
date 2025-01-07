@@ -38,6 +38,7 @@ namespace ServerSide.Models.Services
 
 
             couponInDb.Code = dto.Code;
+            couponInDb.Name = dto.Name;
             couponInDb.DiscountType = dto.DiscountType;
             couponInDb.DiscountValue = dto.DiscountValue;
             couponInDb.UpdatedAt = DateTime.Now;

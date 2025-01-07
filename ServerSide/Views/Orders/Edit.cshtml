@@ -1,27 +1,53 @@
-﻿@model ServerSide.Models.ViewModels.TicketSeatVm
+﻿@model ServerSide.Models.ViewModels.OrderVm
 
 @{
-    ViewData["Title"] = "編輯票務座位資料";
+    ViewData["Title"] = "編輯訂單";
 }
 
 <div class="container">
 
-    <h1 class="fw-bolder">編輯票務座位資料</h1>
+    <h1>編輯訂單</h1>
 
     <div class="row">
         <div class="col-md-4">
             <form asp-action="Edit">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" asp-for="Id" />
                 <div class="mb-3">
-                    <label asp-for="TicketId" class="form-label"></label>
-                    <input asp-for="TicketId" class="form-control form-control-sm" />
-                    <span asp-validation-for="TicketId" class="text-danger"></span>
+                    <label asp-for="MemberId" class="form-label"></label>
+                    <select asp-for="MemberId" class="custom-select" asp-items="ViewBag.MemberAccount">
+                        <option value="">
+                            請選擇分類
+                        </option>
+                    </select>
+                    <span asp-validation-for="MemberId" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
-                    <label asp-for="SeatId" class="form-label"></label>
-                    <input asp-for="SeatId" class="form-control form-control-sm" />
-                    <span asp-validation-for="SeatId" class="text-danger"></span>
+                    <label asp-for="CouponId" class="form-label"></label>
+                    <select asp-for="CouponId" class="custom-select" asp-items="ViewBag.CouponName">
+                        <option value="">
+                            請選擇分類
+                        </option>
+                    </select>
+                    <span asp-validation-for="CouponId" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="TotalAmount" class="form-label"></label>
+                    <input asp-for="TotalAmount" class="form-control form-control-sm" />
+                    <span asp-validation-for="TotalAmount" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Status" class="form-label"></label>
+                    <select asp-for="Status" class="form-control form-control-sm">
+                        <option value="">請選擇</option>
+                        <option value="true">已付款</option>
+                        <option value="false">未付款</option>
+                    </select>
+                    <span asp-validation-for="Status" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="DiscountPrice" class="form-label"></label>
+                    <input asp-for="DiscountPrice" class="form-control form-control-sm" />
+                    <span asp-validation-for="DiscountPrice" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
                     <input type="submit" value="更新" class="btn btn-primary btn-sm" />
@@ -33,8 +59,12 @@
     </div>
 </div>
 
+
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
 }
 
 <script>
@@ -57,7 +87,7 @@
 
     function deleteItem() {
         const id = document.querySelector('input[name="Id"]').value;
-        fetch(`/TicketSeats/Delete/${id}`, {
+        fetch(`/Orders/Delete/${id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -71,7 +101,7 @@
                     text: "票種已成功刪除。",
                     icon: "success"
                 }).then(() => {
-                    window.location.href = '/TicketSeats/Index';
+                        window.location.href = '/Orders/Index';
                 });
             } else {
                 Swal.fire({

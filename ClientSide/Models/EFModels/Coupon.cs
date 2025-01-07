@@ -18,6 +18,10 @@ namespace ClientSide.Models.EFModels
 
         [Required]
         [StringLength(50)]
+        public string Name { get; set; }
+
+        [Required]
+        [StringLength(50)]
         public string Code { get; set; }
 
         [Required]
