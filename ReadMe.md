@@ -76,6 +76,9 @@
 		- 實作IndexPage(範本List)、EditPage(範本Edit)、CreatePage(範本Create)。
 	- 加入 ReviewVm,ReviewDto / IReviewService,IReviewDao並實作、註冊。
 	- 實作CRUD Action，建立對應View。
+   ### 電影管理
+	- 
+	- 建立PriceVm、PriceDto、IPriceService、IPriceDao
    ### 會員系統
 	- 加入 MembersController 和 /Views/Members
 	- 加入 Models/Infra/HashUtility.cs (用來做密碼雜湊的公用函式)
