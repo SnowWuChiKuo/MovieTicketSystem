@@ -1,62 +1,44 @@
-﻿@model IEnumerable<ServerSide.Models.ViewModels.SeatStatusVm>
+﻿@model IEnumerable<ServerSide.Models.ViewModels.PriceIndexVm>
 
 @{
-    ViewData["Title"] = "場次座位狀態資料維護";
+    ViewData["Title"] = "電影票券總覽";
 }
 
-
 <div class="container-fluid">
+    <h1 class="fw-bolder mb-3">電影票券總覽</h1>
+    <h6 class="mt-2">點擊表格瀏覽各電影當前票券</h6>
 
-    <h1 class="fw-bolder mb-3">場次座位狀態資料維護</h1>
-    <div class="d-flex justify-content-end mb-3">
-        <a asp-action="Create" class="btn btn-lg btn-success">新增場次座位</a>
-    </div>
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="myTable" width="100%" cellspacing="0">
+                <table class="table table-bordered table-hover" width="100%" cellspacing="0" id="myTable">
                     <thead>
-                        <tr>
+                        <tr style="background-color:skyblue">
                             <th>
-                                @Html.DisplayNameFor(model => model.Id)
+                                @Html.DisplayNameFor(model => model.MovieId)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.ScreeningId)
+                                @Html.DisplayNameFor(model => model.MovieTitle)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.SeatId)
+                                @Html.DisplayNameFor(model => model.TicketCount)
                             </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Status)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.UpdatedAt)
-                            </th>
-                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var item in Model)
                         {
-                            <tr onclick="navigateToEdit('@item.Id')" style="cursor: pointer;">
+                        //在table row加上onclick事件、改滑鼠懸停狀態，點擊後觸發JavaScript函數，跳轉查看票券
+                            <tr onclick="navigateToEdit('@item.MovieId','@item.MovieTitle')" style="cursor: pointer;">
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Id)
+                                    @Html.DisplayFor(modelItem => item.MovieId)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.ScreeningId)
+                                    @Html.DisplayFor(modelItem => item.MovieTitle)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.SeatId)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Status)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.UpdatedAt)
-                                </td>
-                                <td>
-                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary"><i class="fa-solid fa-pen-to-square"></i>編輯</a>
+                                    @Html.DisplayFor(modelItem => item.TicketCount)
                                 </td>
                             </tr>
                         }
@@ -70,13 +52,15 @@
 
 
 
-@section styles
+@section Styles
 {
     <!-- Custom styles for this page -->
     <link href="~/js/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <!-- Custom styles for this template-->
+    <link href="~/css/sb-admin-2.min.css" rel="stylesheet">
 }
 
-@section scripts
+@section Scripts
 {
     <!-- jQuery -->
     <script src="~/js/vendor/jquery/jquery.min.js"></script>
@@ -87,16 +71,17 @@
     <!-- Core plugin JavaScript-->
     <script src="~/js/vendor/jquery-easing/jquery.easing.min.js"></script>
 
-
     <!-- Page level plugins -->
     <script src="~/js/vendor/datatables/jquery.dataTables.min.js"></script>
     <script src="~/js/vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
+    <!-- SBAdmin scripts -->
+    <script src="~/js/js/sb-admin-2.min.js"></script>
+
     <!-- Page level custom scripts -->
     <script src="~/js/js/demo/datatables-demo.js"></script>
-
     <script>
-        //初始化DataTable套件 設置屬性、id對應body裡Table的id
+        //初始化DataTable套件 設置屬性
         $(document).ready(function () {
             $('#myTable').DataTable({
                 "paging": true,
@@ -121,9 +106,12 @@
 
             $('#myTable_filter').hide();
         });
-        //點擊表格Row跳轉到Edit頁面
-        function navigateToEdit(id) {
-            window.location.href = '/SeatStatuss/Edit/' + id;
+        //點擊表格Row跳轉到該電影票券頁面
+        function navigateToEdit(movieId, movieTitle) {
+            //encodeURIComponent:將標題轉換為URL格式
+            //注意JS傳遞參數名稱要和controller方法參數一致
+            window.location.href = '/Prices/Details?movieId=' + movieId + '&movieTitle=' + encodeURIComponent(movieTitle);
         }
     </script>
 }
+

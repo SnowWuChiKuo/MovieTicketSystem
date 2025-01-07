@@ -11,26 +11,16 @@ namespace ServerSide.Controllers
 	public class TicketsController : Controller
 	{
 		private readonly TicketService _service;
-		private readonly AppDbContext _db;
 
-		public TicketsController(TicketService service, AppDbContext db)
+		public TicketsController(TicketService service)
 		{
 			_service = service;
-			_db = db;
 		}
 
 		[HttpGet]
 		public IActionResult Index()
 		{
-			var data = _db.Tickets.Include(d => d.Screening)
-								.Select(d => new TicketVm
-								{
-									Id = d.Id,
-									ScreeningId = d.ScreeningId,
-									SalesType = d.SalesType,
-									TicketType = d.TicketType,
-									Price = d.Price
-								}).ToList();
+			var data = _service.GetAll();
 
 			return View(data);
 		}
@@ -77,24 +67,9 @@ namespace ServerSide.Controllers
 		[HttpGet]
 		public IActionResult Edit(int id)
 		{
-			var ticketInDb = _db.Tickets.AsNoTracking()
-										.Include(t => t.Screening)
-										 .FirstOrDefault(t => t.Id == id);
-			if (ticketInDb == null)
-			{
-				return NotFound();
-			}
+			var data = _service.Get(id);
 
-			var model = new TicketVm
-			{
-				Id = ticketInDb.Id,
-				ScreeningId = ticketInDb.ScreeningId,
-				SalesType = ticketInDb.SalesType,
-				TicketType = ticketInDb.TicketType,
-				Price = ticketInDb.Price
-			};
-
-			return View(model);
+			return View(data);
 		}
 
 		[HttpPost]

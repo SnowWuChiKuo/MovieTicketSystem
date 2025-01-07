@@ -79,6 +79,9 @@
 		- 實作IndexPage(範本List)、EditPage(範本Edit)、CreatePage(範本Create)。
 	- 加入 ReviewVm,ReviewDto / IReviewService,IReviewDao並實作、註冊。
 	- 實作CRUD Action，建立對應View。
+   ### 電影管理
+	- 
+	- 建立PriceVm、PriceDto、IPriceService、IPriceDao
    ### 會員系統
 	- 加入 Models/Infra/HashUtility.cs (用來做密碼雜湊的公用函式)
 	- 註冊hashutility的salt值，並在DI中註冊 => 
@@ -120,9 +123,17 @@
 	- 刪除部分在 Edit 頁， List 頁僅可編輯
 
 	### 座位狀態系統
-	- 加入 SeatStatusController ， 未加入依賴介面
+	- 加入 SeatStatussController ， 未加入依賴介面
 	- 加入 SeatStatusVm、SeatStatusDto、SeatStatusDao
 	- 在 program.cs 中註冊
 	- 在 SeatStatussController 寫入 CRUD ，並顯示其 View
+	- View 的 Index頁(範本List)、Create頁(範本Create)、Edit頁(範本Edit)
+	- 刪除部分在 Edit 頁， List 頁僅可編輯
+
+	### 優惠卷系統
+	- 加入 CouponsController ， 未加入依賴介面
+	- 加入 CouponVm、CouponDto、CouponDao
+	- 在 program.cs 中註冊
+	- 在 CouponsController 寫入 CRUD ，並顯示其 View
 	- View 的 Index頁(範本List)、Create頁(範本Create)、Edit頁(範本Edit)
 	- 刪除部分在 Edit 頁， List 頁僅可編輯

@@ -367,5 +367,9 @@ public DbSet<ServerSide.Models.ViewModels.UserIndexVm> UserIndexVm { get; set; }
 
 public DbSet<ServerSide.Models.ViewModels.UserCreateVm> UserCreateVm { get; set; } = default!;
 
-public DbSet<ServerSide.Models.ViewModels.UserLoginVm> UserLoginVm { get; set; } = default!;
+public DbSet<ServerSide.Models.ViewModels.ReviewVm> ReviewVm { get; set; } = default!;
+
+public DbSet<ServerSide.Models.ViewModels.CouponVm> CouponVm { get; set; } = default!;
+
+public DbSet<ServerSide.Models.ViewModels.PriceVm> PriceVm { get; set; } = default!;
 }

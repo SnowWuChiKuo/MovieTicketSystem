@@ -5,11 +5,11 @@ using ServerSide.Models.ViewModels;
 
 namespace ServerSide.Controllers
 {
-    public class SeatStatussController : Controller
+    public class CouponsController : Controller
     {
-        private readonly SeatStatusService _service;
+        private readonly CouponService _service;
 
-        public SeatStatussController(SeatStatusService service)
+        public CouponsController(CouponService service)
         {
             _service = service;
         }
@@ -18,6 +18,7 @@ namespace ServerSide.Controllers
         public IActionResult Index()
         {
             var data = _service.GetAll();
+
             return View(data);
         }
 
@@ -29,14 +30,11 @@ namespace ServerSide.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(SeatStatusVm model)
+        public IActionResult Create(CouponVm model)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
+            if (!ModelState.IsValid) return View(model);
 
-            SeatStatusDto dto = ConverToDTO(model);
+            CouponDto dto = ConvertTODTO(model);
 
             try
             {
@@ -48,53 +46,60 @@ namespace ServerSide.Controllers
                 ModelState.AddModelError("", ex.Message);
                 return View(model);
             }
+
         }
 
-        private SeatStatusDto ConverToDTO(SeatStatusVm model)
+        private CouponDto ConvertTODTO(CouponVm model)
         {
-            return new SeatStatusDto
+            return new CouponDto
             {
                 Id = model.Id,
-                Status = model.Status,
-                ScreeningId = model.ScreeningId,
-                SeatId = model.SeatId,
-                UpdatedAt = model.UpdatedAt,
+                Code = model.Code,
+                DiscountType = model.DiscountType,
+                DiscountValue = model.DiscountValue,
+                ExpirationDate = model.ExpirationDate,
             };
         }
+
 
         [HttpGet]
         public IActionResult Edit(int id)
         {
             var data = _service.Get(id);
+
             return View(data);
         }
 
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(SeatStatusVm model)
+        public IActionResult Edit(CouponVm model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
-            SeatStatusDto dto = ConverToDTO(model);
+            CouponDto dto = ConvertTODTO(model);
 
             try
             {
                 _service.Edit(dto);
                 return RedirectToAction("Index");
             }
-            catch (Exception ex)
+            catch (Exception ex) 
             {
                 ModelState.AddModelError("", ex.Message);
                 return View(model);
             }
+
         }
 
         [HttpGet]
         public IActionResult Delete(int? id)
         {
+            if (id == null) return BadRequest("找不到此Id");
+
             try
             {
                 _service.Delete(id.Value);
@@ -106,6 +111,5 @@ namespace ServerSide.Controllers
                 return View();
             }
         }
-
     }
 }

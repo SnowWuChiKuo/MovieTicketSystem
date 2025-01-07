@@ -1,15 +1,14 @@
-﻿@model IEnumerable<ServerSide.Models.ViewModels.SeatStatusVm>
+﻿@model IEnumerable<ServerSide.Models.ViewModels.CouponVm>
 
 @{
-    ViewData["Title"] = "場次座位狀態資料維護";
+    ViewData["Title"] = "優惠卷資料維護";
 }
-
 
 <div class="container-fluid">
 
-    <h1 class="fw-bolder mb-3">場次座位狀態資料維護</h1>
+    <h1 class="fw-bolder mb-3">優惠卷資料維護</h1>
     <div class="d-flex justify-content-end mb-3">
-        <a asp-action="Create" class="btn btn-lg btn-success">新增場次座位</a>
+        <a asp-action="Create" class="btn btn-lg btn-success">新增優惠卷</a>
     </div>
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
@@ -22,13 +21,19 @@
                                 @Html.DisplayNameFor(model => model.Id)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.ScreeningId)
+                                @Html.DisplayNameFor(model => model.Code)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.SeatId)
+                                @Html.DisplayNameFor(model => model.DiscountType)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Status)
+                                @Html.DisplayNameFor(model => model.DiscountValue)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ExpirationDate)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.CreatedAt)
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.UpdatedAt)
@@ -44,13 +49,19 @@
                                     @Html.DisplayFor(modelItem => item.Id)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.ScreeningId)
+                                    @Html.DisplayFor(modelItem => item.Code)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.SeatId)
+                                    @Html.DisplayFor(modelItem => item.DiscountType)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Status)
+                                    @Html.DisplayFor(modelItem => item.DiscountValue)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ExpirationDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CreatedAt)
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.UpdatedAt)
@@ -123,7 +134,7 @@
         });
         //點擊表格Row跳轉到Edit頁面
         function navigateToEdit(id) {
-            window.location.href = '/SeatStatuss/Edit/' + id;
+            window.location.href = '/Coupons/Edit/' + id;
         }
     </script>
 }

@@ -1,62 +1,60 @@
-﻿@model IEnumerable<ServerSide.Models.ViewModels.SeatStatusVm>
+﻿@model IEnumerable<ServerSide.Models.ViewModels.PriceVm>
 
 @{
-    ViewData["Title"] = "場次座位狀態資料維護";
+    ViewData["Title"] = "電影票券詳情";
 }
 
-
 <div class="container-fluid">
-
-    <h1 class="fw-bolder mb-3">場次座位狀態資料維護</h1>
-    <div class="d-flex justify-content-end mb-3">
-        <a asp-action="Create" class="btn btn-lg btn-success">新增場次座位</a>
+    <h1 class="fw-bolder mb-3">電影票券詳情 - @ViewBag.MovieTitle</h1>
+    <div class="d-flex mb-3 justify-content-between">
+        <!-- 新增按鈕 -->
+        <div class="align-item-end" style="margin-bottom:16px">
+            <a asp-action="Create" class="btn btn-success" asp-route-movieId="@ViewBag.MovieId" asp-route-movieTitle="@ViewBag.MovieTitle">
+                <i class="fa fa-pen-fancy"></i>&nbsp 新增票券
+            </a>
+        </div>
     </div>
-    <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="myTable" width="100%" cellspacing="0">
+                <table class="table table-bordered table-hover" width="100%" cellspacing="0">
                     <thead>
-                        <tr>
+                        <tr style="background-color:skyblue">
                             <th>
                                 @Html.DisplayNameFor(model => model.Id)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.ScreeningId)
+                                @Html.DisplayNameFor(model => model.SalesType)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.SeatId)
+                                @Html.DisplayNameFor(model => model.TicketType)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Status)
+                                @Html.DisplayNameFor(model => model.ReservedSeats)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.UpdatedAt)
+                                @Html.DisplayNameFor(model => model.PriceOfTicket)
                             </th>
-                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var item in Model)
                         {
-                            <tr onclick="navigateToEdit('@item.Id')" style="cursor: pointer;">
+                            <tr onclick="navigateToEdit('@item.Id','@item.MovieId','@ViewBag.MovieTitle')" style="cursor:pointer">
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Id)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.ScreeningId)
+                                    @Html.DisplayFor(modelItem => item.SalesType)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.SeatId)
+                                    @Html.DisplayFor(modelItem => item.TicketType)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Status)
+                                    @Html.DisplayFor(modelItem => item.ReservedSeats)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.UpdatedAt)
-                                </td>
-                                <td>
-                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary"><i class="fa-solid fa-pen-to-square"></i>編輯</a>
+                                    @Html.DisplayFor(modelItem => item.PriceOfTicket)
                                 </td>
                             </tr>
                         }
@@ -65,18 +63,17 @@
             </div>
         </div>
     </div>
-
 </div>
 
-
-
-@section styles
+@section Styles
 {
     <!-- Custom styles for this page -->
     <link href="~/js/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <!-- Custom styles for this template-->
+    <link href="~/css/sb-admin-2.min.css" rel="stylesheet">
 }
 
-@section scripts
+@section Scripts
 {
     <!-- jQuery -->
     <script src="~/js/vendor/jquery/jquery.min.js"></script>
@@ -87,16 +84,17 @@
     <!-- Core plugin JavaScript-->
     <script src="~/js/vendor/jquery-easing/jquery.easing.min.js"></script>
 
-
     <!-- Page level plugins -->
     <script src="~/js/vendor/datatables/jquery.dataTables.min.js"></script>
     <script src="~/js/vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
+    <!-- SBAdmin scripts -->
+    <script src="~/js/js/sb-admin-2.min.js"></script>
+
     <!-- Page level custom scripts -->
     <script src="~/js/js/demo/datatables-demo.js"></script>
-
     <script>
-        //初始化DataTable套件 設置屬性、id對應body裡Table的id
+        //初始化DataTable套件 設置屬性
         $(document).ready(function () {
             $('#myTable').DataTable({
                 "paging": true,
@@ -122,8 +120,9 @@
             $('#myTable_filter').hide();
         });
         //點擊表格Row跳轉到Edit頁面
-        function navigateToEdit(id) {
-            window.location.href = '/SeatStatuss/Edit/' + id;
+        function navigateToEdit(id,movieId,movieTitle) {
+            window.location.href = '/Prices/Edit/' + id + '?movieId=' + movieId + '&movieTitle=' + encodeURIComponent(movieTitle);;
         }
     </script>
 }
+

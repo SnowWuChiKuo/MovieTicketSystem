@@ -42,6 +42,9 @@ namespace ServerSide
             // 新增 User 相關服務
             builder.Services.AddScoped<UserService>();
             builder.Services.AddScoped<UserDao>();
+			//註冊PriceController介面跟它的實作
+			builder.Services.AddScoped<IPriceService, PriceService>();
+			builder.Services.AddScoped<IPriceDao,PriceDao>();
 
             // 新增 Ticket 相關服務
             builder.Services.AddScoped<TicketService>();
@@ -58,6 +61,11 @@ namespace ServerSide
             // 新增 SeatStatus 相關服務
             builder.Services.AddScoped<SeatStatusService>();
             builder.Services.AddScoped<SeatStatusDao>();
+
+            // 新增 Coupon 相關服務
+            builder.Services.AddScoped<CouponService>();
+            builder.Services.AddScoped<CouponDao>();
+
 
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 			builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
