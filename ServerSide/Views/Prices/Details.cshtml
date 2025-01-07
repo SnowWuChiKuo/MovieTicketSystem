@@ -6,10 +6,11 @@
 
 <div class="container-fluid">
     <h1 class="fw-bolder mb-3">電影票券詳情 - @ViewBag.MovieTitle</h1>
-    <div class="d-flex mb-3 justify-content-between">
+    <div class="d-flex mb-3 justify-content-between align-content-end">
         <!-- 新增按鈕 -->
-        <div class="align-item-end" style="margin-bottom:16px">
-            <a asp-action="Create" class="btn btn-success" asp-route-movieId="@ViewBag.MovieId" asp-route-movieTitle="@ViewBag.MovieTitle">
+        <div class="ml-auto" style="margin-bottom:16px">
+            <a asp-action="Index" class="btn btn-secondary me-4 btn-lg"><i class="fa fa-list-ul"></i> &nbsp 回到票券清單</a>
+            <a asp-action="Create" class="btn btn-success btn-lg" asp-route-movieId="@ViewBag.MovieId" asp-route-movieTitle="@ViewBag.MovieTitle">
                 <i class="fa fa-pen-fancy"></i>&nbsp 新增票券
             </a>
         </div>

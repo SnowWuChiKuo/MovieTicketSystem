@@ -5,7 +5,7 @@
 }
 
 <div class="container-fluid">
-    <h1 class="fw-bolder mx-5">電影票券編輯 - @ViewBag.MovieTitle</h1>
+    <h1 class="fw-bolder mx-5">電影票券編輯 - @ViewBag.MovieId - @ViewBag.MovieTitle</h1>
     <div class="card m-5">
         <div class="card-body">
             <div class="row mx-5">
@@ -39,7 +39,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <a asp-action="Index" class="btn btn-secondary me-4">回到票券清單</a>
+                            <a asp-action="Index" class="btn btn-secondary me-4"><i class="fa fa-list-ul"></i> &nbsp回到票券清單</a>
                             <input type="submit" value="保存變更" class="btn btn-primary me-4" />
                             <input type="button" value="刪除" class="btn btn-danger" onclick="confirmDelete()" />
                         </div>

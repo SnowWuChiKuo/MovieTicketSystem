@@ -19,8 +19,8 @@ namespace ServerSide.Models.Services
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
-        }
+            _dao.Delete(id);
+		}
 
         public void Edit(PriceDto dto)
         {

@@ -93,13 +93,14 @@ namespace ServerSide.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(PriceVm vm)
+        public IActionResult Edit(PriceVm vm,string movieTitle)
         {
             if (!ModelState.IsValid) return View(vm);
             PriceDto dto= ConvertToDto(vm);
             try
             {
                 _service.Edit(dto);
+
             }
             catch (Exception ex)
             {
@@ -109,9 +110,25 @@ namespace ServerSide.Controllers
 
             //因為Details頁面需要movieId和movieTitle，所以要將這兩個參數傳遞過去
             //ModelBinding or Request.Query
-            TempData["MovieTitle"] = Request.Form["movieTitle"];
-            return RedirectToAction("Details", new { movieId = vm.MovieId });
+            //TempData["MovieTitle"] = Request.Form["movieTitle"];
+            return RedirectToAction("Details", new { movieId = vm.MovieId, movieTitle = movieTitle });
 
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete(int id, int movieId, string movieTitle)
+        {
+            try
+            {
+                _service.Delete(id);
+                return RedirectToAction("Details", new {movieId,movieTitle});
+			}
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+                return View("Edit", new{ movieId,movieTitle });
+			}
         }
 
         private PriceVm ConvertToVm(PriceDto priceDto)
