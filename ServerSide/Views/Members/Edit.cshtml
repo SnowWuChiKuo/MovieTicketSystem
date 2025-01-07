@@ -1,0 +1,104 @@
+﻿@model ServerSide.Models.ViewModels.MemberCreateVm
+
+@{
+    ViewData["Title"] = "編輯會員資料";
+}
+
+<div class="container-fluid">
+    <h1 class="fw-bolder mb-3 mx-4">編輯會員資料</h1>
+    <div class="card m-4">
+        <div class="card-body">
+            <div class="col-md-12">
+                <form asp-action="Edit" id="editMemberForm">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="Id" />
+                    <div class="mb-3">
+                        <label asp-for="Account" class="form-label"></label>
+                        <input asp-for="Account" class="form-control" />
+                        <span asp-validation-for="Account" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label"></label>
+                        <input asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Password" class="form-label"></label>
+                        <input asp-for="Password" class="form-control" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Name" class="form-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3 form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" asp-for="IsDeleted" /> @Html.DisplayNameFor(model => model.IsDeleted)
+                        </label>
+                    </div>
+                    <div class="mb-3 form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" asp-for="IsBlackList" /> @Html.DisplayNameFor(model => model.IsBlackList)
+                        </label>
+                    </div>
+                    <div class="mb-3 form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" asp-for="IsConfirmed" /> @Html.DisplayNameFor(model => model.IsConfirmed)
+                        </label>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="ConfirmCode" class="form-label"></label>
+                        <input asp-for="ConfirmCode" class="form-control" />
+                        <span asp-validation-for="ConfirmCode" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="CreatedAt" class="form-label"></label>
+                        <input asp-for="CreatedAt" class="form-control" />
+                        <span asp-validation-for="CreatedAt" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="UpdatedAt" class="form-label"></label>
+                        <input asp-for="UpdatedAt" class="form-control" />
+                        <span asp-validation-for="UpdatedAt" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <a asp-action="Index" class="btn btn-secondary me-4">回到會員清單</a>
+                        <input type="submit" value="儲存" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        $(function () {
+            $('#editMemberForm').submit(function (e) {
+                var isDeletedChecked = $('#IsDeleted').is(':checked');
+                var isBlackListChecked = $('#IsBlackList').is(':checked');
+                 var isConfirmedChecked = $('#IsConfirmed').is(':checked');
+                if (isDeletedChecked || isBlackListChecked || isConfirmedChecked) {
+                    e.preventDefault(); // Prevent default form submission
+                     Swal.fire({
+                       title: '確認編輯會員',
+                        text: '您確定要儲存此會員的編輯嗎？',
+                       icon: 'warning',
+                         showCancelButton: true,
+                        confirmButtonText: '是的，儲存編輯',
+                        cancelButtonText: '取消'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            this.submit(); // Manually submit form if confirmed
+                        }
+                    });
+               }
+            });
+        });
+    </script>
+}

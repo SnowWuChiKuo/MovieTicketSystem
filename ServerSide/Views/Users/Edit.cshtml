@@ -1,0 +1,95 @@
+﻿@model ServerSide.Models.ViewModels.UserCreateVm
+
+@{
+    ViewData["Title"] = "編輯員工";
+}
+
+<div class="container-fluid">
+    <h1 class="fw-bolder mb-3 mx-4">編輯員工</h1>
+    <div class="card m-4">
+        <div class="card-body">
+            <div class="col-md-12">
+                <form asp-action="Edit" id="editUserForm">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="Id" />
+                    <div class="mb-3">
+                        <label asp-for="Account" class="form-label"></label>
+                        <input asp-for="Account" class="form-control" />
+                        <span asp-validation-for="Account" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label"></label>
+                        <input asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Password" class="form-label"></label>
+                        <input asp-for="Password" class="form-control" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Name" class="form-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3 form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" asp-for="IsAdmin" /> @Html.DisplayNameFor(model => model.IsAdmin)
+                        </label>
+                    </div>
+                    <div class="mb-3">
+                        <a asp-action="Index" class="btn btn-secondary me-4">回到員工清單</a>
+                        <input type="submit" value="儲存" class="btn btn-primary me-2" />
+                    </div>
+                </form>
+                <form asp-action="DeleteUser" id="deleteUserForm">
+                    <input type="hidden" asp-for="Account" />
+                    <div class="mb-3">
+                        <input type="submit" value="刪除" class="btn btn-danger btn-sm" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        $(function () {
+            $('#editUserForm').submit(function (e) {
+                e.preventDefault(); // Prevent default form submission
+                Swal.fire({
+                    title: '確認編輯員工',
+                    text: '您確定要儲存此員工的編輯嗎？',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: '是的，儲存編輯',
+                    cancelButtonText: '取消'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.submit(); // Manually submit form if confirmed
+                    }
+                });
+            });
+            $('#deleteUserForm').submit(function (e) {
+                e.preventDefault(); // Prevent default form submission
+                Swal.fire({
+                    title: '確認刪除員工',
+                    text: '您確定要刪除此員工嗎？',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: '是的，刪除員工',
+                    cancelButtonText: '取消'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.submit(); // Manually submit form if confirmed
+                    }
+                });
+            });
+        });
+    </script>
+}

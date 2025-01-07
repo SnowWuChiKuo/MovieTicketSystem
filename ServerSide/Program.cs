@@ -1,7 +1,10 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using ServerSide.Models.DAOs;
 using ServerSide.Models.DTOs;
 using ServerSide.Models.EFModels;
+using ServerSide.Models.Infra;
 using ServerSide.Models.Interfaces;
 using ServerSide.Models.Services;
 
@@ -13,8 +16,12 @@ namespace ServerSide
 		{
 			var builder = WebApplication.CreateBuilder(args);
 
-			// Add services to the container.
-			builder.Services.AddControllersWithViews();
+            // Configure App Configuration
+            var configuration = builder.Configuration;
+            HashUtility.SetConfiguration(configuration);
+
+            // Add services to the container.
+            builder.Services.AddControllersWithViews();
 
 			//註冊MovieController介面跟它的實作
 			builder.Services.AddScoped<IMovieDao, MovieDao>();
@@ -28,6 +35,13 @@ namespace ServerSide
 			builder.Services.AddScoped<IReviewDao, ReviewDao>();
 			builder.Services.AddScoped<IReviewService, ReviewService>();
 
+            // 新增 Member 相關服務
+            builder.Services.AddScoped<MemberService>();
+            builder.Services.AddScoped<MemberDao>();
+
+            // 新增 User 相關服務
+            builder.Services.AddScoped<UserService>();
+            builder.Services.AddScoped<UserDao>();
 			//註冊PriceController介面跟它的實作
 			builder.Services.AddScoped<IPriceService, PriceService>();
 			builder.Services.AddScoped<IPriceDao,PriceDao>();
@@ -60,7 +74,20 @@ namespace ServerSide
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 			builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
 
-			var app = builder.Build();
+            // 設定 Cookie 表單驗證 ---------------------
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.Cookie.Name = "mySite";
+                    options.LoginPath = "/Users/Login";
+                    options.AccessDeniedPath = "/Users/Login"; // 如果需要設定拒絕訪問頁面
+                    options.ReturnUrlParameter = "returnUrl";
+                    options.SlidingExpiration = true;
+                    options.ExpireTimeSpan = TimeSpan.FromMinutes(30); // 設定 cookie 有效時間
+                });
+            // ---------------------------------------
+
+            var app = builder.Build();
 
 			// Configure the HTTP request pipeline.
 			if (!app.Environment.IsDevelopment())
@@ -75,13 +102,15 @@ namespace ServerSide
 
 			app.UseRouting();
 
-			app.UseAuthorization();
+            app.UseAuthentication(); // 啟用驗證
+            app.UseAuthorization(); // 啟用授權
 
-			app.MapControllerRoute(
+            app.MapControllerRoute(
 				name: "default",
 				pattern: "{controller=Home}/{action=Index}/{id?}");
 
 			app.Run();
 		}
-	}
+
+    }
 }
