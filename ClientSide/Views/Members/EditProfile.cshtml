@@ -116,4 +116,26 @@
         TempData.Remove("SweetAlertText");
         TempData.Remove("SweetAlertIcon");
     }
+    <script>
+        $(function () {
+            $('#deleteForm').submit(function (e) {
+                var isDeletedChecked = $('#IsDeleted').is(':checked');
+                if (isDeletedChecked) {
+                    e.preventDefault(); // Prevent default form submission
+                    Swal.fire({
+                        title: '確認取消會員身分',
+                        text: '您確定要取消您的會員身分嗎？',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: '是的，取消會員',
+                        cancelButtonText: '取消'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            this.submit(); // Manually submit form if confirmed
+                        }
+                    });
+                }
+            });
+        });
+    </script>
 }
