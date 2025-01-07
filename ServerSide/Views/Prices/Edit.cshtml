@@ -1,13 +1,11 @@
-﻿@model ServerSide.Models.ViewModels.GenreVm
+﻿@model ServerSide.Models.ViewModels.PriceVm
 
 @{
-    ViewData["Title"] = "電影分類編輯";
+    ViewData["Title"] = "電影票券編輯";
 }
 
-
-<hr />
 <div class="container-fluid">
-    <h1 class="fw-bolder mx-5">電影分類編輯</h1>
+    <h1 class="fw-bolder mx-5">電影票券編輯 - @ViewBag.MovieTitle</h1>
     <div class="card m-5">
         <div class="card-body">
             <div class="row mx-5">
@@ -16,24 +14,32 @@
                         @Html.AntiForgeryToken()
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="MovieId" />
+                        <input type="hidden" name="movieTitle" value="@ViewBag.MovieTitle" />
+
                         <div class="mb-3">
-                            <label class="form-label fw-bolder">Id</label>
-                            <p class="form-control-plaintext">@Model.Id</p>
-                            <input type="hidden" asp-for="Id" />
+                            <label asp-for="SalesType" class="form-label"></label>
+                            <input asp-for="SalesType" class="form-control" />
+                            <span asp-validation-for="SalesType" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
-                            <label asp-for="Name" class="form-label fw-bolder"></label>
-                            <input asp-for="Name" class="form-control" />
-                            <span asp-validation-for="Name" class="text-danger"></span>
+                            <label asp-for="TicketType" class="form-label"></label>
+                            <input asp-for="TicketType" class="form-control" />
+                            <span asp-validation-for="TicketType" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
-                            <label asp-for="DisplayOrder" class="form-label fw-bolder"></label>
-                            <input asp-for="DisplayOrder" class="form-control" />
-                            <span asp-validation-for="DisplayOrder" class="text-danger"></span>
+                            <label asp-for="ReservedSeats" class="form-label"></label>
+                            <input asp-for="ReservedSeats" class="form-control" />
+                            <span asp-validation-for="ReservedSeats" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="PriceOfTicket" class="form-label"></label>
+                            <input asp-for="PriceOfTicket" class="form-control" />
+                            <span asp-validation-for="PriceOfTicket" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
-                            <a asp-action="Index" class="btn btn-secondary me-4">回到評論清單</a>
+                            <a asp-action="Index" class="btn btn-secondary me-4">回到票券清單</a>
                             <input type="submit" value="保存變更" class="btn btn-primary me-4" />
                             <input type="button" value="刪除" class="btn btn-danger" onclick="confirmDelete()" />
                         </div>

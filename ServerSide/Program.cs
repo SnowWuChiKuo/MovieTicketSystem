@@ -28,6 +28,9 @@ namespace ServerSide
 			builder.Services.AddScoped<IReviewDao, ReviewDao>();
 			builder.Services.AddScoped<IReviewService, ReviewService>();
 
+			//註冊PriceController介面跟它的實作
+			builder.Services.AddScoped<IPriceService, PriceService>();
+			builder.Services.AddScoped<IPriceDao,PriceDao>();
 
             // 新增 Ticket 相關服務
             builder.Services.AddScoped<TicketService>();

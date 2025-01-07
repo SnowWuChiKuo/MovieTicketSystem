@@ -362,4 +362,14 @@ public partial class AppDbContext : DbContext
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 
 public DbSet<ServerSide.Models.ViewModels.OrderVm> OrderVm { get; set; } = default!;
+
+public DbSet<ServerSide.Models.ViewModels.TicketVm> TicketVm { get; set; } = default!;
+
+public DbSet<ServerSide.Models.ViewModels.SeatStatusVm> SeatStatusVm { get; set; } = default!;
+
+public DbSet<ServerSide.Models.ViewModels.ReviewVm> ReviewVm { get; set; } = default!;
+
+public DbSet<ServerSide.Models.ViewModels.CouponVm> CouponVm { get; set; } = default!;
+
+public DbSet<ServerSide.Models.ViewModels.PriceVm> PriceVm { get; set; } = default!;
 }
