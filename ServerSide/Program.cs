@@ -66,6 +66,10 @@ namespace ServerSide
             builder.Services.AddScoped<OrderService>();
             builder.Services.AddScoped<OrderDao>();
 
+            // 新增 OrderItem 相關服務
+            builder.Services.AddScoped<OrderItemService>();
+            builder.Services.AddScoped<OrderItemDao>();
+
             // 新增 Coupon 相關服務
             builder.Services.AddScoped<CouponService>();
             builder.Services.AddScoped<CouponDao>();

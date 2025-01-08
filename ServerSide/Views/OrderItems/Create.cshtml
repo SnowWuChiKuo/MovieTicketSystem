@@ -1,0 +1,76 @@
+﻿@model ServerSide.Models.ViewModels.OrderItemVm
+
+@{
+    ViewData["Title"] = "新增電影訂單項目";
+}
+
+<div class="新增電影訂單項目">
+    <h1>Create</h1>
+
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="mb-3">
+                    <label asp-for="OrderId" class="form-label"></label>
+                    <input asp-for="OrderId" class="form-control form-control-sm" />
+                    <span asp-validation-for="OrderId" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="TicketId" class="form-label"></label>
+                    <input asp-for="TicketId" class="form-control form-control-sm" id="TicketId" />
+                    <span asp-validation-for="TicketId" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="TicketName" class="form-label"></label>
+                    <input asp-for="TicketName" class="form-control form-control-sm" id="TicketName" readonly />
+                    <span asp-validation-for="TicketName" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Price" class="form-label"></label>
+                    <input asp-for="Price" class="form-control form-control-sm" />
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Qty" class="form-label"></label>
+                    <input asp-for="Qty" class="form-control form-control-sm" />
+                    <span asp-validation-for="Qty" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="SubTotal" class="form-label"></label>
+                    <input asp-for="SubTotal" class="form-control form-control-sm" />
+                    <span asp-validation-for="SubTotal" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <input type="submit" value="新增" class="btn btn-primary btn-sm" />
+                    <a asp-action="Index" class="btn btn-secondary btn-sm">回清單頁</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        $(document).ready(function () {
+            $('#getTicketNameBtn').click(function () {
+                var ticketId = $('#ticketId').val();
+                $.ajax({
+                    url: '/OrderItems/GetTicketName',
+                    type: 'GET',
+                    data: { ticketId: ticketId },
+                    success: function (response) {
+                        $('#ticketName').text(response.data);
+                    },
+                    error: function (error) {
+                        console.error('Error:', error);
+                    }
+                });
+            });
+        });
+    </script>
+}
