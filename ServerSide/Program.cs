@@ -46,6 +46,7 @@ namespace ServerSide
             // 新增 User 相關服務
             builder.Services.AddScoped<UserService>();
             builder.Services.AddScoped<UserDao>();
+
 			//註冊PriceController介面跟它的實作
 			builder.Services.AddScoped<IPriceService, PriceService>();
 			builder.Services.AddScoped<IPriceDao,PriceDao>();
@@ -70,6 +71,10 @@ namespace ServerSide
             builder.Services.AddScoped<OrderService>();
             builder.Services.AddScoped<OrderDao>();
 
+            // 新增 OrderItem 相關服務
+            builder.Services.AddScoped<OrderItemService>();
+            builder.Services.AddScoped<OrderItemDao>();
+
             // 新增 Coupon 相關服務
             builder.Services.AddScoped<CouponService>();
             builder.Services.AddScoped<CouponDao>();
@@ -80,13 +85,14 @@ namespace ServerSide
 
             // 設定 Cookie 表單驗證 ---------------------
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options =>
+                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, 
+                options =>
                 {
                     options.Cookie.Name = "mySite";
                     options.LoginPath = "/Users/Login";
-                    options.AccessDeniedPath = "/Users/Login"; // 如果需要設定拒絕訪問頁面
+                    options.AccessDeniedPath = "/Users/AccessDenied"; // 如果需要設定拒絕訪問頁面
                     options.ReturnUrlParameter = "returnUrl";
-                    options.SlidingExpiration = true;
+                    //options.SlidingExpiration = true;
                     options.ExpireTimeSpan = TimeSpan.FromMinutes(30); // 設定 cookie 有效時間
                 });
             // ---------------------------------------

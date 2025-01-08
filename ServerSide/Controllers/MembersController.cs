@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using ServerSide.Models.DTOs;
 using ServerSide.Models.Infra;
@@ -16,6 +17,7 @@ namespace ServerSide.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult Index()
         {
             var data = _service.GetAll();
@@ -23,12 +25,15 @@ namespace ServerSide.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public IActionResult Create(MemberCreateVm model)
         {
             if (!ModelState.IsValid) return View(model);
@@ -48,6 +53,7 @@ namespace ServerSide.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult Edit(int id)
         {
             MemberDto memberDto = _service.Get(id);
@@ -65,6 +71,8 @@ namespace ServerSide.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [ValidateAntiForgeryToken]
         public IActionResult Edit(MemberCreateVm model)
         {
             if (!ModelState.IsValid) return View(model);

@@ -55,25 +55,19 @@ namespace ServerSide.Models.Services
 
         public void ValidateLogin(string account, string password)
         {
-            using (var db = new AppDbContext())
-            {
-                var member = db.Members.FirstOrDefault(m => m.Account == account);
+                var user = _dao.GetByAccount(account);
                 //若帳號找不到就拋出例外
-                if (member == null) throw new Exception("帳號或密碼錯誤");
+                if (user == null) throw new Exception("找不到該帳號");
 
                 //若密碼錯誤就拋出例外
-                if (!HashUtility.VerifySHA256(password, member.PasswordHash)) throw new Exception("帳號或密碼錯誤");
+                if (!HashUtility.VerifySHA256(password, user.PasswordHash)) throw new Exception("密碼錯誤");
 
-            }
         }
 
         public (string userName, string role) ProcessLogin(string account)
         {
-            using (var db = new AppDbContext())
-            {
-                var user = db.Users.FirstOrDefault(u => u.Account == account);
-                return (user.Account, user.IsAdmin ? "Admin" : "User");
-            }
+            var user = _dao.GetByAccount(account);
+            return (user.Account, user.IsAdmin ? "Admin" : "User");
         }
     }
 }

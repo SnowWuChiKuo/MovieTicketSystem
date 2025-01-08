@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using System.Security.Claims
+<!DOCTYPE html>
 <html lang="zh-TW">
 
 <head>
@@ -14,7 +15,7 @@
     <!-- Custom fonts for this template-->
     <link href="~/js/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-          rel="stylesheet">
+    rel="stylesheet">
 
     <!-- Custom styles for this template-->
     <link href="~/css/sb-admin-2.min.css" rel="stylesheet">
@@ -42,11 +43,11 @@
             </li>
 
             <!-- Nav Item - Dashboard -->
-            <li class="nav-item active">
-                <a class="nav-link" href="index.html">
-                    <span>首頁</span>
-                </a>
-            </li>
+            @* <li class="nav-item active"> *@
+            @*     <a class="nav-link" href="index.html"> *@
+            @*         <span>首頁</span> *@
+            @*     </a> *@
+            @* </li> *@
 
             <!-- Nav Item - 會員管理 -->
             <li class="nav-item">
@@ -68,7 +69,7 @@
             <!-- Nav Item - 電影管理 -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                   aria-expanded="true" aria-controls="collapseTwo">
+                aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-cog"></i>
                     <span>電影管理</span>
                 </a>
@@ -89,7 +90,7 @@
                     <i class="fas fa-fw fa-wrench"></i>
                     影廳清單
                 </a>
-                
+
             </li>
 
             <!-- Nav Item - 場次管理 -->
@@ -112,7 +113,7 @@
             <!-- Nav Item - 座位管理 -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree"
-                   aria-expanded="true" aria-controls="collapseThree">
+                aria-expanded="true" aria-controls="collapseThree">
                     <i class="fas fa-fw fa-cog"></i>
                     <span>座位管理</span>
                 </a>
@@ -129,7 +130,7 @@
             <!-- Nav Item - 購物車管理 -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFour"
-                   aria-expanded="true" aria-controls="collapseFour">
+                aria-expanded="true" aria-controls="collapseFour">
                     <i class="fas fa-fw fa-cog"></i>
                     <span>購物車管理</span>
                 </a>
@@ -145,7 +146,7 @@
             <!-- Nav Item - 訂單管理 -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFive"
-                   aria-expanded="true" aria-controls="collapseFive">
+                aria-expanded="true" aria-controls="collapseFive">
                     <i class="fas fa-fw fa-cog"></i>
                     <span>訂單管理</span>
                 </a>
@@ -158,9 +159,9 @@
                     </div>
                 </div>
             </li>
-            
 
-            
+
+
 
         </ul>
         <!-- End of Sidebar -->
@@ -173,25 +174,37 @@
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <!-- Nav Item - User Information -->
-                        <li class="nav-item dropdown no-arrow">
+                       <li class="nav-item dropdown no-arrow">
                             <!-- Dropdown - User Information -->
                             <div class="d-flex">
-                                <a class="dropdown-item" href="@Url.Action("Create", "Users")">
-                                    註冊
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                                    登入
-                                </a>
+                                @{
+                                    if (User.Identity.IsAuthenticated)
+                                    {
+                                         if (Context.User?.FindFirst(ClaimTypes.Role)?.Value == "Admin") {
+                                            <label class="dropdown-header " >
+                                                管理員:  @Context.User?.FindFirst(ClaimTypes.Name)?.Value
+                                            </label>
+                                         }
+                                        else
+                                        {
+                                            <label class="dropdown-header ">
+                                                一般員工:  @Context.User?.FindFirst(ClaimTypes.Name)?.Value
+                                            </label>
+                                        }
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item"  href="@Url.Action("Logout", "Users")" >
+                                            登出
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a class="dropdown-item" href="~/Users/Login">
+                                            員工登入
+                                        </a>
+                                    }
+                                }
 
 
-                                <a class="dropdown-item" href="#">
-                                    Username
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                                    登出
-                                </a>
                             </div>
                         </li>
 

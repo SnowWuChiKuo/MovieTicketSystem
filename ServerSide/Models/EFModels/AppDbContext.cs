@@ -14,9 +14,10 @@ public partial class AppDbContext : DbContext
     {
     }
 
-    public AppDbContext()
-    {
-    }
+
+    //public AppDbContext()
+    //{
+    //}
 
     public virtual DbSet<Cart> Carts { get; set; }
 
@@ -377,6 +378,8 @@ public DbSet<ServerSide.Models.ViewModels.ReviewVm> ReviewVm { get; set; } = def
 public DbSet<ServerSide.Models.ViewModels.CouponVm> CouponVm { get; set; } = default!;
 
 public DbSet<ServerSide.Models.ViewModels.PriceVm> PriceVm { get; set; } = default!;
+
+public DbSet<ServerSide.Models.ViewModels.OrderItemVm> OrderItemVm { get; set; } = default!;
 
 public DbSet<ServerSide.Models.ViewModels.TheaterVm> TheaterVm { get; set; } = default!;
 }
