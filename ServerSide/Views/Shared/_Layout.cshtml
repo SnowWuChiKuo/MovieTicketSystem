@@ -177,21 +177,23 @@
                        <li class="nav-item dropdown no-arrow">
                             <!-- Dropdown - User Information -->
                             <div class="d-flex">
-                                @if (User.Identity.IsAuthenticated)
-                                {
-                                    <label class="" >
-                                        @Context.User?.FindFirst(ClaimTypes.Name)?.Value
-                                    </label>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item"  href="@Url.Action("Logout", "Users")" data-toggle="modal" data-target="#logoutModal">
-                                        登出
-                                    </a>
-                                }
-                                else
-                                {
-                                    <a class="dropdown-item" href="@Url.Action("Login", "Users")" data-toggle="modal" data-target="#loginModal">
-                                        員工登入
-                                    </a>
+                                @{
+                                    if (User.Identity.IsAuthenticated)
+                                    {
+                                        <label class="" >
+                                            @Context.User?.FindFirst(ClaimTypes.Name)?.Value
+                                        </label>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item"  href="@Url.Action("Logout", "Users")" data-toggle="modal" data-target="#logoutModal">
+                                            登出
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a class="dropdown-item" href="~/Users/Login" data-toggle="modal" data-target="#loginModal">
+                                            員工登入
+                                        </a>
+                                    }
                                 }
 
 
