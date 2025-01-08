@@ -1,0 +1,35 @@
+﻿@model ServerSide.Models.ViewModels.TheaterVm
+
+@{
+    ViewData["Title"] = "影廳名稱編輯";
+}
+
+<div class="container-fluid">
+    <h1 class="fw-bolder mx-5">影廳名稱編輯</h1>
+    <div class="card m-5">
+        <div class="card-body">
+            <div class="row mx-5">
+                <div class="col-md-12">
+                    <form asp-action="Edit">
+                        @Html.AntiForgeryToken()
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="Id" />
+                        <div class="form-group">
+                            <label asp-for="Name" class="control-label"></label>
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <a asp-action="Index" class="btn btn-secondary me-4"><i class="fa fa-list-ul"></i> &nbsp回到影廳清單</a>
+                            <input type="submit" value="保存變更" class="btn btn-primary me-4" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
