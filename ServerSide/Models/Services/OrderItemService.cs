@@ -18,10 +18,10 @@ namespace ServerSide.Models.Services
             return _dao.GetAll();
         }
 
-        public string GetTicketName(int ticketId)
+        public Ticket GetTicketNameById(int ticketId)
         {
             // 根據 ticketId 從資料存取層獲取 TicketName
-            return _dao.GetTicketName(ticketId);
+            return _dao.GetTicketNameById(ticketId);
         }
     }
 }

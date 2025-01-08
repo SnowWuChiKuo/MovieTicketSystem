@@ -27,10 +27,14 @@ namespace ServerSide.Controllers
 
         // 這個是前端要找 ticketId 會需要使用到的 controller
         [HttpGet]
-        public JsonResult GetTicketName(int ticketId)
+        public IActionResult GetTicketName(int ticketId)
         {
-            var data = _service.GetTicketName(ticketId);
-            return Json(new { data });
+            var ticket = _service.GetTicketNameById(ticketId);
+            if (ticket != null)
+            {
+                return Json(new { data = ticket.TicketType });
+            }
+            return NotFound();
         }
     }
 }
