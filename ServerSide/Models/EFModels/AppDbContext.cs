@@ -14,9 +14,10 @@ public partial class AppDbContext : DbContext
     {
     }
 
-    public AppDbContext()
-    {
-    }
+
+    //public AppDbContext()
+    //{
+    //}
 
     public virtual DbSet<Cart> Carts { get; set; }
 

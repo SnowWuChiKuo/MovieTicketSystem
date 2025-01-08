@@ -43,11 +43,11 @@
             </li>
 
             <!-- Nav Item - Dashboard -->
-            <li class="nav-item active">
-                <a class="nav-link" href="index.html">
-                    <span>首頁</span>
-                </a>
-            </li>
+            @* <li class="nav-item active"> *@
+            @*     <a class="nav-link" href="index.html"> *@
+            @*         <span>首頁</span> *@
+            @*     </a> *@
+            @* </li> *@
 
             <!-- Nav Item - 會員管理 -->
             <li class="nav-item">
@@ -180,9 +180,17 @@
                                 @{
                                     if (User.Identity.IsAuthenticated)
                                     {
-                                        <label class="" >
-                                            @Context.User?.FindFirst(ClaimTypes.Name)?.Value
-                                        </label>
+                                         if (Context.User?.FindFirst(ClaimTypes.Role)?.Value == "Admin") {
+                                            <label class="dropdown-header " >
+                                                管理員:  @Context.User?.FindFirst(ClaimTypes.Name)?.Value
+                                            </label>
+                                         }
+                                        else
+                                        {
+                                            <label class="dropdown-header ">
+                                                一般員工:  @Context.User?.FindFirst(ClaimTypes.Name)?.Value
+                                            </label>
+                                        }
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item"  href="@Url.Action("Logout", "Users")" >
                                             登出
