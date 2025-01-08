@@ -12,6 +12,7 @@ using System.Web.Configuration;
 using System.Web.Helpers;
 using System.Web.Mvc;
 using System.Web.Security;
+using System.Web.Services.Description;
 using System.Web.UI.WebControls;
 
 namespace ClientSide.Controllers
@@ -281,6 +282,7 @@ namespace ClientSide.Controllers
             var member = new Models.EFModels.Member();
             try
             {
+               //confirmcode 設 Guid
                member = dao.ProcessForgotPassword(model);
             }
             catch (Exception ex)
@@ -290,11 +292,30 @@ namespace ClientSide.Controllers
             }
 
             //<自訂port>/Members/ResetPassword/?MemberId=&confirmCode=
-            string url = Url.Action("ResetPassword", "Members", new { memberId = member.Id, confirmCode = member.ConfirmCode }, Request.Url.Scheme);
+            //string url = Url.Action("ResetPassword", "Members", new { memberId = member.Id, confirmCode = member.ConfirmCode }, Request.Url.Scheme);
 
-            //todo 寄送email
+            //todo: 寄送驗證信
+            // 2. 建立郵件內容
+            string subject = "密碼重設申請回覆";
+            // 要記得將`你的網址`替換成你的網頁驗證網址
+            var confirmLink = Url.Action("ResetPassword", "Members", new { memberId = member.Id ,confirmCode = member.ConfirmCode }, protocol: Request.Url.Scheme);
+            string body = $"<h1>親愛的 {model.Account}，</h1><p>我們已收到您重設密碼的申請！</p><p>請點擊以下連結以重設您的密碼：<a href='{confirmLink}'>點擊重設</a></p>";
 
+            // 3. 使用 EmailService 發送郵件
+            try
+            {
+                _emailService.SendEmail(model.Email, subject, body);
+                // ... 成功發送郵件後的處理
+            }
+            catch (Exception ex)
+            {
+                // ... 發送失敗後的處理
+                Console.WriteLine($"郵件發送失敗: {ex.Message}");
+                return View(); // 返回錯誤頁面
+            }
 
+            //return View("Success");  //返回成功頁面
+            //-----------------
 
             return View("ConfirmForgotPassword");
 
@@ -306,6 +327,7 @@ namespace ClientSide.Controllers
         /// <param name="memberId"></param>
         /// <param name="confirmCode"></param>
         /// <returns></returns>
+        //Get
         public ActionResult ResetPassword(int memberId, string confirmCode)
         {
             var dao = new MemberEFDao();
@@ -338,7 +360,6 @@ namespace ClientSide.Controllers
                 return View(model);
             }
 
-            TempData["Message"] = "密碼已重設";
 
             //回到登入頁
             return RedirectToAction("Login", "Members");

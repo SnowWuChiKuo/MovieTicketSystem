@@ -8,9 +8,24 @@
 		- 在 Web.config 中加入 appSetting , key="salt"
 		- 加入 /Models/ViewModels/RegisterVm class
 		- 加入 RegisterConfirm View Page
-	- 實作會員確認功能   (未做發送email信驗證)
+	- 實作會員確認功能  (已做發送email信開通帳號功能)
 		- 加入 /Members/ActiveRegister, url是 /Members/ActiveRegister?memberId=&confirmCode=
 		- 加入 ActiveRegister view page , 範本: empty
+		- 加入 /Models/Infra/EmailService class
+		- 在 Webconfig 中加入 smtp 設定 =>
+		```
+		<!-- smtp 設定-->
+		<add key="SmtpServer" value="smtp.gmail.com" />
+		<add key="SmtpPort" value="587" />
+		<add key="SmtpUsername" value="mailsendersimulate1@gmail.com" />
+		<!-- 替換成你的 Gmail 帳號 -->
+		<add key="SmtpPassword" value="hjky lpxr qedj krjv" />
+		<!-- 替換成你的 Gmail 應用程式密碼 -->
+		<add key="EnableSsl" value="true" /> 
+		```
+		- 修改 MembersController/Register action ，加入寄送Email功能
+		- 使用者點擊就會導到 ActiveRegister action，帳號成功開通
+		
 	- 實作登入/登出功能
 		- 只有帳密正確且 IsConfirmed = true ,IsDeleted = false , IsBlackList = false 的會員才被允許登入，請事先準備已/未開通的會員各一，方便測式
 	    - 修改 web.config，加入表單認證(cookie) => 
@@ -24,7 +39,7 @@
 		- 加入 Login view page, 範本: create
 		- 暫時做一個簡單的會員中心頁 /Members/Index
 		- 修改 MemberControler, 加入 Logout action
-		- 修改 _Layout.csthml, add登入/登出的連結(沒登入與已登入，要顯示不同連結)
+		- 修改 _Layout.csthml, add登入/登出的連結(沒登入與已登入，會顯示不同連結)
 	- 實作修改個資
 		- 在 /Members/Index(會員中心) 加入修改個資的連結
 		- 加入 /Models/ViewModels/ProfileVm class
@@ -39,8 +54,9 @@
 		- 加入 /Models/ViewModels/ForgotPasswordVm class
 		- 加入 /Members/ForgotPassword action
 		- 加入 ForgotPassword view page，範本: Create
-		- 比對account , email ，若正確就 update confirmCode = guid ，並寄送Email (未做)
+		- 比對account , email ，若正確就 update confirmCode = guid ，並寄送Email
 		- postback 成功後，return View("ConfirmForgotPassword")
+		- 使用者點擊 Email 連結後導到 ResetPassword action 以重設密碼
 		- 加入 /Models/ViewModels/ResetPasswordVm class,包括 update , confirmPassword
 		- 加入 /Models/ResetPassword action ,  url = /Members/ResetPassword?memberId=99&confirmCode=XXXXXXXXXXX
 		- 加入 ResetPassword view page , 範本: Create
@@ -50,7 +66,7 @@
 		- 加入的DeleteMember action 以及 修改 EditProfile view page，使得該頁 httppost 提交表單使用兩個不同的 action
 		- 按下取消會員後導到 Logout action
 	- 其他 
-		- 使用sweetalert : 帳號開通頁， 編輯資料頁
+		- 使用sweetalert : 帳號開通頁， 編輯資料頁， 重設密碼頁
 - ## ServerSide
    ### 資料庫  
 	- 加入 /Models/EFModels
