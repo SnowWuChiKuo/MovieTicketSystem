@@ -39,6 +39,10 @@ namespace ServerSide
             builder.Services.AddScoped<ITheaterDao, TheaterDao>();
             builder.Services.AddScoped<ITheaterService, TheaterService>();
 
+            // 註冊ScreeningsController介面跟它的實作
+            builder.Services.AddScoped<IScreeningDao, ScreeningDao>();
+            builder.Services.AddScoped<IScreeningService, ScreeningService>();
+
             // 新增 Member 相關服務
             builder.Services.AddScoped<MemberService>();
             builder.Services.AddScoped<MemberDao>();

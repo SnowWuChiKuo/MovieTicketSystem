@@ -88,6 +88,9 @@
 	- 加入 /Controllers/TheatersController，依賴介面。
 	- 加入 TheaterVm,TheaterDto / ITheaterService,ITheaterDao並實作、註冊。
 	- 實作Search、Edit Action，建立對應View。
+   ### 場次系統
+	- 加入 /Controller/ScreeningController，依賴介面。
+	- 加入 ScreeningVm,ScreeningDto / IScreeningService,IScreeningDao並實作、註冊。
    ### 會員系統
 	- 加入 Models/Infra/HashUtility.cs (用來做密碼雜湊的公用函式)
 	- 註冊hashutility的salt值，並在DI中註冊 => 
