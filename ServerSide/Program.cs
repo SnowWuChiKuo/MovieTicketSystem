@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using ServerSide.Models.DAOs;
@@ -62,6 +63,10 @@ namespace ServerSide
             // 新增 SeatStatus 相關服務
             builder.Services.AddScoped<SeatStatusService>();
             builder.Services.AddScoped<SeatStatusDao>();
+
+            // 新增 Cart 相關服務
+            builder.Services.AddScoped<CartService>();
+            builder.Services.AddScoped<CartDao>();
 
             // 新增 Order 相關服務
             builder.Services.AddScoped<OrderService>();
