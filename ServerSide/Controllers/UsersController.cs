@@ -17,43 +17,41 @@ namespace ServerSide.Controllers
             _service = service;
         }
 
-        [HttpGet]
-        public IActionResult Login()
+        [HttpGet("Users/Login")]
+        public IActionResult Login(string returnUrl = "/")
         {
+            ViewBag.ReturnUrl = returnUrl;
             return View();
         }
 
 
-        [HttpPost]
+        [HttpPost("Users/Login")]
         [ValidateAntiForgeryToken]
-        public IActionResult Login(UserLoginVm model, string returnUrl = null)
+        public IActionResult Login(UserLoginVm model, string returnUrl = "/")
         {
+            ViewBag.ReturnUrl = returnUrl;
+
             if (!ModelState.IsValid) return View(model);
+           
             try
             {
-                _service.ValidateLogin(model.Account, model.Password);//若失敗會拋出例外
+                _service.ValidateLogin(model.Account, model.Password); //若失敗會拋出例外
 
                 (string userName, string role) = _service.ProcessLogin(model.Account);
 
                 var claims = new List<Claim>
                     {
-                      new Claim(ClaimTypes.Name, userName),
+                        new Claim(ClaimTypes.Name, userName),
                         new Claim(ClaimTypes.Role, role)
                     };
 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                var authProperties = new AuthenticationProperties { };
+                var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
 
-                HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties).Wait();
+                HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal).Wait();
 
-                if (string.IsNullOrEmpty(returnUrl))
-                {
-                    return RedirectToAction("Index", "Home");
-                }
-                else
-                {
-                    return Redirect(returnUrl);
-                }
+                return Redirect(returnUrl);
+                
             }
             catch (Exception ex)
             {
@@ -69,19 +67,30 @@ namespace ServerSide.Controllers
         }
 
         [HttpGet]
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
             var data = _service.GetAll();
             return View(data);
         }
 
+
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public IActionResult Create(UserCreateVm model)
         {
             if (!ModelState.IsValid) return View(model);
@@ -101,6 +110,7 @@ namespace ServerSide.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult Edit(int id)
         {
             UserDto userDto = _service.Get(id);
@@ -115,6 +125,8 @@ namespace ServerSide.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public IActionResult Edit(UserCreateVm model)
         {
             if (!ModelState.IsValid) return View(model);
@@ -134,7 +146,7 @@ namespace ServerSide.Controllers
 
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteUser(UserCreateVm model)

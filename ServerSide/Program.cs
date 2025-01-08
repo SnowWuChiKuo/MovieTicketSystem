@@ -80,13 +80,14 @@ namespace ServerSide
 
             // 設定 Cookie 表單驗證 ---------------------
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options =>
+                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, 
+                options =>
                 {
                     options.Cookie.Name = "mySite";
                     options.LoginPath = "/Users/Login";
-                    options.AccessDeniedPath = "/Users/Login"; // 如果需要設定拒絕訪問頁面
+                    options.AccessDeniedPath = "/Users/AccessDenied"; // 如果需要設定拒絕訪問頁面
                     options.ReturnUrlParameter = "returnUrl";
-                    options.SlidingExpiration = true;
+                    //options.SlidingExpiration = true;
                     options.ExpireTimeSpan = TimeSpan.FromMinutes(30); // 設定 cookie 有效時間
                 });
             // ---------------------------------------
