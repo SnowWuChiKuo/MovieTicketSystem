@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ServerSide.Models.DTOs;
 using ServerSide.Models.EFModels;
 using ServerSide.Models.ViewModels;
 
@@ -37,9 +38,84 @@ namespace ServerSide.Models.DAOs
 
             if (ticket == null) throw new Exception("找不到此票種!");
 
-            // ?? 是空合併運算符，它的作用是如果左邊的表達式為 null，則返回右邊的值。
             return ticket;
         }
 
+        public Dictionary<int, int> GetAllOrderQty()
+        {
+            var orderQty = _db.OrderItems
+                              .GroupBy(o => o.OrderId)
+                              .Select(g => new
+                              {
+                                  OrderId = g.Key,
+                                  TotalQty = g.Sum(o => o.Qty)
+                              })
+                              .ToDictionary(x => x.OrderId, x => x.TotalQty);
+
+            return orderQty;
+        }
+
+        public void Create(OrderItemDto dto)
+        {
+            OrderItem orderItem = ConvertTOEntity(dto);
+            _db.OrderItems.Add(orderItem);
+            _db.SaveChanges();
+        }
+
+        private OrderItem ConvertTOEntity(OrderItemDto dto)
+        {
+            return new OrderItem
+            {
+                Id= dto.Id,
+                OrderId= dto.OrderId,
+                TicketId= dto.TicketId,
+                TicketName= dto.TicketName,
+                Price= dto.Price,
+                Qty= dto.Qty,
+                SubTotal= dto.SubTotal,
+            };
+        }
+
+        public OrderItemVm Get(int id)
+        {
+            var orderItem = _db.OrderItems.FirstOrDefault(o => o.Id == id);
+
+            if (orderItem == null)
+            {
+                throw new Exception("找不到此電影票!");
+            }
+
+            return new OrderItemVm
+            {
+                Id = orderItem.Id,
+                OrderId= orderItem.OrderId,
+                TicketId= orderItem.TicketId,
+                TicketName= orderItem.TicketName,
+                Price= orderItem.Price,
+                Qty= orderItem.Qty,
+                SubTotal= orderItem.SubTotal,
+            };
+        }
+
+        public OrderItem GetOrderItemById(int id)
+        {
+            var data = _db.OrderItems.FirstOrDefault(d => d.Id == id);
+
+            if (data == null) throw new Exception("找不到此電影票!");
+
+            return data;
+        }
+
+        public void Edit(OrderItem orderItem)
+        {
+            _db.OrderItems.Update(orderItem);
+            _db.SaveChanges();
+        }
+
+        public void Delete(OrderItem orderItem)
+        {
+            _db.OrderItems.Remove(orderItem);
+            _db.SaveChanges();
+        }
     }
 }
