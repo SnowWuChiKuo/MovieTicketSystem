@@ -1,13 +1,23 @@
-﻿@model IEnumerable<ServerSide.Models.ViewModels.PriceIndexVm>
+﻿@model IEnumerable<ServerSide.Models.ViewModels.TheaterVm>
 
 @{
-    ViewData["Title"] = "電影票券總覽";
+    ViewData["Title"] = "影廳清單";
 }
-
 <div class="container-fluid">
-    <h1 class="fw-bolder mb-3">電影票券總覽</h1>
-    <h6 class="mt-2">點擊表格瀏覽各電影當前票券</h6>
-
+    <h1 class="fw-bolder mb-3">影廳清單</h1>
+    <div class="d-flex mb-3 justify-content-between">
+        <!-- 搜尋表單 -->
+        <form asp-action="Search" method="get" class="flex-grow-1 me-3">
+            <div class="row mb-3 justify-content-start">
+                <div class="col-2">
+                    <input type="text" name="name" placeholder="影廳名稱" class="form-control" />
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa fa-search"></i> &nbsp 搜尋
+                </button>
+            </div>
+        </form>
+    </div>
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-body">
@@ -16,29 +26,29 @@
                     <thead>
                         <tr style="background-color:skyblue">
                             <th>
-                                @Html.DisplayNameFor(model => model.MovieId)
+                                @Html.DisplayNameFor(model => model.Name)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.MovieTitle)
+                                @Html.DisplayNameFor(model => model.TotalSeats)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.TicketCount)
+                                @Html.DisplayNameFor(model => model.CreatedAt)
                             </th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var item in Model)
                         {
-                        //在table row加上onclick事件、改滑鼠懸停狀態，點擊後觸發JavaScript函數，跳轉查看票券
-                            <tr onclick="navigateToEdit('@item.MovieId','@item.MovieTitle')" style="cursor: pointer;">
+                        //在table row加上onclick事件、改滑鼠懸停狀態，點擊後觸發JavaScript函數，跳轉到Edit
+                            <tr onclick="navigateToEdit('@item.Id')" style="cursor: pointer;">
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.MovieId)
+                                    @Html.DisplayFor(modelItem => item.Name)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.MovieTitle)
+                                    @Html.DisplayFor(modelItem => item.TotalSeats)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.TicketCount)
+                                    @Html.DisplayFor(modelItem => item.CreatedAt)
                                 </td>
                             </tr>
                         }
@@ -47,7 +57,6 @@
             </div>
         </div>
     </div>
-
 </div>
 
 
@@ -88,7 +97,7 @@
                 "lengthChange": true,
                 "ordering": true,
                 "info": true,
-                "autoWidth": true,
+                "autoWidth": false,
                 "language":
                 {
                     "lengthMenu": "每頁顯示筆數 _MENU_ ",
@@ -106,12 +115,9 @@
 
             $('#myTable_filter').hide();
         });
-        //點擊表格Row跳轉到該電影票券頁面
-        function navigateToEdit(movieId, movieTitle) {
-            //encodeURIComponent:將標題轉換為URL格式
-            //注意JS傳遞參數名稱要和controller方法參數一致
-            window.location.href = '/Prices/Details?movieId=' + movieId + '&movieTitle=' + encodeURIComponent(movieTitle);
+        //點擊表格Row跳轉到Edit頁面
+        function navigateToEdit(id) {
+            window.location.href = '/Theaters/Edit/' + id;
         }
     </script>
 }
-

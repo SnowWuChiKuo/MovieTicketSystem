@@ -1,7 +1,5 @@
 ﻿
 @{
-    
-
     Layout = null;
 }
 <html lang="zh-TW">
@@ -15,7 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@200..900&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&family=Noto+Sans+TC:wght@100..900&family=Noto+Serif+TC:wght@200..900&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="~/Content/Site.css"/>
+    <link rel="stylesheet" href="~/Content/MovieMainPageCss.css"/>
 </head>
 <body>
     <!--NAVBAR Start-->
@@ -218,7 +216,8 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <script>
+    <script src="~/Scripts/MovieMainPageJS.js"></script>
+    @*<script>
         const { createApp, ref } = Vue;
         const config = {
             setup(){
@@ -250,12 +249,17 @@
 
                 function scrollRight(section) {
                     let target;
-                    if(section === 'mostViewed') target = mostViewedCardRow.value;
-                    else if(section === 'mostCommented') target = mostCommentedCardRow.value;
-                    else if(section === 'allMovies') target = allMoviesCardRow.value;
+                    if (section === 'mostViewed') target = mostViewedCardRow.value;
+                    else if (section === 'mostCommented') target = mostCommentedCardRow.value;
+                    else if (section === 'allMovies') target = allMoviesCardRow.value;
 
-                    if(target){
-                        target.scrollBy({left: 600, behavior: 'smooth'});
+                    if (target) {
+                        // 檢查是否已經到最右邊
+                        if (target.scrollLeft + target.clientWidth >= target.scrollWidth) {
+                            target.scrollLeft = 0;  // 回到最左邊
+                        } else {
+                            target.scrollBy({ left: 600, behavior: 'smooth' });
+                        }
                     }
                 }
 
@@ -275,6 +279,6 @@
             }
         }
         createApp(config).mount("#app");
-    </script>
+    </script>*@
 </body>
 </html>

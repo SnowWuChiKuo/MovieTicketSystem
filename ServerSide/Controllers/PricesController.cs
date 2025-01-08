@@ -108,26 +108,24 @@ namespace ServerSide.Controllers
                 return View(vm);
             }
 
-            //因為Details頁面需要movieId和movieTitle，所以要將這兩個參數傳遞過去
-            //ModelBinding or Request.Query
-            //TempData["MovieTitle"] = Request.Form["movieTitle"];
-            return RedirectToAction("Details", new { movieId = vm.MovieId, movieTitle = movieTitle });
-
+            return RedirectToAction("Details", new { movieId = vm.MovieId, movieTitle });
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete(int id, int movieId, string movieTitle)
+        public IActionResult Delete(int id)
         {
             try
             {
                 _service.Delete(id);
-                return RedirectToAction("Details", new { movieId, movieTitle });
+                var newListData = _service.GetMovieTixList();
+
+                return View("Index", newListData);
 			}
             catch (Exception ex)
             {
                 ModelState.AddModelError("", ex.Message);
-                return View("Details", new { movieId, movieTitle });
+                return View("Index");
 			}
         }
 
