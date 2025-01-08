@@ -42,6 +42,7 @@ namespace ServerSide
             // 新增 User 相關服務
             builder.Services.AddScoped<UserService>();
             builder.Services.AddScoped<UserDao>();
+
 			//註冊PriceController介面跟它的實作
 			builder.Services.AddScoped<IPriceService, PriceService>();
 			builder.Services.AddScoped<IPriceDao,PriceDao>();

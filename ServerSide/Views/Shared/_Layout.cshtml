@@ -184,13 +184,13 @@
                                             @Context.User?.FindFirst(ClaimTypes.Name)?.Value
                                         </label>
                                         <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item"  href="@Url.Action("Logout", "Users")" data-toggle="modal" data-target="#logoutModal">
+                                        <a class="dropdown-item"  href="@Url.Action("Logout", "Users")" >
                                             登出
                                         </a>
                                     }
                                     else
                                     {
-                                        <a class="dropdown-item" href="~/Users/Login" data-toggle="modal" data-target="#loginModal">
+                                        <a class="dropdown-item" href="~/Users/Login">
                                             員工登入
                                         </a>
                                     }
