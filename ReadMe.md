@@ -136,6 +136,14 @@
 	- View 的 Index頁(範本List)、Create頁(範本Create)、Edit頁(範本Edit)
 	- 刪除部分在 Edit 頁， List 頁僅可編輯
 
+	### 購物車系統
+	- 加入 CartsController ， 未加入依賴介面
+	- 加入 CartVm、CartDto、CartDao
+	- 在 program.cs 中註冊
+	- 在 CartsController 寫入 CRUD ，並顯示其 View
+	- View 的 Index頁(範本List)、Create頁(範本Create)、Edit頁(範本Edit)
+	- 刪除部分在 Edit 頁， List 頁僅可編輯
+
 	### 訂票系統
 	- 加入 OrdersController ， 未加入依賴介面
 	- 加入 OrderVm、OrderDto、OrderDao
@@ -152,6 +160,7 @@
 	- 在 OrderItemsController 寫入 CRUD ，並顯示其 View
 	- View 的 Index頁(範本List)、Create頁(範本Create)、Edit頁(範本Edit)
 	- 刪除部分在 Edit 頁， List 頁僅可編輯
+	- `限制購買數量為六張`
 
 	### 優惠卷系統
 	- 加入 CouponsController ， 未加入依賴介面
