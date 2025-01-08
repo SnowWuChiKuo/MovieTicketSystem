@@ -58,6 +58,10 @@ namespace ServerSide.Models.DAOs
                 throw new Exception("找不到該員工");
             }
         }
+        public User GetByAccount(string account)
+        {
+            return _db.Users.FirstOrDefault(u => u.Account == account);
+        }
 
         public void Edit(UserDto dto)
         {
