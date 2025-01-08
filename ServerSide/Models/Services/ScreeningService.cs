@@ -21,7 +21,12 @@ namespace ServerSide.Models.Services
             throw new NotImplementedException();
         }
 
-        public IEnumerable<ScreeningVm> GetScreeningList()
+		public ScreeningEditVm GetEditList(int id)
+		{
+			return _dao.GetEditList(id);
+		}
+
+		public IEnumerable<ScreeningVm> GetScreeningList()
         {
             return _dao. GetScreeningList();
         }
@@ -31,7 +36,7 @@ namespace ServerSide.Models.Services
             throw new NotImplementedException();
         }
 
-        public void Update(ScreeningDto dto)
+        public void Edit(ScreeningDto dto)
         {
             throw new NotImplementedException();
         }

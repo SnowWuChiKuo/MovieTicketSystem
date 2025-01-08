@@ -1,0 +1,133 @@
+﻿@model ServerSide.Models.ViewModels.ScreeningEditVm
+
+@{
+    ViewData["Title"] = "場次編輯";
+}
+
+<div class="container-fluid">
+    <h1 class="fw-bolder mx-5">場次編輯</h1>
+    <div class="card m-5">
+        <div class="card-body">
+            <div class="row mx-5">
+                <div class="col-md-12">
+                    <form asp-action="Edit">
+                        @Html.AntiForgeryToken()
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="Id" />
+
+                        <!-- 修改這裡：使用下拉選單 -->
+                        <div class="form-group mb-3">
+                            <label asp-for="MovieId" class="control-label"></label>
+                            <select asp-for="MovieId" class="form-control"
+                                    asp-items="Model.MovieOptions"></select>
+                            <span asp-validation-for="MovieId" class="text-danger"></span>
+                        </div>
+
+                        <!-- 將 MovieTitle 改為隱藏欄位 -->
+                        <input type="hidden" asp-for="MovieTitle" />
+
+                        <div class="form-group mb-3">
+                            <label asp-for="TheaterId" class="control-label"></label>
+                            <input asp-for="TheaterId" class="form-control" />
+                            <span asp-validation-for="TheaterId" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="ScreeningDate" class="control-label"></label>
+                            <input asp-for="ScreeningDate" class="form-control" type="date" />
+                            <span asp-validation-for="ScreeningDate" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="StartTime" class="control-label"></label>
+                            <input asp-for="StartTime" class="form-control" type="time" />
+                            <span asp-validation-for="StartTime" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="EndTime" class="control-label"></label>
+                            <input asp-for="EndTime" class="form-control" type="time" />
+                            <span asp-validation-for="EndTime" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <a asp-action="Index" class="btn btn-secondary me-4">回到影廳清單</a>
+                            <input type="submit" value="保存變更" class="btn btn-primary me-4" />
+                            <input type="button" value="刪除" class="btn btn-danger" onclick="confirmDelete()" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        // 當電影選擇改變時更新電影標題
+        $(document).ready(function() {
+            $('#MovieId').change(function() {
+                var selectedOption = $(this).find('option:selected');
+                var movieTitle = selectedOption.text().split(' - ')[1]; // 假設格式為 "Id - Title"
+                $('#MovieTitle').val(movieTitle);
+            });
+        });
+
+        function confirmDelete() {
+            Swal.fire({
+                title: "確定要刪除嗎？",
+                text: "刪除後將無法恢復！",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "是的，刪除！",
+                cancelButtonText: "取消"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    deleteItem();
+                }
+            });
+        }
+
+        function deleteItem() {
+            const id = document.querySelector('input[name="Id"]').value;
+            // 注意：這裡的路徑應該改為 Screenings 而不是 Reviews
+            fetch(`/Screenings/Delete/${id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    Swal.fire({
+                        title: "已刪除！",
+                        text: "場次已成功刪除。",
+                        icon: "success"
+                    }).then(() => {
+                        window.location.href = '/Screenings/Index';
+                    });
+                } else {
+                    Swal.fire({
+                        title: "刪除失敗！",
+                        text: "請稍後再試。",
+                        icon: "error"
+                    });
+                }
+            })
+            .catch(error => {
+                Swal.fire({
+                    title: "錯誤！",
+                    text: "無法連接到伺服器。",
+                    icon: "error"
+                });
+            });
+        }
+    </script>
+}

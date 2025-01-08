@@ -386,4 +386,6 @@ public DbSet<ServerSide.Models.ViewModels.TheaterVm> TheaterVm { get; set; } = d
 public DbSet<ServerSide.Models.ViewModels.CartVm> CartVm { get; set; } = default!;
 
 public DbSet<ServerSide.Models.ViewModels.ScreeningVm> ScreeningVm { get; set; } = default!;
+
+public DbSet<ServerSide.Models.ViewModels.ScreeningEditVm> ScreeningEditVm { get; set; } = default!;
 }

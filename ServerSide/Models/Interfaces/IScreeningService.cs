@@ -8,10 +8,11 @@ namespace ServerSide.Models.Interfaces
         
         
         public IEnumerable<ScreeningVm> GetScreeningList();
-        //public ScreeningDto GetScreeningDetail(int screeningId);
-        public bool IsScreeningExist(int id);
+		//public ScreeningDto GetScreeningDetail(int screeningId);
+		public ScreeningEditVm GetEditList(int id);
+		public bool IsScreeningExist(int id);
         public void Create(ScreeningDto dto);
-        public void Update(ScreeningDto dto);
+        public void Edit(ScreeningDto dto);
         public void Delete(int id);
     }
 }

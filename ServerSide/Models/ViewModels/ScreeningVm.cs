@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ServerSide.Models.ViewModels
 {
@@ -44,7 +45,7 @@ namespace ServerSide.Models.ViewModels
         public int MovieId { get; set; }
 
         [Display(Name = "電影名稱")]
-        public string MovieName { get; set; }
+        public string MovieTitle { get; set; }
 
         [Display(Name = "該場播放影廳")]
         public int TheaterId { get; set; }
@@ -58,8 +59,8 @@ namespace ServerSide.Models.ViewModels
         [Display(Name = "場次結束時間")]
         public TimeOnly EndTime { get; set; }
 
-
-        //電影的下拉清單屬性
-        public SelectList MovieOptions { get; set; }
+		[NotMapped]
+		//電影的下拉清單屬性
+		public List<SelectListItem> MovieOptions { get; set; }
     }
 }

@@ -17,5 +17,24 @@ namespace ServerSide.Controllers
             var indexData = _service.GetScreeningList();
             return View(indexData);
         }
-    }
+
+
+		[HttpGet]
+		public IActionResult Edit(int? id)
+		{
+			if (id == null)
+			{
+				return BadRequest("資料已被更動或被刪除");
+			}
+
+			var editVm = _service.GetEditList(id.Value);
+
+			if (editVm == null)
+			{
+				return NotFound("找不到資料");
+			}
+
+			return View(editVm);
+		}
+	}
 }
