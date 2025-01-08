@@ -5,7 +5,11 @@ using ClientSide.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
+using System.Threading.Tasks;
 using System.Web;
+using System.Web.Configuration;
+using System.Web.Helpers;
 using System.Web.Mvc;
 using System.Web.Security;
 using System.Web.UI.WebControls;
@@ -14,6 +18,23 @@ namespace ClientSide.Controllers
 {
     public class MembersController : Controller
     {
+        private readonly EmailService _emailService;
+
+        public MembersController()
+        {
+            // 讀取郵件設定
+            var settings = new EmailSettings
+            {
+                SmtpServer = WebConfigurationManager.AppSettings["SmtpServer"],
+                SmtpPort = int.Parse(WebConfigurationManager.AppSettings["SmtpPort"]),
+                SmtpUsername = WebConfigurationManager.AppSettings["SmtpUsername"],
+                SmtpPassword = WebConfigurationManager.AppSettings["SmtpPassword"],
+                EnableSsl = bool.Parse(WebConfigurationManager.AppSettings["EnableSsl"])
+            };
+            // 建立郵件服務
+            _emailService = new EmailService();
+        }
+
         // GET: Members
         /// <summary>
         /// 會員註冊頁面
@@ -33,8 +54,29 @@ namespace ClientSide.Controllers
             {
                 var service = new MemberService();
                 service.ProcessRegister(model);
-                //todo: 寄送驗證信
 
+                //todo: 寄送驗證信
+                // 2. 建立郵件內容
+                string subject = "歡迎加入我們的系統";
+                // 要記得將`你的網址`替換成你的網頁驗證網址
+                var confirmLink = Url.Action("ActiveRegister", "Members", new { memberId = service.GetByAccount(model.Account).Id, confirmCode = service.GetByAccount(model.Account).ConfirmCode }, protocol: Request.Url.Scheme);
+                string body = $"<h1>親愛的 {model.Account}，</h1><p>感謝您註冊我們的系統！</p><p>請點擊以下連結開通您的帳號：<a href='{confirmLink}'>點擊驗證</a></p>";
+
+                // 3. 使用 EmailService 發送郵件
+                try
+                {
+                    _emailService.SendEmail(model.Email, subject, body);
+                    // ... 成功發送郵件後的處理
+                }
+                catch (Exception ex)
+                {
+                    // ... 發送失敗後的處理
+                    Console.WriteLine($"郵件發送失敗: {ex.Message}");
+                    return View(); // 返回錯誤頁面
+                }
+
+                //return View("Success");  //返回成功頁面
+                //-----------------
                 return View("RegisterConfirm");
             }
             catch (Exception ex)

@@ -24,17 +24,21 @@ namespace ServerSide
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
-			//註冊MovieController介面跟它的實作
+			//註冊MoviesController介面跟它的實作
 			builder.Services.AddScoped<IMovieDao, MovieDao>();
 			builder.Services.AddScoped<IMovieService, MovieService>();
 
-			//註冊GenreController介面跟它的實作
+			//註冊GenresController介面跟它的實作
 			builder.Services.AddScoped<IGenreDao, GenreDao>();
 			builder.Services.AddScoped<IGenreService, GenreService>();
 
-			//註冊ReviewController介面跟它的實作
+			//註冊ReviewsController介面跟它的實作
 			builder.Services.AddScoped<IReviewDao, ReviewDao>();
 			builder.Services.AddScoped<IReviewService, ReviewService>();
+
+            // 註冊TheatersController介面跟它的實作
+            builder.Services.AddScoped<ITheaterDao, TheaterDao>();
+            builder.Services.AddScoped<ITheaterService, TheaterService>();
 
             // 新增 Member 相關服務
             builder.Services.AddScoped<MemberService>();

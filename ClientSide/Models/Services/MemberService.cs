@@ -130,31 +130,10 @@ namespace ClientSide.Models.Services
             dao.Delete(account);
         }
 
-        //public void ChangePassword(string account, ChangePasswordVm model)
-        //{
-        //    try
-        //    {
-        //        var dao = new MemberEFDao();
-        //        dao.ChangePassword(account, model);
-
-
-
-        //            TempData["Message"] = "更改密碼成功";
-
-        //            return RedirectToAction("Index");
-        //        }
-        //        else
-        //        {
-        //            ModelState.AddModelError("PasswordOrigin", "原始密碼錯誤");
-        //            return View(model);
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-
-        //    }
-
-
-        //}
+        public Member GetByAccount(string account)
+        {
+            var dao = new MemberEFDao();
+            return dao.Get(account);
+        }
     }
 }

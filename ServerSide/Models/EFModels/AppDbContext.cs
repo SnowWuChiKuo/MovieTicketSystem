@@ -381,5 +381,7 @@ public DbSet<ServerSide.Models.ViewModels.PriceVm> PriceVm { get; set; } = defau
 
 public DbSet<ServerSide.Models.ViewModels.OrderItemVm> OrderItemVm { get; set; } = default!;
 
+public DbSet<ServerSide.Models.ViewModels.TheaterVm> TheaterVm { get; set; } = default!;
+
 public DbSet<ServerSide.Models.ViewModels.CartVm> CartVm { get; set; } = default!;
 }

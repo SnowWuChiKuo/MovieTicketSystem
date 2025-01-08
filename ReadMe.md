@@ -79,9 +79,15 @@
 		- 實作IndexPage(範本List)、EditPage(範本Edit)、CreatePage(範本Create)。
 	- 加入 ReviewVm,ReviewDto / IReviewService,IReviewDao並實作、註冊。
 	- 實作CRUD Action，建立對應View。
-   ### 電影管理
-	- 
+   ### 電影票券管理
+	- 加入 /Controllers/PricesController，依賴介面。
+		- 實作IndexPage(範本List)、DetailsPage(範本List)、EditPage(範本Edit)、CreatePage(範本Create)。
 	- 建立PriceVm、PriceDto、IPriceService、IPriceDao
+	- 實作CRUD Action，建立對應View。
+   ### 影廳管理系統
+	- 加入 /Controllers/TheatersController，依賴介面。
+	- 加入 TheaterVm,TheaterDto / ITheaterService,ITheaterDao並實作、註冊。
+	- 實作Search、Edit Action，建立對應View。
    ### 會員系統
 	- 加入 Models/Infra/HashUtility.cs (用來做密碼雜湊的公用函式)
 	- 註冊hashutility的salt值，並在DI中註冊 => 

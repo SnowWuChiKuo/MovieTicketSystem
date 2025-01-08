@@ -39,7 +39,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <a asp-action="Index" class="btn btn-secondary me-4"><i class="fa fa-list-ul"></i> &nbsp回到票券清單</a>
+                            <a asp-action="Index" class="btn btn-secondary me-4"><i class="fa fa-list-ul"></i> &nbsp返回</a>
                             <input type="submit" value="保存變更" class="btn btn-primary me-4" />
                             <input type="button" value="刪除" class="btn btn-danger" onclick="confirmDelete()" />
                         </div>
@@ -56,8 +56,6 @@
 
 <script>
     function confirmDelete() {
-        const movieId = "@ViewBag.MovieId";
-        const movieTitle = "@ViewBag.MovieTitle";
         Swal.fire({
             title: "確定要刪除嗎？",
             text: "刪除後將無法恢復！",
@@ -69,14 +67,14 @@
             cancelButtonText: "取消"
         }).then((result) => {
             if (result.isConfirmed) {
-                deleteItem(movieId, movieTitle);
+                deleteItem();
             }
         });
     }
 
-    function deleteItem(movieId, movieTitle) {
+    function deleteItem() {
         const id = document.querySelector('input[name="Id"]').value;
-        fetch(`/Prices/Delete/${id}?movieId=${movieId}&movieTitle=${encodeURIComponent(movieTitle)}`, {
+        fetch(`/Prices/Delete/${id}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -90,7 +88,7 @@
                         text: "評論已成功刪除。",
                         icon: "success"
                     }).then(() => {
-                        window.location.href = '/Prices/Details?movieId=' + movieId + '&movieTitle=' + encodeURIComponent(movieTitle);;
+                        window.location.href = '/Prices/Index';
                     });
                 } else {
                     Swal.fire({
