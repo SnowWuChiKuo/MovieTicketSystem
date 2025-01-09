@@ -23,7 +23,7 @@
 		<!-- 替換成你的 Gmail 應用程式密碼 -->
 		<add key="EnableSsl" value="true" /> 
 		```
-		- 修改 MembersController/Register action ，加入寄送Email功能
+		- 修改 MembersController/Register action ，加入寄送 Email 功能
 		- 使用者點擊就會導到 ActiveRegister action，帳號成功開通
 		
 	- 實作登入/登出功能
@@ -50,7 +50,7 @@
 		- 加入 /Models/ViewModels/ChangePasswordVm
 		- 加入 /Members/ChangePassword action , 加入[Authorize]
 		- 加入 ChangePassword view page , 範本: Create(不使用Edit，不需要事先load資料進去)
-	- 實作忘記密碼/重設密碼
+	- 實作忘記密碼/重設密碼 ( 已做寄送 Email 導回重設密碼頁 )
 		- 加入 /Models/ViewModels/ForgotPasswordVm class
 		- 加入 /Members/ForgotPassword action
 		- 加入 ForgotPassword view page，範本: Create
@@ -140,12 +140,18 @@
 	---
    ### 會員系統
 	- 加入 Models/Infra/HashUtility.cs (用來做密碼雜湊的公用函式)
-	- 註冊hashutility的salt值，並在DI中註冊 => 
+	- 在 appsetting.json 註冊 hashutility 的 salt 值 =>
+	  ```
+      "AppSettings": {
+      "salt": "s-kf!d1(#!$#elwpq2"
+      }
+	  ```
+	- 在DI中註冊 => 
 	 ```
       Configure App Configuration
             var configuration = builder.Configuration;
             HashUtility.SetConfiguration(configuration); 
-	```
+	 ```
     - MemberService , MemberDao , MemberIndexVm , MemberCreateVm ,MemberDto 
 	- 加入 MembersController Index action , /Views/Members/Index page , 未加入依賴介面
 	- 加入 MembersController Edit action , view page
