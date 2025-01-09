@@ -11,7 +11,7 @@ namespace ClientSide.Models.EFModels
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Rating()
         {
-            Movies = new HashSet<Movy>();
+            Movies = new HashSet<Movie>();
         }
 
         public int Id { get; set; }
@@ -23,6 +23,6 @@ namespace ClientSide.Models.EFModels
         public int DisplayOrder { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Movy> Movies { get; set; }
+        public virtual ICollection<Movie> Movies { get; set; }
     }
 }
