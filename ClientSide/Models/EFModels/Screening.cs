@@ -29,7 +29,7 @@ namespace ClientSide.Models.EFModels
 
         public DateTime? UpdatedAt { get; set; }
 
-        public virtual Movy Movy { get; set; }
+        public virtual Movie Movie { get; set; }
 
         public virtual Theater Theater { get; set; }
 

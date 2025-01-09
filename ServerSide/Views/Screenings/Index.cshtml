@@ -13,17 +13,17 @@
                     <input type="text" name="theaterId" placeholder="影廳編號" class="form-control" />
                 </div>
                 <div class="col-2">
-                    <input type="text" name="Title" placeholder="電影名稱" class="form-control" />
+                    <input type="text" name="movieTitle" placeholder="電影名稱" class="form-control" />
                 </div>
             </div>
 
 
             <div class="row mb-3">
                 <div class="col-3">
-                    <input type="date" name="StartDate" class="form-control" />
+                    <input type="time" name="StartTime" class="form-control" />
                 </div>
                 <div class="col-3">
-                    <input type="date" name="EndDate" class="form-control" />
+                    <input type="time" name="EndTime" class="form-control" />
                 </div>
                 <div class="col-auto">
                     <button type="submit" class="btn btn-primary">
@@ -36,7 +36,7 @@
         <!-- 新增按鈕 -->
         <div class="align-self-end" style="margin-bottom:16px">
             <a asp-action="Create" class="btn btn-success">
-                <i class="fa fa-pen-fancy"></i>&nbsp 新增測試評論
+                <i class="fa fa-pen-fancy"></i>&nbsp 新增場次
             </a>
         </div>
     </div>
@@ -88,7 +88,7 @@
                                     @Html.DisplayFor(modelItem => item.TheaterId)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.ScreeningDate)
+                                    @item.ScreeningDate.ToString("yyyy-MM-dd")
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.StartTime)
