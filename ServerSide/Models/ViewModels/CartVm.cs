@@ -12,6 +12,7 @@ namespace ServerSide.Models.ViewModels
 
         [Display(Name = "會員帳號")]
         public string? MemberAccount { get; set; }
+
         [Display(Name = "會員名字")]
         public string? MemberName { get; set; }
     }

@@ -67,7 +67,7 @@
                     type: 'GET',
                     data: { ticketId: ticketId },
                     success: function (response) {
-                        $('#TicketName').val(response.data.ticketType);
+                        $('#TicketName').val(response.data.ticketName);
                         $('#price').val(response.data.price);
                     },
                     error: function (error) {

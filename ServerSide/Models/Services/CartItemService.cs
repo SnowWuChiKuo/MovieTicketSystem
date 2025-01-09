@@ -1,6 +1,6 @@
-﻿
-using ServerSide.Models.DAOs;
+﻿using ServerSide.Models.DAOs;
 using ServerSide.Models.DTOs;
+using ServerSide.Models.EFModels;
 using ServerSide.Models.Infra;
 using ServerSide.Models.ViewModels;
 
@@ -17,57 +17,93 @@ namespace ServerSide.Models.Services
         {
             return _dao.GetAll();
         }
-        //public void Create(UserDto model)
-        //{
-        //    _dao.Create(model);
-        //}
+        public void Create(CartItemDto model)
+        {
+            // 檢查單一商品數量是否超過 6
+            if (model.Qty > 6)
+            {
+                throw new Exception("單一商品數量不能超過 6");
+            }
 
-        //public UserDto Get(int id)
-        //{
-        //    return _dao.Get(id);
+            // 檢查購物車總數量是否超過 6
+            CheckCartTotalQuantity(model.CartId, model.Qty);
 
-        //}
-        //public UserDto ConvertToDto(UserCreateVm model)
-        //{
-        //    var dto = new UserDto
-        //    {
-        //        Account = model.Account,
-        //        Email = model.Email,
-        //        Password = model.Password,
-        //        //PasswordHash = ,
-        //        Name = model.Name,
-        //        IsAdmin = model.IsAdmin,
-        //    };
-        //    dto.PasswordHash = HashUtility.ToSHA256(model.Password, HashUtility.GetSalt());
 
-        //    return dto;
-        //}
+            _dao.Create(model);
+        }
+        private void CheckCartTotalQuantity(int cartId, int quantityToAdd, int? ticketIdToExclude = null)
+        {
+            int currentTotal = _dao.GetTotalQuantityInCart(cartId, ticketIdToExclude);
 
-        //public void Edit(UserDto dto)
-        //{
-        //    _dao.Edit(dto);
-        //}
+            if (currentTotal + quantityToAdd > 6)
+            {
+                throw new Exception($"購物車內商品總數量不能超過 6。 目前數量: {currentTotal} ，您想新增數量: {quantityToAdd}");
+            }
+        }
+        public int GetTotalQuantityInCart(int cartId)
+        {
+            return _dao.GetTotalQuantityInCart(cartId); 
+        }
 
-        //public void Delete(string account)
-        //{
-        //    _dao.Delete(account);
-        //}
+        // 新增方法簽名
+        public int GetTotalQuantityInCart(int cartId, int? ticketIdToExclude = null)
+        {
+            return _dao.GetTotalQuantityInCart(cartId, ticketIdToExclude);
+        }
 
-        //public void ValidateLogin(string account, string password)
-        //{
-        //    var user = _dao.GetByAccount(account);
-        //    //若帳號找不到就拋出例外
-        //    if (user == null) throw new Exception("找不到該帳號");
+        public CartItemDto Get(int id)
+        {
+            return _dao.Get(id);
 
-        //    //若密碼錯誤就拋出例外
-        //    if (!HashUtility.VerifySHA256(password, user.PasswordHash)) throw new Exception("密碼錯誤");
+        }
+        public CartItemDto ConvertToDtoForCreate(CartItemCreateVm model)
+        {
+            var dto = new CartItemDto
+            {
+                CartId = model.CartId,
+                TicketId = model.TicketId,
+                TicketName = _dao.GetTicketNameForCreate(model),
+                Qty = model.Qty,
+                SubTotal = _dao.GetSubTotalForCreate(model)
+            };
+            return dto;
+        }
+        public CartItemDto ConvertToDtoForEdit(CartItemEditVm model)
+        {
+            var dto = new CartItemDto
+            {
+                CartId = model.CartId,
+                TicketId = model.TicketId,
+                TicketName = _dao.GetTicketNameForEdit(model),
+                Qty = model.Qty,
+                SubTotal = _dao.GetSubTotalForEdit(model)
+            };
+            return dto;
+        }
 
-        //}
+        public Ticket GetTicketById(int ticketId)
+        {
+            return _dao.GetTicketById(ticketId);
+        }
 
-        //public (string userName, string role) ProcessLogin(string account)
-        //{
-        //    var user = _dao.GetByAccount(account);
-        //    return (user.Account, user.IsAdmin ? "Admin" : "User");
-        //}
+        public void Edit(CartItemDto dto)
+        {
+            // 檢查單一商品數量是否超過 6
+            if (dto.Qty > 6)
+            {
+                throw new Exception("單一商品數量不能超過 6");
+            }
+
+            // 檢查購物車總數量是否超過 6，並且排除自身數量
+            CheckCartTotalQuantity(dto.CartId, dto.Qty, dto.TicketId);
+
+            _dao.Edit(dto);
+        }
+
+        public void Delete(int cartId , int ticketId)
+        {
+            _dao.Delete(cartId , ticketId);
+        }
+
     }
 }

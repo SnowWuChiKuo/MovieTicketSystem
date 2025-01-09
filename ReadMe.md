@@ -168,6 +168,13 @@
 	- 在 CartsController 寫入 CRUD ，並顯示其 View
 	- View 的 Index頁(範本List)、Create頁(範本Create)、Edit頁(範本Edit)
 	- 刪除部分在 Edit 頁， List 頁僅可編輯
+	
+	- 加入 CartItemsController， 未加入依賴介面
+	- 加入 CartItemVm、CartItemDto、CartItemDao、CartItemService
+	- 加入Index view page 
+	- 加入 Create view page
+	- 加入 Edit view page (目前有無法判斷整個購物車項目總數不能超過6的bug)
+	
 
 	### 訂票系統
 	- 加入 OrdersController ， 未加入依賴介面
