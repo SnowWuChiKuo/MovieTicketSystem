@@ -15,10 +15,10 @@
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <input type="hidden" asp-for="Id" />
 
-                        <!-- 修改這裡：使用下拉選單 -->
-                        <div class="form-group mb-3">
-                            <label asp-for="MovieId" class="control-label"></label>
-                            <select asp-for="MovieId" class="form-control"
+                        <!-- 電影下拉選單 -->
+                        <div class="mb-3">
+                            <label asp-for="MovieId" class="form-label"></label>
+                            <select asp-for="MovieId" class="form-control" id="theaterSelect"
                                     asp-items="Model.MovieOptions"></select>
                             <span asp-validation-for="MovieId" class="text-danger"></span>
                         </div>
@@ -26,32 +26,36 @@
                         <!-- 將 MovieTitle 改為隱藏欄位 -->
                         <input type="hidden" asp-for="MovieTitle" />
 
-                        <div class="form-group mb-3">
-                            <label asp-for="TheaterId" class="control-label"></label>
-                            <input asp-for="TheaterId" class="form-control" />
+
+                        @* <input type="hidden" asp-for="TheaterId" /> *@
+                        <!-- 影廳下拉選單 -->
+                        <div class="mb-3">
+                            <label asp-for="TheaterId" class="form-label"></label>
+                            <select asp-for="TheaterId" class="form-control"
+                                    asp-items="Model.TheaterOptions"></select>
                             <span asp-validation-for="TheaterId" class="text-danger"></span>
                         </div>
 
-                        <div class="form-group mb-3">
-                            <label asp-for="ScreeningDate" class="control-label"></label>
-                            <input asp-for="ScreeningDate" class="form-control" type="date" />
+                        <div class="mb-3">
+                            <label asp-for="ScreeningDate" class="form-label"></label>
+                            <input asp-for="ScreeningDate" class="form-control"  type="date" />
                             <span asp-validation-for="ScreeningDate" class="text-danger"></span>
                         </div>
 
-                        <div class="form-group mb-3">
-                            <label asp-for="StartTime" class="control-label"></label>
-                            <input asp-for="StartTime" class="form-control" type="time" />
+                        <div class="mb-3">
+                            <label asp-for="StartTime" class="form-label"></label>
+                            <input asp-for="StartTime" class="form-control" id="startTime" type="time" />
                             <span asp-validation-for="StartTime" class="text-danger"></span>
                         </div>
 
-                        <div class="form-group mb-3">
-                            <label asp-for="EndTime" class="control-label"></label>
-                            <input asp-for="EndTime" class="form-control" type="time" />
+                        <div class="mb-3">
+                            <label asp-for="EndTime" class="form-label"></label>
+                            <input asp-for="EndTime" class="form-control" id="endTime" type="time" readonly/>
                             <span asp-validation-for="EndTime" class="text-danger"></span>
                         </div>
-
+                        <input type="hidden" id="runTime" value="@Model.RunTime" />
                         <div class="mb-3">
-                            <a asp-action="Index" class="btn btn-secondary me-4">回到影廳清單</a>
+                            <a asp-action="Index" class="btn btn-secondary me-4">回到場次清單</a>
                             <input type="submit" value="保存變更" class="btn btn-primary me-4" />
                             <input type="button" value="刪除" class="btn btn-danger" onclick="confirmDelete()" />
                         </div>
@@ -72,11 +76,28 @@
         $(document).ready(function() {
             $('#MovieId').change(function() {
                 var selectedOption = $(this).find('option:selected');
-                var movieTitle = selectedOption.text().split(' - ')[1]; // 假設格式為 "Id - Title"
+                var movieTitle = selectedOption.text().split(' - ')[1];
                 $('#MovieTitle').val(movieTitle);
             });
         });
 
+        $('#theaterSelect').change(function () {
+            var theaterId = $(this).val();
+            console.log('Selected Theater ID:', theaterId);
+        });
+
+        // 初始化選擇的值
+        console.log('Initial Theater ID:', $('#theaterSelect').val());
+
+        // 實時改endTime
+        $(document).ready(function () {
+            $('#startTime').on('change', function () {
+                var startTime = new Date('2025-01-01T' + $(this).val() + 'Z');
+                var runTime = parseInt($('#runTime').val()) || 0;
+                var endTime = new Date(startTime.getTime() + runTime * 60000);
+                $('#endTime').val(endTime.toISOString().substring(11, 16));
+            });
+        });
         function confirmDelete() {
             Swal.fire({
                 title: "確定要刪除嗎？",
@@ -96,7 +117,6 @@
 
         function deleteItem() {
             const id = document.querySelector('input[name="Id"]').value;
-            // 注意：這裡的路徑應該改為 Screenings 而不是 Reviews
             fetch(`/Screenings/Delete/${id}`, {
                 method: 'POST',
                 headers: {

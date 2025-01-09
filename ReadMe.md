@@ -78,35 +78,66 @@
 	- 修改 /Views/Home/Index.cshtml, 加入後台模板的模板
    ### 電影管理
 	#### 1 . 電影清單系統
-	- 加入 /Controllers/MoviesController，依賴介面。
+	- 加入 ```/Controllers/MoviesController```，依賴介面。
 		- 加入ConvertToDto, ConvertToVm方法。
-	- 加入MovieVm跟MovieDto /Models/ViewModels/MovieVm , /Models/Dtos/MovieDto。
+	- 加入MovieVm跟MovieDto ```/Models/ViewModels/MovieVm``` + ```/Models/Dtos/MovieDto```。
 	- 建立Service,Dao介面並實作，並在Program.cs中註冊。
 		- 加入GetGenresName , GetRatingsName方法，透過ViewBag傳遞Name到Index , Edit。
 	- 實作CRUD Action，並建立對應View。
 		- IndexPage可以點擊TableRow導向到EditPage。
 	#### 2 . 電影種類系統
-	- 加入 /Controllers/GenresController，依賴介面。
+	- 加入 ```/Controllers/GenresController```，依賴介面。
 		- 實作IndexPage(範本List)、CreatePage(範本Create)、EditPage(範本Edit)。
 	- 加入 GenreVm,GenreDto / IGenreService,IGenreDao並實作、註冊。
 	- 實作CRUD Action，建立對應View。
 	#### 3. 電影評論系統
-	- 加入 /Controllers/ReviewsController，依賴介面。
+	- 加入 ```/Controllers/ReviewsController```，依賴介面。
 		- 實作IndexPage(範本List)、EditPage(範本Edit)、CreatePage(範本Create)。
 	- 加入 ReviewVm,ReviewDto / IReviewService,IReviewDao並實作、註冊。
 	- 實作CRUD Action，建立對應View。
    ### 電影票券管理
-	- 加入 /Controllers/PricesController，依賴介面。
+	- 加入 ```/Controllers/PricesController```，依賴介面。
 		- 實作IndexPage(範本List)、DetailsPage(範本List)、EditPage(範本Edit)、CreatePage(範本Create)。
 	- 建立PriceVm、PriceDto、IPriceService、IPriceDao
 	- 實作CRUD Action，建立對應View。
    ### 影廳管理系統
-	- 加入 /Controllers/TheatersController，依賴介面。
+	- 加入 ```/Controllers/TheatersController```，依賴介面。
 	- 加入 TheaterVm,TheaterDto / ITheaterService,ITheaterDao並實作、註冊。
 	- 實作Search、Edit Action，建立對應View。
    ### 場次系統
-	- 加入 /Controller/ScreeningController，依賴介面。
+	- 加入 ```/Controller/ScreeningController```，依賴介面。
 	- 加入 ScreeningVm,ScreeningDto / IScreeningService,IScreeningDao並實作、註冊。
+	- 實作CRUD Action，建立對應View。
+	---
+   ## 增加自訂驗證
+	- 建立 Attributes 資料夾
+	```/Models/Attributes/ValidScreeningDateAttribute```
+	- ViewModel加入自訂驗證
+		```
+		public class ScreeningEditVm
+		{
+			[ValidScreeningDate]  // 套用自定義驗證
+			public DateTime ScreeningDate { get; set; }
+		} 
+		```
+	- 確定前端ViewPage引用驗證
+		```
+		@section Scripts {
+			@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+		}
+		```
+	-**目的**
+	```
+	- 用於驗證場次日期是否符合電影上映日期規則
+	- 確保場次日期不會早於電影的上映日期
+	```
+	-**實作**
+	```
+	- 繼承 ValidationAttribute
+	- Override 改寫IsValid 方法
+	- 注入服務（IScreeningService）
+	```
+	---
    ### 會員系統
 	- 加入 Models/Infra/HashUtility.cs (用來做密碼雜湊的公用函式)
 	- 註冊hashutility的salt值，並在DI中註冊 => 
