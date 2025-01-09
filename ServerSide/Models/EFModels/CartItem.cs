@@ -15,6 +15,12 @@ public partial class CartItem
 
     public int Qty { get; set; }
 
+    public int SubTotal { get; set; }
+
+    public DateTime CreatedAt { get; set; }
+
+    public DateTime? UpdatedAt { get; set; }
+
     public virtual Cart Cart { get; set; }
 
     public virtual Ticket Ticket { get; set; }

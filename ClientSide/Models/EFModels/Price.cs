@@ -25,6 +25,6 @@ namespace ClientSide.Models.EFModels
         [Column("Price")]
         public int Price1 { get; set; }
 
-        public virtual Movie Movie { get; set; }
+        public virtual Movy Movy { get; set; }
     }
 }

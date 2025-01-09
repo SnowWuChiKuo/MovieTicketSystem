@@ -8,7 +8,7 @@ namespace ClientSide.Models.EFModels
     public partial class AppDbContext : DbContext
     {
         public AppDbContext()
-            : base("name=AppDbContext7")
+            : base("name=AppDbContext8")
         {
         }
 
@@ -17,7 +17,7 @@ namespace ClientSide.Models.EFModels
         public virtual DbSet<Coupon> Coupons { get; set; }
         public virtual DbSet<Genre> Genres { get; set; }
         public virtual DbSet<Member> Members { get; set; }
-        public virtual DbSet<Movie> Movies { get; set; }
+        public virtual DbSet<Movy> Movies { get; set; }
         public virtual DbSet<OrderItem> OrderItems { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<Price> Prices { get; set; }
@@ -69,21 +69,21 @@ namespace ClientSide.Models.EFModels
                 .WithRequired(e => e.Member)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<Movie>()
+            modelBuilder.Entity<Movy>()
                 .HasMany(e => e.Prices)
-                .WithRequired(e => e.Movie)
+                .WithRequired(e => e.Movy)
                 .HasForeignKey(e => e.MovieId)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<Movie>()
+            modelBuilder.Entity<Movy>()
                 .HasMany(e => e.Reviews)
-                .WithRequired(e => e.Movie)
+                .WithRequired(e => e.Movy)
                 .HasForeignKey(e => e.MovieId)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<Movie>()
+            modelBuilder.Entity<Movy>()
                 .HasMany(e => e.Screenings)
-                .WithRequired(e => e.Movie)
+                .WithRequired(e => e.Movy)
                 .HasForeignKey(e => e.MovieId)
                 .WillCascadeOnDelete(false);
 

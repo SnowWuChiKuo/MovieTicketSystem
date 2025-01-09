@@ -11,6 +11,10 @@ public partial class Cart
 
     public int MemberId { get; set; }
 
+    public int TotalPrice { get; set; }
+
+    public DateTime CreatedAt { get; set; }
+
     public virtual ICollection<CartItem> CartItems { get; set; } = new List<CartItem>();
 
     public virtual Member Member { get; set; }

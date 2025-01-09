@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using ServerSide.Models.ViewModels;
 
 namespace ServerSide.Models.EFModels;
 
@@ -13,11 +12,6 @@ public partial class AppDbContext : DbContext
         : base(options)
     {
     }
-
-
-    //public AppDbContext()
-    //{
-    //}
 
     public virtual DbSet<Cart> Carts { get; set; }
 
@@ -59,6 +53,10 @@ public partial class AppDbContext : DbContext
     {
         modelBuilder.Entity<Cart>(entity =>
         {
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+
             entity.HasOne(d => d.Member).WithMany(p => p.Carts)
                 .HasForeignKey(d => d.MemberId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -68,6 +66,11 @@ public partial class AppDbContext : DbContext
         modelBuilder.Entity<CartItem>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK_TicketItems");
+
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
 
             entity.HasOne(d => d.Cart).WithMany(p => p.CartItems)
                 .HasForeignKey(d => d.CartId)
@@ -106,8 +109,6 @@ public partial class AppDbContext : DbContext
         modelBuilder.Entity<Member>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK_Users");
-
-            entity.HasIndex(e => e.Account, "IX_Members").IsUnique();
 
             entity.Property(e => e.Account)
                 .IsRequired()
@@ -342,8 +343,6 @@ public partial class AppDbContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PK_Users_1");
 
-            entity.HasIndex(e => e.Account, "IX_Users").IsUnique();
-
             entity.Property(e => e.Account)
                 .IsRequired()
                 .HasMaxLength(30)
@@ -365,27 +364,4 @@ public partial class AppDbContext : DbContext
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
-
-public DbSet<ServerSide.Models.ViewModels.OrderVm> OrderVm { get; set; } = default!;
-public DbSet<ServerSide.Models.ViewModels.MemberCreateVm> MemberCreateVm { get; set; } = default!;
-
-public DbSet<ServerSide.Models.ViewModels.UserIndexVm> UserIndexVm { get; set; } = default!;
-
-public DbSet<ServerSide.Models.ViewModels.UserCreateVm> UserCreateVm { get; set; } = default!;
-
-public DbSet<ServerSide.Models.ViewModels.ReviewVm> ReviewVm { get; set; } = default!;
-
-public DbSet<ServerSide.Models.ViewModels.CouponVm> CouponVm { get; set; } = default!;
-
-public DbSet<ServerSide.Models.ViewModels.PriceVm> PriceVm { get; set; } = default!;
-
-public DbSet<ServerSide.Models.ViewModels.OrderItemVm> OrderItemVm { get; set; } = default!;
-
-public DbSet<ServerSide.Models.ViewModels.TheaterVm> TheaterVm { get; set; } = default!;
-
-public DbSet<ServerSide.Models.ViewModels.CartVm> CartVm { get; set; } = default!;
-
-public DbSet<ServerSide.Models.ViewModels.ScreeningVm> ScreeningVm { get; set; } = default!;
-
-public DbSet<ServerSide.Models.ViewModels.ScreeningEditVm> ScreeningEditVm { get; set; } = default!;
 }
