@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
+
 namespace ServerSide.Models.ViewModels
 {
     public class CartItemVm
@@ -8,31 +9,31 @@ namespace ServerSide.Models.ViewModels
         public int Id { get; set; }
 
         [Display(Name = "購物車Id")]
-        [Required]
+        [Required(ErrorMessage = "{0}必填")]
         public int CartId { get; set; }
 
         [Display(Name = "票種Id")]
-        [Required]
+        [Required(ErrorMessage = "{0}必填")]
         public int TicketId { get; set; }
 
         [Display(Name = "票種名稱")]
-        [Required]
+        [Required(ErrorMessage = "{0}必填")]
         public string TicketName { get; set; }
 
         [Display(Name = "該項票種數量")]
-        [Required]
+        [Required(ErrorMessage = "{0}必填")]
         public int Qty { get; set; }
 
         [Display(Name = "該項小計")]
-        [Required]
+        [Required(ErrorMessage = "{0}必填")]
         public int SubTotal { get; set; }
 
         [Display(Name = "創建時間")]
-        [Required]
+        [Required(ErrorMessage = "{0}必填")]
         public DateTime CreatedAt { get; set; }
 
         [Display(Name = "更新時間")]
-        [Required]
+        [Required(ErrorMessage = "{0}必填")]
         public DateTime? UpdatedAt { get; set; }
     }
 
@@ -41,20 +42,20 @@ namespace ServerSide.Models.ViewModels
         public int Id { get; set; }
 
         [Display(Name = "購物車Id")]
-        [Required]
+        [Required(ErrorMessage = "{0}必填")]
         public int CartId { get; set; }
 
         [Display(Name = "票種Id")]
-        [Required]
+        [Required(ErrorMessage = "{0}必填")]
         public int TicketId { get; set; }
 
 
         [Display(Name = "該項票種數量")]
-        [Required]
+        [Required(ErrorMessage = "{0}必填")]
         public int Qty { get; set; }
 
         [Display(Name = "該項小計")]
-        [Required]
+        [Required(ErrorMessage = "{0}必填")]
         public int SubTotal { get; set; }
     }
 
@@ -63,34 +64,30 @@ namespace ServerSide.Models.ViewModels
         public int Id { get; set; }
 
         [Display(Name = "購物車Id")]
-        [Required]
+        [Required(ErrorMessage = "{0}必填")]
         public int CartId { get; set; }
+
         [Display(Name = "票種Id")]
-        [Required]
+        [Required(ErrorMessage = "{0}必填")]
         public int TicketId { get; set; }
 
         [Display(Name = "票種名稱")]
-        [Required]
         public string TicketName { get; set; }
 
         [Display(Name = "此項目單張票價")]
-        [Required]
         public int TicketPrice { get; set; }
 
         [Display(Name = "該項票種數量")]
-        [Required]
+        [Required(ErrorMessage = "{0}必填")]
         public int Qty { get; set; }
 
         [Display(Name = "該項小計")]
-        [Required]
         public int SubTotal { get; set; }
 
         [Display(Name = "創建時間")]
-        [Required]
         public DateTime CreatedAt { get; set; }
 
         [Display(Name = "更新時間")]
-        [Required]
         public DateTime? UpdatedAt { get; set; }
     }
 

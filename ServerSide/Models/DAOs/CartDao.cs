@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using ServerSide.Models.DTOs;
 using ServerSide.Models.EFModels;
 using ServerSide.Models.ViewModels;
+using System.Linq;
 
 namespace ServerSide.Models.DAOs
 {
@@ -17,14 +18,17 @@ namespace ServerSide.Models.DAOs
 
         public List<CartVm> GetAll()
         {
-            var data = _db.Carts.Include(d => d.Member)
-                                .Select(d => new CartVm
-                                {
-                                    Id = d.Id,
-                                    MemberId = d.MemberId,
-                                    MemberAccount = d.Member.Account,
-                                    MemberName = d.Member.Name
-                                }).ToList();
+            var data = _db.Carts.Include(c => c.Member).Include(c => c.CartItems)
+           .Select(c => new CartVm
+           {
+               Id = c.Id,
+               MemberId = c.MemberId,
+               MemberAccount = c.Member.Account,
+               MemberName = c.Member.Name,
+               TotalPrice = c.CartItems.Sum(item => item.SubTotal), // 計算總和
+               CreatedAt = c.CreatedAt
+           })
+           .ToList();
             return data;
         }
 

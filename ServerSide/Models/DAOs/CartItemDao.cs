@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Humanizer;
+using Microsoft.EntityFrameworkCore;
 using ServerSide.Models.DTOs;
 using ServerSide.Models.EFModels;
 using ServerSide.Models.ViewModels;
@@ -15,8 +16,8 @@ namespace ServerSide.Models.DAOs
         public List<CartItemVm> GetAll()
         {
             var data = _db.CartItems.AsNoTracking()
-                .Include(u => u.Cart)
-                .Include(u=> u.Ticket)
+                .Include(ci => ci.Cart)
+                .Include(ci=> ci.Ticket)
                 .Select(ci => new CartItemVm
                  {
                     Id = ci.Id,
@@ -33,16 +34,41 @@ namespace ServerSide.Models.DAOs
 
         public void Create(CartItemDto model)
         {
-            CartItem cartItem = new CartItem
+            //查看是否同個購物車內已經存在相同項目
+            var cartItemInDb = _db.CartItems.FirstOrDefault(ci => ci.CartId == model.CartId && ci.TicketId == model.TicketId);
+
+            //尋找資料庫內有無該 Cart 和 Ticket
+            var cartInDb = _db.Carts.FirstOrDefault(c => c.Id == model.CartId);
+            var ticketInDb = _db.Tickets.FirstOrDefault(t => t.Id == model.TicketId);
+
+            //如果沒有該 Cart 或 Ticket
+            if (cartInDb != null && ticketInDb != null)
             {
-                CartId = model.CartId,
-                TicketId = model.TicketId,
-                Qty = model.Qty,
-                SubTotal = model.SubTotal,
-                CreatedAt = DateTime.Now
-            };
-            _db.CartItems.Add(cartItem);
-            _db.SaveChanges();
+                //不存在相同項目，Insert 新的 data
+                if (cartItemInDb == null)
+                {
+                    CartItem cartItem = new CartItem
+                    {
+                        CartId = model.CartId,
+                        TicketId = model.TicketId,
+                        Qty = model.Qty,
+                        SubTotal = model.SubTotal,
+                        CreatedAt = DateTime.Now
+                    };
+                    _db.CartItems.Add(cartItem);
+                    _db.SaveChanges();
+                }
+                else //存在相同項目，加上該相同項目的數量
+                {
+                    cartItemInDb.Qty += model.Qty;
+                    _db.SaveChanges();
+                }
+            }
+            else
+            {
+                throw new Exception("您要新增的項目不存在");
+            }
+
         }
 
         public string GetTicketNameForCreate(CartItemCreateVm model)
@@ -98,7 +124,7 @@ namespace ServerSide.Models.DAOs
 
         public int GetSubTotalForCreate(CartItemCreateVm model)
         {
-            var data = _db.Tickets.AsNoTracking().FirstOrDefault(t=>t.Id == model.TicketId);
+            var data = _db.Tickets.FirstOrDefault(t=>t.Id == model.TicketId);
             if(data != null)
             {
                 return data.Price * model.Qty;
@@ -110,7 +136,7 @@ namespace ServerSide.Models.DAOs
         }
         public int GetSubTotalForEdit(CartItemEditVm model)
         {
-            var data = _db.Tickets.AsNoTracking().FirstOrDefault(t => t.Id == model.TicketId);
+            var data = _db.Tickets.FirstOrDefault(t => t.Id == model.TicketId);
             if (data != null)
             {
                 return data.Price * model.Qty;
@@ -147,19 +173,68 @@ namespace ServerSide.Models.DAOs
 
         public void Edit(CartItemDto dto)
         {
-            var cartItem = _db.CartItems.FirstOrDefault(ci => ci.CartId == dto.CartId && ci.TicketId == dto.TicketId);
+            //該 cartitem
+             var cartItem = _db.CartItems.FirstOrDefault(ci => ci.Id == dto.Id);
+            
+
+            //尋找資料庫內有無該 Cart 和 Ticket
+            var cartInDb = _db.Carts.FirstOrDefault(c => c.Id == dto.CartId);
+            var ticketInDb = _db.Tickets.FirstOrDefault(t => t.Id == dto.TicketId);
+
+            //查看該購物車是否已存在相同的 CartItem 
+            var cartItemInDb = _db.CartItems.FirstOrDefault(ci => ci.CartId == dto.CartId && ci.TicketId == dto.TicketId);
+
+            //確認資料庫中真有該 Cart , Ticket
+            if (cartInDb != null && ticketInDb != null )
+            {
+                //不存在相同項目
+                if(cartItemInDb == null) {
+
+                    cartItem.CartId = dto.CartId;
+                    cartItem.TicketId = dto.TicketId;
+                    cartItem.Qty = dto.Qty;
+                    cartItem.SubTotal = dto.SubTotal;
+
+                    _db.SaveChanges();
+                }
+                //已存在相同項目
+                else
+                {
+                    //該相同項目與原本項目不變(只單純改數量(Qty))
+                    if (cartItem.Id == cartItemInDb.Id)
+                    {
+                        // 將編輯後的數量寫入到已存在的 cartitem 內
+                        cartItem.Qty = dto.Qty;
+                        cartItemInDb.Qty = dto.Qty;
+                        _db.SaveChanges();
+                    }
+
+                    //有改 CartId 或 TicketId
+                    else
+                    { //將編輯後的數量寫入到已存在的 cartitem 內
+                        cartItemInDb.Qty += dto.Qty;
+                       //刪掉原先的項目的資料
+                        DeleteById(cartItem.Id);
+                        _db.SaveChanges();
+                    }
+                }
+            }
+            else
+            {
+                throw new Exception("找不到該購物車或票種");
+            }
+        }
+        public void DeleteById(int id )
+        {
+            var cartItem = _db.CartItems.FirstOrDefault(ci => ci.Id == id);
             if (cartItem != null)
             {
-                cartItem.CartId = dto.CartId;
-                cartItem.TicketId = dto.TicketId;
-                cartItem.Qty = dto.Qty;
-                cartItem.SubTotal = dto.SubTotal;
-
+                _db.Remove(cartItem);
                 _db.SaveChanges();
             }
             else
             {
-                throw new Exception("找不到該購物車項目");
+                throw new Exception("找不到該購物車物品項目");
             }
         }
 
