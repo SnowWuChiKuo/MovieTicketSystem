@@ -25,7 +25,7 @@ namespace ServerSide.Models.DAOs
                MemberId = c.MemberId,
                MemberAccount = c.Member.Account,
                MemberName = c.Member.Name,
-               TotalPrice = c.CartItems.Sum(item => item.SubTotal), // 計算總和
+               TotalPrice = c.CartItems.Sum(ci => ci.SubTotal), // 計算總和
                CreatedAt = c.CreatedAt
            })
            .ToList();

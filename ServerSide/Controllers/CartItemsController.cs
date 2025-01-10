@@ -63,7 +63,7 @@ namespace ServerSide.Controllers
             {
                 int currentTotal = _service.GetTotalQuantityInCart(cartId, ticketIdToExclude);
                 bool exceedsLimit = currentTotal + quantityToAdd > 6;
-
+                //超過 6 返回 true
                 return Json(new { exceedsLimit = exceedsLimit, currentTotal = currentTotal });
             }
             catch (Exception ex)

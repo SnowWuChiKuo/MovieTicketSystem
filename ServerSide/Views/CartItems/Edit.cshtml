@@ -14,12 +14,12 @@
                     <input type="hidden" asp-for="Id" />
                     <div class="form-group">
                         <label asp-for="CartId" class="control-label"></label>
-                        <input asp-for="CartId" class="form-control" />
+                        <input asp-for="CartId" class="form-control"  />
                         <span asp-validation-for="CartId" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="TicketId" class="control-label"></label>
-                        <input asp-for="TicketId" class="form-control" id="TicketId" />
+                        <input asp-for="TicketId" class="form-control" id="TicketId"  />
                         <span asp-validation-for="TicketId" class="text-danger"></span>
                     </div>
                     <div class="form-group">
@@ -48,10 +48,6 @@
                     </div>
                 </form>
                 <form asp-action="DeleteCartItem" id="deleteCartItemForm">
-                    @* **問題的根源**: *@
-                    @* 問題的根源在於，你的刪除表單並沒有正確地將 `CartId` 和 `TicketId` 傳遞給 `DeleteCartItem` Action 方法。因為刪除表單中沒有任何隱藏欄位或是其他輸入元素來儲存這兩個值。 *@
-                    @* **解決方法**: *@
-                    @* 你需要在刪除表單中加入隱藏欄位，以傳遞 `CartId` 和 `TicketId` 的值。這些值應該從頁面上讀取，因為他們在編輯表單的資料中已經存在。 *@
                     <input type="hidden" asp-for="CartId" />
                     <input type="hidden" asp-for="TicketId" />
                     <div class="mb-3">
@@ -65,7 +61,6 @@
     </div>
 </div>
 
-@* 目前有無法判斷整個購物車項目總數不能超過6的bug *@
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
@@ -150,75 +145,76 @@
                  var subTotal = price * qty;
                $('#SubTotal').val(subTotal);
            }
+
+               $('#Qty').change(function () {
+        var currentQty = parseInt($('#Qty').val()) || 0;
+        var quantityToAdd = currentQty - originalQty;
+        console.log("$('#Qty').val():", $('#Qty').val());
+        console.log("currentQty:", currentQty);
+        console.log("originalQty:", originalQty);
+
+        var cartId = parseInt($('#CartId').val()) || 0;
+        var ticketId = parseInt($('#TicketId').val()) || 0;
+
+        // 單一商品數量驗證
+        if (currentQty > 6) {
+             Swal.fire({
+                title: '錯誤',
+                text: '單一商品數量不能超過 6',
+                icon: 'error'
+                }).then(() => {
+                $('#Qty').val(6);
+                 calculateSubTotal();
+               });
+             return;
+            }
+
+          if (cartId !== 0) {
+                $.ajax({
+                    url: '/CartItems/CheckCartQuantity',
+                    type: 'GET',
+                    data: { cartId: cartId, quantityToAdd: quantityToAdd, ticketIdToExclude: ticketId },
+                     success: function (response) {
+                        console.log("AJAX response:", response);
+                        if (response && response.currentTotal) {
+                            console.log("currentTotal:", response.currentTotal);
+                            console.log("quantityToAdd:", quantityToAdd);
+                            console.log("response.currentTotal + quantityToAdd:", response.currentTotal + quantityToAdd);
+
+                            if (response.currentTotal + quantityToAdd >= 6) {
+                                console.log("Swal.fire is about to be called");
+                                Swal.fire({
+                                    title: '錯誤',
+                                    text: `購物車內商品總數量不能超過 6。目前數量: ${response.currentTotal} ，您想新增數量: ${quantityToAdd}`,
+                                    icon: 'error'
+                                 }).then(() => {
+                                    // do nothing, 保留當前數值
+                                   $('#Qty').val(originalQty);
+                                });
+                            } else {
+                                // 在沒有顯示 sweetalert 的情況下，更新 originalQty
+                                originalQty = currentQty;
+                                 calculateSubTotal();
+                               }
+                        }
+                      },
+                     error: function (error) {
+                         console.error('Error checking cart quantity:', error);
+                         alert('無法檢查購物車數量，請檢查網路連線或伺服器端程式碼。')
+                      }
+                });
+            } else {
+                originalQty = currentQty;
+                calculateSubTotal();
+            }
+        });
+            
             // 更換 總價數量
-            $('#price, #Qty').change(function () {
-                 var currentQty = parseInt($('#Qty').val()) || 0;
-                // 計算要新增或減少的數量
-                var quantityToAdd = currentQty - originalQty;
 
-                  // 單一商品數量驗證 (Synchronous)
-               if (currentQty > 6) {
-                     Swal.fire({
-                        title: '錯誤',
-                         text: '單一商品數量不能超過 6',
-                         icon: 'error'
-                      });
-                     $('#Qty').val(6);
-                   // 更新 originalQty 的值
-                     originalQty = 6;
-                    calculateSubTotal();// 重新計算小計
-                    return; // 在單一商品數量驗證失敗後直接結束，避免其他邏輯被執行。
-               }
-
-               // 購物車總數量驗證(Asynchronous)
-               var cartId = parseInt($('#CartId').val()) || 0;
-               var ticketId = parseInt($('#TicketId').val()) || 0;
-
-                 if(cartId !== 0)
-                 {
-
-                        $.ajax({
-                           url: '/CartItems/CheckCartQuantity',
-                           type: 'GET',
-                           data: { cartId: cartId, quantityToAdd: quantityToAdd, ticketIdToExclude: ticketId },
-                           success: function (response) {
-
-                            if(response && response.currentTotal)
-                             {
-                                     //  購物車總數量驗證 (Javascript side check)
-                                     if (response.currentTotal + quantityToAdd > 6)
-                                      {
-                                           Swal.fire({
-                                              title: '錯誤',
-                                              text: `購物車內商品總數量不能超過 6。目前數量: ${response.currentTotal} ，您想新增數量: ${quantityToAdd}`,
-                                                icon: 'error'
-                                           });
-                                           // 更新 #Qty 的值到 ajax 發送前的值
-                                            $('#Qty').val(originalQty);
-
-                                     }
-                              }
-                            // 更新 originalQty 的值
-                            originalQty = parseInt($('#Qty').val())|| 0;
-                             calculateSubTotal();// 重新計算小計
-
-                        },
-                         error: function (error) {
-                            console.error('Error checking cart quantity:', error);
-                            alert('無法檢查購物車數量，請檢查網路連線或伺服器端程式碼。')
-                         }
-                      });
-
-                 }
-                 else
-                 {
-                     //  如果 cartId 為0 代表不需要非同步驗證
-                      // 更新 originalQty 的值
-                       originalQty = currentQty;
-                       calculateSubTotal();// 重新計算小計
-                }
-
-             });
+            $('#price').change(function ()
+              {
+                  calculateSubTotal();
+            })
          });
     </script>
 }
