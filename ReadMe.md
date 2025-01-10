@@ -67,6 +67,16 @@
 		- 按下取消會員後導到 Logout action
 	- 其他 
 		- 使用sweetalert : 帳號開通頁， 編輯資料頁， 重設密碼頁
+
+	### 訂單系統
+    - 實作訂單系統功能:
+		- 加入 CartController ，確認訂單 Checkout() Get Post 、得到購物車資料 GetCartInfo()。
+		- 加入 CartVm、CheckoutVm， CartVm 裡面包含 CartItem 類似，CheckoutVm 裡面是 Order 類似。
+		- 加入 CartService，加入確認購物車資料、創建訂單以及刪除購物車。
+		- 加入 CartEFDao、OrderEFRepository，將訂單建立以及刪除購物車。
+		- 加入 Cart 的 Index View 頁，選擇影廳、場次時間、票種、價格。
+
+
 - ## ServerSide
    ### 資料庫  
 	- 加入 /Models/EFModels
@@ -158,7 +168,7 @@
 	- 加入 MembersController Create action, view page
 	- 加入 sweetalert
    ### 員工系統
-	-	 
+	-
 
    ### 票種系統
     - 加入 TicketsController ， 未加入依賴介面
@@ -193,6 +203,7 @@
 	- 刪除部分在 Edit 頁， List 頁僅可編輯
 
 	### 購物車系統
+	- Cart:
 	- 加入 CartsController ， 未加入依賴介面
 	- 加入 CartVm、CartDto、CartDao
 	- 在 program.cs 中註冊
@@ -200,6 +211,7 @@
 	- View 的 Index頁(範本List)、Create頁(範本Create)、Edit頁(範本Edit)
 	- 刪除部分在 Edit 頁， List 頁僅可編輯
 	
+	- CartItem:
 	- 加入 CartItemsController， 未加入依賴介面
 	- 加入 CartItemVm、CartItemDto、CartItemDao、CartItemService
 	- 加入Index view page 

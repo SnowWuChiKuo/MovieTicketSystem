@@ -1,0 +1,114 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+
+
+<div id="app" class="container mt-5">
+    <div class="mb-4">
+        <h3>選擇電影</h3>
+        <div>
+            <button class="btn btn-dark btn-custom"
+                    v-for="movie in movies"
+                    :key="movie.id"
+                    v-bind:class="{ selected: selectedMovie === movie }"
+                    v-on:click="selectMovie(movie)">
+                {{ movie.name }}
+            </button>
+        </div>
+    </div>
+    <transition name="slide-up">
+        <div class="mb-4" v-if="selectedMovie">
+            <h3>選擇影廳</h3>
+            <div>
+                <button class="btn btn-primary btn-custom"
+                        v-for="theater in theaters"
+                        :key="theater.id"
+                        v-bind:class="{ selected: selectedTheater === theater }"
+                        v-on:click="selectTheater(theater)">
+                    {{ theater.name }}
+                </button>
+            </div>
+        </div>
+    </transition>
+    <transition name="slide-up">
+        <div class="mb-4" v-if="selectedTheater">
+            <h3>選擇日期</h3>
+            <div>
+                <button class="btn btn-secondary btn-custom"
+                        v-for="(date, index) in dates"
+                        :key="index"
+                        v-bind:class="{ selected: selectedDate === date }"
+                        v-on:click="selectDate(date)">
+                    {{ date }}
+                </button>
+            </div>
+        </div>
+    </transition>
+    <transition name="slide-up">
+        <div v-if="selectedTheater && selectedDate" class="mb-4">
+            <h3>{{ selectedTheater.name }} : 時間</h3>
+            <div>
+                <button class="btn btn-info btn-custom"
+                        v-for="time in times"
+                        :key="time"
+                        v-bind:class="{ selected: selectedTime === time }"
+                        v-on:click="selectTime(time)">
+                    {{ time }}
+                </button>
+            </div>
+        </div>
+    </transition>
+    <transition name="slide-up">
+        <div v-if="selectedTime" class="mb-4">
+            <h3>選擇銷售策略</h3>
+            <div>
+                <select class="form-control" v-model="selectedTicket">
+                    <option v-for="ticket in tickets"
+                            :key="ticket.id"
+                            :value="ticket">
+                        {{ ticket.name }}
+                    </option>
+                </select>
+            </div>
+            <h3 class="mt-4" v-if="selectedTicket">選擇票的類型</h3>
+            <div v-if="selectedTicket">
+                <select class="form-control" v-model="selectedTicketType">
+                    <option v-for="type in ticketTypes" :key="type.id" :value="type">
+                        {{ type.name }}
+                    </option>
+                </select>
+            </div>
+            <div v-if="selectedTicketType" class="mt-4">
+                <h4>單價: {{ selectedTicketType.price }} 元</h4>
+                <div class="form-group">
+                    <label>數量</label>
+                    <select class="form-control"
+                            v-model="selectedTicketType.quantity">
+                        <option v-for="n in 6" :key="n" :value="n">{{ n }}</option>
+                    </select>
+                </div>
+            </div>
+            <h3 class="mt-4"
+                v-if="selectedTicketType && selectedTicketType.quantity > 0">
+                總共價錢: {{ totalPrice }} 元
+            </h3>
+            <button class="btn btn-success"
+                    v-if="selectedTicketType && selectedTicketType.quantity > 0"
+                    v-on:click="selectSeats">
+                選擇座位
+            </button>
+        </div>
+    </transition>
+</div>
+
+
+@section styles
+{
+    <link href="~/Content/Ticket.css" rel="stylesheet">
+}
+
+@section scripts
+{
+    <script src="~/Scripts/Ticket.js"></script>
+}

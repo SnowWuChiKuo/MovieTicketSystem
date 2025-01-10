@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using ServerSide.Models.ViewModels;
 
 namespace ServerSide.Models.EFModels;
 
@@ -110,6 +109,8 @@ public partial class AppDbContext : DbContext
         modelBuilder.Entity<Member>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK_Users");
+
+            entity.HasIndex(e => e.Account, "IX_Members").IsUnique();
 
             entity.Property(e => e.Account)
                 .IsRequired()
@@ -255,6 +256,8 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
+            entity.Property(e => e.EndTime).HasPrecision(0);
+            entity.Property(e => e.StartTime).HasPrecision(0);
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
 
             entity.HasOne(d => d.Movie).WithMany(p => p.Screenings)
@@ -293,7 +296,6 @@ public partial class AppDbContext : DbContext
 
             entity.HasOne(d => d.Screening).WithMany(p => p.SeatStatuses)
                 .HasForeignKey(d => d.ScreeningId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_SeatStatus_Screenings");
 
             entity.HasOne(d => d.Seat).WithMany(p => p.SeatStatuses)
@@ -344,6 +346,8 @@ public partial class AppDbContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PK_Users_1");
 
+            entity.HasIndex(e => e.Account, "IX_Users").IsUnique();
+
             entity.Property(e => e.Account)
                 .IsRequired()
                 .HasMaxLength(30)
@@ -365,10 +369,4 @@ public partial class AppDbContext : DbContext
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
-
-public DbSet<ServerSide.Models.ViewModels.CartItemCreateVm> CartItemCreateVm { get; set; } = default!;
-
-public DbSet<ServerSide.Models.ViewModels.CartItemVm> CartItemVm { get; set; } = default!;
-
-public DbSet<ServerSide.Models.ViewModels.CartItemEditVm> CartItemEditVm { get; set; } = default!;
 }

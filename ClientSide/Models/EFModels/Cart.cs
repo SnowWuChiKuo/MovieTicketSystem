@@ -18,8 +18,6 @@ namespace ClientSide.Models.EFModels
 
         public int MemberId { get; set; }
 
-        public int TotalPrice { get; set; }
-
         public DateTime CreatedAt { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

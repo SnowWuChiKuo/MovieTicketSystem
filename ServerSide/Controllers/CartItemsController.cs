@@ -109,12 +109,15 @@ namespace ServerSide.Controllers
             CartItemDto cartItemDto = _service.Get(id);
             CartItemEditVm model = new CartItemEditVm
             {
+                Id = cartItemDto.Id,
                 CartId = cartItemDto.CartId,
                 TicketId = cartItemDto.TicketId,
                 Qty = cartItemDto.Qty,
                 TicketPrice = _service.GetTicketById(cartItemDto.TicketId).Price,
                 TicketName = cartItemDto.TicketName,
                 SubTotal = cartItemDto.SubTotal,
+                CreatedAt = cartItemDto.CreatedAt, // 設定創建時間
+                UpdatedAt = cartItemDto.UpdatedAt, // 設定更新時間
             };
             return View(model);
         }

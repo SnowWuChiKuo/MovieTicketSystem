@@ -8,7 +8,7 @@ namespace ClientSide.Models.EFModels
     public partial class AppDbContext : DbContext
     {
         public AppDbContext()
-            : base("name=AppDbContext8")
+            : base("name=AppDbContext10")
         {
         }
 
@@ -103,9 +103,12 @@ namespace ClientSide.Models.EFModels
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Screening>()
-                .HasMany(e => e.SeatStatus)
-                .WithRequired(e => e.Screening)
-                .WillCascadeOnDelete(false);
+                .Property(e => e.StartTime)
+                .HasPrecision(0);
+
+            modelBuilder.Entity<Screening>()
+                .Property(e => e.EndTime)
+                .HasPrecision(0);
 
             modelBuilder.Entity<Screening>()
                 .HasMany(e => e.Tickets)

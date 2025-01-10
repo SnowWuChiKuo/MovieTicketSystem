@@ -72,6 +72,7 @@ namespace ServerSide.Models.Services
         {
             var dto = new CartItemDto
             {
+                Id = model.Id,
                 CartId = model.CartId,
                 TicketId = model.TicketId,
                 TicketName = _dao.GetTicketNameForEdit(model),
