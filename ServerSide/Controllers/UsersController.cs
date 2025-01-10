@@ -151,7 +151,7 @@ namespace ServerSide.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteUser(UserCreateVm model)
         {
-            if (!ModelState.IsValid) return View(model);
+            //if (!ModelState.IsValid) return View(model);
 
             string account = model.Account;
 
@@ -162,7 +162,17 @@ namespace ServerSide.Controllers
             TempData["SweetAlertText"] = "該員工帳號已成功刪除。";
             TempData["SweetAlertIcon"] = "success";
 
-            return RedirectToAction("EditProfile");
+            // 如果刪的是本登入者的帳號就導回登入頁
+            if (HttpContext.User.Identity.Name == account)
+            {
+                return RedirectToAction("Login");
+
+            }
+            // 如果刪的是其他人的帳號就導回員工列表頁
+            else
+            {
+                return RedirectToAction("Index");
+            }
         }
 
     }

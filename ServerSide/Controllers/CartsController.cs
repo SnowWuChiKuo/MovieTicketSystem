@@ -61,36 +61,6 @@ namespace ServerSide.Controllers
         }
 
         [HttpGet]
-        public IActionResult Edit(int id)
-        {
-            ViewBag.MemberAccount = _service.GetMembersAccount();
-            var data = _service.Edit(id);
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Edit(CartVm model)
-        {
-            if (!ModelState.IsValid) return View(model);
-
-            CartDto dto = ConvertToDTO(model);
-
-            try
-            {
-                ViewBag.MemberAccount = _service.GetMembersAccount();
-                _service.Create(dto);
-                return RedirectToAction("Index");
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError("", ex.Message);
-                ViewBag.MemberAccount = _service.GetMembersAccount();
-                return View(model);
-            }
-        }
-
-        [HttpGet]
         public IActionResult Delete(int? id)
         {
             if (id == null) return BadRequest("找不到此Id");
@@ -107,5 +77,37 @@ namespace ServerSide.Controllers
                 return View();
             }
         }
+
+
+        //[HttpGet]
+        //public IActionResult Edit(int id)
+        //{
+        //    ViewBag.MemberAccount = _service.GetMembersAccount();
+        //    var data = _service.Edit(id);
+        //    return View();
+        //}
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public IActionResult Edit(CartVm model)
+        //{
+        //    if (!ModelState.IsValid) return View(model);
+
+        //    CartDto dto = ConvertToDTO(model);
+
+        //    try
+        //    {
+        //        ViewBag.MemberAccount = _service.GetMembersAccount();
+        //        _service.Create(dto);
+        //        return RedirectToAction("Index");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ModelState.AddModelError("", ex.Message);
+        //        ViewBag.MemberAccount = _service.GetMembersAccount();
+        //        return View(model);
+        //    }
+        //}
+
     }
 }

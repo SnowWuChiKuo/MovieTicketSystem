@@ -166,7 +166,7 @@
 	- 加入 MembersController Create action, view page
 	- 加入 sweetalert
    ### 員工系統
-	-	 
+	-
 
    ### 票種系統
     - 加入 TicketsController ， 未加入依賴介面
@@ -201,12 +201,21 @@
 	- 刪除部分在 Edit 頁， List 頁僅可編輯
 
 	### 購物車系統
+	- Cart:
 	- 加入 CartsController ， 未加入依賴介面
 	- 加入 CartVm、CartDto、CartDao
 	- 在 program.cs 中註冊
 	- 在 CartsController 寫入 CRUD ，並顯示其 View
 	- View 的 Index頁(範本List)、Create頁(範本Create)、Edit頁(範本Edit)
 	- 刪除部分在 Edit 頁， List 頁僅可編輯
+	
+	- CartItem:
+	- 加入 CartItemsController， 未加入依賴介面
+	- 加入 CartItemVm、CartItemDto、CartItemDao、CartItemService
+	- 加入Index view page 
+	- 加入 Create view page
+	- 加入 Edit view page (目前有無法判斷整個購物車項目總數不能超過6的bug)
+	
 
 	### 訂票系統
 	- 加入 OrdersController ， 未加入依賴介面

@@ -38,10 +38,12 @@ namespace ServerSide.Controllers
                 return NotFound();
             }
 
+            var salesType = ticket.SalesType;
+            var ticketType = ticket.TicketType;
 
             var result = new
             {
-                ticketType = ticket.TicketType,
+                ticketName = $"{salesType} - {ticketType}",
                 price = ticket.Price
             };
 

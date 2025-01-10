@@ -8,7 +8,7 @@ namespace ClientSide.Models.EFModels
     public partial class AppDbContext : DbContext
     {
         public AppDbContext()
-            : base("name=AppDbContext8")
+            : base("name=AppDbContext9")
         {
         }
 

@@ -1,0 +1,155 @@
+﻿@model ServerSide.Models.ViewModels.CartItemCreateVm
+
+@{
+    ViewData["Title"] = "新增購物車物品資料";
+}
+
+<div class="container-fluid">
+    <h1 class="fw-bolder mb-3 mx-4">新增購物車物品資料</h1>
+    <div class="card m-4">
+        <div class="card-body">
+            <div class="col-md-12">
+                <form asp-action="Create" id="createCartItemForm">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="CartId" class="control-label"></label>
+                        <input asp-for="CartId" class="form-control" />
+                        <span asp-validation-for="CartId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="TicketId" class="control-label"></label>
+                        <input asp-for="TicketId" class="form-control" id="TicketId" />
+                        <span asp-validation-for="TicketId" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">此項目單張票價 </label>
+                        <input class="form-control form-control-sm no-border" id="price" readonly />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Qty" class="control-label"></label>
+                        <input asp-for="Qty" class="form-control" id="Qty" />
+                        <span asp-validation-for="Qty" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="SubTotal" class="control-label"></label>
+                        <input asp-for="SubTotal" class="form-control" id="SubTotal" readonly/>
+                        <span asp-validation-for="SubTotal" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <a asp-action="Index" class="btn btn-secondary me-4">回到購物車物品清單</a>
+                        <input type="submit" value="確認新增" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        document.getElementById('createCartItemForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            Swal.fire({
+                title: '確認新增購物車物品資料？',
+                text: '您確定要新增此物品到購物車嗎？',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: '確認',
+                cancelButtonText: '取消'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.submit(); // Submit the form if confirmed
+                }
+            });
+        });
+
+        var price;
+        //計算並帶入小計到頁面
+        $(document).ready(function () {
+            $('#TicketId').change(function () {
+                var ticketId = $(this).val();
+                console.log("ticketId: ",ticketId); // 確認 ticketId 是否有值
+                $.ajax({
+                    url: '/CartItems/GetTicket',
+                    type: 'GET',
+                    data: { ticketId: ticketId },
+                    success: function (response) {
+                        if (response && response.data && response.data.price) {
+                            price = response.data.price;
+                            $('#price').val(price);
+                            // 在這裡呼叫 calculateSubTotal，確保在每次票種 ID 改變時，小計也會更新。
+                            calculateSubTotal();
+
+
+                        } else {
+                            console.error('Invalid data structure from server:', response);
+                            $('#price').val(''); // 清空 price 欄位
+                            alert('伺服器回應的資料格式錯誤，請檢查伺服器端程式碼。')
+                        }
+                    },
+                    error: function (error) {
+                        console.error('Error fetching ticket data:', error);
+                        $('#price').val(''); // 清空 price 欄位
+                        alert('無法載入票券資料，請檢查網路連線或伺服器端程式碼。')
+                    }
+                });
+            });
+
+            // 算出總價
+            function calculateSubTotal() {
+                var qty = parseInt($('#Qty').val()) || 0;
+                var subTotal = price * qty;
+                $('#SubTotal').val(subTotal);
+            }
+            // 更換 總價數量
+             $('#price, #Qty').change(function () {
+
+                var qty = parseInt($('#Qty').val()) || 0;
+                // 單一商品數量驗證
+                if (qty > 6) {
+                    Swal.fire({
+                        title: '錯誤',
+                        text: '單一商品數量不能超過 6',
+                        icon: 'error'
+                    });
+                    $('#Qty').val(6);
+                }
+                // 購物車總數量驗證
+                 var cartId = parseInt($('#CartId').val()) || 0;
+
+                if(cartId !== 0)
+                {
+                     $.ajax({
+                         url: '/CartItems/CheckCartQuantity',
+                         type: 'GET',
+                         data: { cartId: cartId, quantityToAdd: qty },
+                         success: function (response) {
+                             if (response && response.exceedsLimit)
+                              {
+                                 Swal.fire({
+                                     title: '錯誤',
+                                      text: `購物車內商品總數量不能超過 6。目前數量: ${response.currentTotal} ，您想新增數量: ${qty}`,
+                                     icon: 'error'
+                                 });
+                                 $('#Qty').val(6 - response.currentTotal);
+                             }
+                             calculateSubTotal();// 重新計算小計
+                         },
+                         error: function (error) {
+                             console.error('Error checking cart quantity:', error);
+                            alert('無法檢查購物車數量，請檢查網路連線或伺服器端程式碼。')
+                        }
+                     });
+                  }
+                else
+                {
+                     calculateSubTotal();// 重新計算小計
+                }
+            });
+        });
+    </script>
+}
