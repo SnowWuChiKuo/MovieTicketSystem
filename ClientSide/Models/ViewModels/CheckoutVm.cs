@@ -18,7 +18,7 @@ namespace ClientSide.Models.ViewModels
         public bool Status { get; set; }
 
         [Display(Name = "優惠後價格")]
-        public int? DiscountPrice { get; set; }
+        public int? DiscountPrice { get; set; } 
 
         [Display(Name = "訂單時間")]
         public DateTime CreatedAt { get; set; }

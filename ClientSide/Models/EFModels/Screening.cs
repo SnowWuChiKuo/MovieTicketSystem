@@ -21,6 +21,9 @@ namespace ClientSide.Models.EFModels
 
         public int TheaterId { get; set; }
 
+        [Column(TypeName = "date")]
+        public DateTime Televising { get; set; }
+
         public TimeSpan StartTime { get; set; }
 
         public TimeSpan EndTime { get; set; }

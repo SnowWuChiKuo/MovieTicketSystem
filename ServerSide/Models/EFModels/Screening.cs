@@ -13,6 +13,8 @@ public partial class Screening
 
     public int TheaterId { get; set; }
 
+    public DateOnly Televising { get; set; }
+
     public TimeOnly StartTime { get; set; }
 
     public TimeOnly EndTime { get; set; }

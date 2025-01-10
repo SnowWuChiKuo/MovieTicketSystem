@@ -254,6 +254,8 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
+            entity.Property(e => e.EndTime).HasPrecision(0);
+            entity.Property(e => e.StartTime).HasPrecision(0);
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
 
             entity.HasOne(d => d.Movie).WithMany(p => p.Screenings)
@@ -292,7 +294,6 @@ public partial class AppDbContext : DbContext
 
             entity.HasOne(d => d.Screening).WithMany(p => p.SeatStatuses)
                 .HasForeignKey(d => d.ScreeningId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_SeatStatus_Screenings");
 
             entity.HasOne(d => d.Seat).WithMany(p => p.SeatStatuses)
