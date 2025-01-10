@@ -67,6 +67,14 @@
 		- 按下取消會員後導到 Logout action
 	- 其他 
 		- 使用sweetalert : 帳號開通頁， 編輯資料頁， 重設密碼頁
+
+	### 訂單系統
+    - 實作訂單系統功能:
+		- 加入 CartController ，確認訂單 Checkout() Get Post 、得到購物車資料 GetCartInfo()。
+		- 加入 CartVm、CheckoutVm， CartVm 裡面包含 CartItem 類似，CheckoutVm 裡面是 Order 類似。
+		- 加入 CartService，加入確認購物車資料、創建訂單以及刪除購物車。
+		- 加入 CartEFDao、OrderEFRepository，將訂單建立以及刪除購物車。
+
 - ## ServerSide
    ### 資料庫  
 	- 加入 /Models/EFModels
