@@ -18,6 +18,11 @@ namespace ClientSide.Controllers
             _service = service;
         }
 
+        public CartController()
+        {
+            
+        }
+
         // GET: Cart
         public ActionResult Index()
         {

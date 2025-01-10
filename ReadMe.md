@@ -74,6 +74,8 @@
 		- 加入 CartVm、CheckoutVm， CartVm 裡面包含 CartItem 類似，CheckoutVm 裡面是 Order 類似。
 		- 加入 CartService，加入確認購物車資料、創建訂單以及刪除購物車。
 		- 加入 CartEFDao、OrderEFRepository，將訂單建立以及刪除購物車。
+		- 加入 Cart 的 Index View 頁，選擇影廳、場次時間、票種、價格。
+
 
 - ## ServerSide
    ### 資料庫  
