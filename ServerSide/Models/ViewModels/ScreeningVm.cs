@@ -20,7 +20,7 @@ namespace ServerSide.Models.ViewModels
         public int TheaterId { get; set; }
 
         [Display(Name = "場次開始日")]
-        public DateTime ScreeningDate { get; set; }
+        public DateOnly Televising { get; set; }
 
         [Display(Name = "場次開始時間")]
         public TimeOnly StartTime { get; set; }
@@ -36,7 +36,7 @@ namespace ServerSide.Models.ViewModels
     }
 
 
-    public class ScreeningEditVm : IValidatableObject
+    public class ScreeningEditVm
     {
         [Display(Name = "場次編號")]
         public int Id { get; set; }
@@ -55,7 +55,7 @@ namespace ServerSide.Models.ViewModels
         [Required(ErrorMessage = "請選擇日期")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [ValidScreeningDate]
-        public DateTime ScreeningDate { get; set; }
+        public DateOnly Televising { get; set; }
 
         [Display(Name = "場次開始時間")]
         public TimeOnly StartTime { get; set; }
@@ -73,15 +73,5 @@ namespace ServerSide.Models.ViewModels
         //影廳的下拉選單
         public List<SelectListItem> TheaterOptions { get; set; } = new List<SelectListItem>();
 
-        //在ViewModel進行驗證，使用IValidatableObject介面
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        {
-            //因為StartTime是timeonly型別 所以不能直接用運算符比較
-            var screeningStartDateTime = ScreeningDate.Add(StartTime.ToTimeSpan());
-            if (screeningStartDateTime < ScreeningDate)
-            {
-                yield return new ValidationResult("上映時間不能早於上映日期!", new[] { nameof(StartTime) });
-            }
-        }
     }
 }

@@ -34,6 +34,7 @@ namespace ServerSide.Models.DAOs
 
             screeningInDb.MovieId = dto.MovieId;
             screeningInDb.TheaterId = dto.TheaterId;
+            screeningInDb.Televising = dto.Televising;
             screeningInDb.StartTime = dto.StartTime;
             screeningInDb.EndTime = dto.EndTime;
             screeningInDb.UpdatedAt = dto.UpdatedAt;
@@ -60,10 +61,10 @@ namespace ServerSide.Models.DAOs
                 .Select(m => m.ReleaseDate.Date)
                 .FirstOrDefault();
         }
-        public bool IsValidScreeningDate(int movieId, DateTime screeningDate)
+        public bool IsValidTelevisingDate(int movieId, DateOnly televising)
         {
             var releaseDate = GetMovieReleaseDate(movieId);
-            return screeningDate.Date >= releaseDate;
+            return televising.ToDateTime(TimeOnly.MinValue) >= releaseDate;
         }
         public void Delete(int id)
         {
@@ -125,7 +126,7 @@ namespace ServerSide.Models.DAOs
                     MovieId = s.MovieId,
                     MovieTitle = s.Movie.Title,
                     TheaterId = s.TheaterId,
-                    ScreeningDate = s.Movie.ReleaseDate,
+                    Televising = s.Televising,
                     StartTime = s.StartTime,
                     EndTime = s.StartTime.AddMinutes(s.Movie.RunTime ?? 0),
                     CreatedAt = s.CreatedAt,
@@ -139,15 +140,13 @@ namespace ServerSide.Models.DAOs
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-		public ScreeningEditVm GetEditList(int id)
-		{
-			// 取得特定場次資料
-			var screening = _db.Screenings
-				.Include(e => e.Movie)
-				.Include(e => e.Theater)
-				.FirstOrDefault(e => e.Id == id);
+        public ScreeningEditVm GetEditList(int id)
+        {
+            var screening = _db.Screenings
+                .Include(e => e.Movie)
+                .Include(e => e.Theater)
+                .FirstOrDefault(e => e.Id == id);
 
-            // 取得所有電影資料並轉換為 SelectListItem，轉換為List
             var movieOptions = _db.Movies
                 .Select(m => new SelectListItem
                 {
@@ -157,7 +156,6 @@ namespace ServerSide.Models.DAOs
                 })
                 .ToList();
 
-            // 取得所有影廳資料轉換為 SelectListItem，轉換為List
             var theaterOptions = _db.Theaters
                 .Select(t => new SelectListItem
                 {
@@ -176,24 +174,23 @@ namespace ServerSide.Models.DAOs
                 };
             }
             var editVm = new ScreeningEditVm
-			{
-				Id = screening.Id,
-				MovieId = screening.MovieId,
-				MovieTitle = screening.Movie.Title,
-				TheaterId = screening.TheaterId,
-				ScreeningDate = screening.Movie.ReleaseDate.Date,
-				StartTime = screening.StartTime,
-                //如果場次中的電影有值，該場次的結束時間就是把開始時間加上電影片長(int? RunTime)
+            {
+                Id = screening.Id,
+                MovieId = screening.MovieId,
+                MovieTitle = screening.Movie.Title,
+                TheaterId = screening.TheaterId,
+                Televising = screening.Televising,
+                StartTime = screening.StartTime,
                 RunTime = screening.Movie.RunTime,
-				EndTime = screening.StartTime.AddMinutes(screening.Movie.RunTime.HasValue ? screening.Movie.RunTime.Value : 0 ),
-				MovieOptions = movieOptions,
+                EndTime = screening.StartTime.AddMinutes(screening.Movie.RunTime.HasValue ? screening.Movie.RunTime.Value : 0),
+                MovieOptions = movieOptions,
                 TheaterOptions = theaterOptions
-			};
+            };
 
-			return editVm;
-		}
+            return editVm;
+        }
 
-		public bool IsScreeningExist(int id)
+        public bool IsScreeningExist(int id)
         {
             throw new NotImplementedException();
         }
@@ -206,6 +203,7 @@ namespace ServerSide.Models.DAOs
                 Id = screening.Id,
                 MovieId = screening.MovieId,
                 TheaterId = screening.TheaterId,
+                Televising = screening.Televising,
                 StartTime = screening.StartTime,
                 EndTime = screening.EndTime,
                 CreatedAt = screening.CreatedAt,
@@ -220,6 +218,7 @@ namespace ServerSide.Models.DAOs
                 Id = dto.Id,
                 MovieId = dto.MovieId,
                 TheaterId = dto.TheaterId,
+                Televising = dto.Televising,
                 StartTime = dto.StartTime,
                 EndTime = dto.EndTime,
                 CreatedAt = dto.CreatedAt,

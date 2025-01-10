@@ -11,11 +11,11 @@ namespace MovieTicketSystem.Models.Attributes
             var vm = (ScreeningEditVm)validationContext.ObjectInstance;
             var screeningService = (IScreeningService)validationContext.GetService(typeof(IScreeningService));
 
-            if (value is DateTime screeningDate)
+            if (value is DateOnly televisingDate)
             {
                 var releaseDate = screeningService.GetMovieReleaseDate(vm.MovieId);
 
-                if (screeningDate.Date < releaseDate)
+                if (televisingDate.ToDateTime(TimeOnly.MinValue) < releaseDate)
                 {
                     return new ValidationResult(
                         $"場次日期不能早於電影上檔日期 {releaseDate:yyyy/MM/dd}");
@@ -25,4 +25,5 @@ namespace MovieTicketSystem.Models.Attributes
             return ValidationResult.Success;
         }
     }
+
 }

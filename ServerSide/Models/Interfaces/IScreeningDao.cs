@@ -13,7 +13,7 @@ namespace ServerSide.Models.Interfaces
         public List<SelectListItem> GetTheaterOptions();
         public int? GetMovieRunTime(int movieId);
         DateTime GetMovieReleaseDate(int movieId);
-        bool IsValidScreeningDate(int movieId, DateTime screeningDate);
+        bool IsValidTelevisingDate(int movieId, DateOnly televising);
         public ScreeningEditVm GetEditList(int id);
         public bool IsScreeningExist(int id);
         public void Create(ScreeningDto dto);

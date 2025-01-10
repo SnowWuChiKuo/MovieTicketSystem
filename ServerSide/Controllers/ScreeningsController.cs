@@ -135,7 +135,7 @@ namespace ServerSide.Controllers
 
             try
             {
-                if (!_service.ValidateScreeningDate(vm.MovieId, vm.ScreeningDate))
+                if (!_service.ValidateTelevisingDate(vm.MovieId, vm.Televising))
                 {
                     var releaseDate = _service.GetMovieReleaseDate(vm.MovieId);
                     ModelState.AddModelError("ScreeningDate",
@@ -185,7 +185,7 @@ namespace ServerSide.Controllers
                 MovieId = vm.MovieId,
                 MovieTitle = vm.MovieTitle,
                 TheaterId = vm.TheaterId,
-                ScreeningDate = vm.ScreeningDate,
+                Televising = vm.Televising,
                 StartTime = vm.StartTime,
                 EndTime = vm.EndTime,
             };

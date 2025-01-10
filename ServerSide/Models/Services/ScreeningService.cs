@@ -43,9 +43,9 @@ namespace ServerSide.Models.Services
             return _dao.GetMovieRunTime(movieId);
         }
 
-        public bool ValidateScreeningDate(int movieId, DateTime screeningDate)
+        public bool ValidateTelevisingDate(int movieId, DateOnly televising)
         {
-            return _dao.IsValidScreeningDate(movieId, screeningDate);
+            return _dao.IsValidTelevisingDate(movieId, televising);
         }
 
         public DateTime GetMovieReleaseDate(int movieId)
