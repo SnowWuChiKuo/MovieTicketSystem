@@ -1,0 +1,489 @@
+﻿@model List<ClientSide.Models.ViewModels.TicketVm>
+@{
+    ViewBag.Title = "Index";
+
+}
+
+<div id="app" class="container mt-5 position-relative">
+    <!-- 動態內容 -->
+    <div class="mb-4">
+        <h3>選擇電影</h3>
+        <div>
+            <button class="btn btn-dark btn-custom"
+                    v-for="movie in movies"
+                    :key="movie.id"
+                    v-bind:class="{ selected: selectedMovie === movie }"
+                    v-on:click="selectMovie(movie)">
+                {{ movie.name }}
+            </button>
+        </div>
+    </div>
+    <div v-if="!showSeats">
+        <transition name="slide-up">
+            <div class="mb-4" v-if="selectedMovie">
+                <h3>選擇影廳</h3>
+                <div>
+                    <button class="btn btn-primary btn-custom"
+                            v-for="theater in theaters"
+                            :key="theater.id"
+                            v-bind:class="{ selected: selectedTheater === theater }"
+                            v-on:click="selectTheater(theater)">
+                        {{ theater.text }}
+                    </button>
+                </div>
+            </div>
+        </transition>
+        <!-- 日期選擇區塊 -->
+        <transition name="slide-up">
+            <div class="mb-4" v-if="selectedTheater && dates.length > 0">
+                <h3>選擇日期</h3>
+                <div>
+                    <button class="btn btn-secondary btn-custom"
+                            v-for="(date, index) in dates"
+                            :key="index"
+                            v-bind:class="{ selected: selectedDate === date }"
+                            v-on:click="selectDate(date)">
+                        {{ date }}
+                    </button>
+                </div>
+            </div>
+        </transition>
+
+        <!-- 時間選擇區塊 -->
+        <transition name="slide-up">
+            <div class="mb-4" v-if="selectedTheater && selectedDate">
+                <h3>{{ selectedTheater.text }} - 時間</h3>
+                <div>
+                    <button class="btn btn-info btn-custom"
+                            v-for="(time, index) in times"
+                            :key="index"
+                            v-bind:class="{ selected: selectedTime === time }"
+                            v-on:click="selectTime(time)">
+                        {{ time }}
+                    </button>
+                </div>
+            </div>
+        </transition>
+        <transition name="slide-up">
+            <div v-if="selectedTime" class="mb-4">
+                <h3>選擇時段</h3>
+                <select class="form-control mb-3" v-model="selectedTicketSale">
+                    <option v-for="(sale, index) in ticketSales"
+                            :key="index"
+                            v-bind:class="{ selected: selectedTicketSale === sale }"
+                            v-on:click="selectTicketSale(ticketSale)">
+                        {{ sale }}
+                    </option>
+                </select>
+                <h3 class="mt-4" v-if="selectedTicketSale">選擇票的類型</h3>
+                <div v-if="selectedTicketSale">
+                    <select class="form-control" v-model="selectedTicketType">
+                        <option v-for="(type, index) in ticketTypes[selectedTicketSale]"
+                                :key="index"
+                                v-bind:class="{ selected: selectedTicketType === type }"
+                                v-on:click="selectedTicketType(ticketType)">
+                            {{ type.TicketType }}
+                        </option>
+                    </select>
+                </div>
+                <div v-if="selectedTicketType" class="mt-4">
+                    <h4 v-for="(price, index) in ticketTypes[selectedTicketSale]"
+                        :key="index"
+                        v-bind:class="{ selected: selectedTicketPrice === price }"
+                        v-on:click="selectTicketPrice(price)"
+                        >
+                        單價: {{ price.Price }} 元
+                    </h4>
+                    <div class="form-group">
+                        <label>數量</label>
+                        <select  class="form-control" v-model="selectedTicketType.quantity">
+                            <option v-for="n in 6" :key="n" :value="n">{{ n }}</option>
+                        </select>
+                    </div>
+                    <h3 class="mt-4">總共價錢: {{ totalPrice }} 元</h3>
+                    <button class="btn btn-success"
+                            v-if="selectedTicketType.quantity > 0"
+                            v-on:click="selectSeats">
+                        選擇座位
+                    </button>
+                </div>
+            </div>
+        </transition>
+    </div>
+
+    <!-- 座位選擇區 -->
+    <div v-if="showSeats">
+        <div class="top-buttons">
+            <button class="btn btn-danger" v-on:click="goBack">回上一步</button>
+        </div>
+
+        <h3 class="text-center">影廳座位選擇</h3>
+
+        <!-- 座位圖例 -->
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-box"></div>
+                <span>座位狀況</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box selected"></div>
+                <span>已選取</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box unavailable"></div>
+                <span>無法選取</span>
+            </div>
+        </div>
+
+        <!-- 銀幕 -->
+        <div class="screen">銀幕</div>
+
+        <!-- 座位區域 -->
+        <div class="seat-container">
+            <div v-for="row in 10" :key="row" class="seat-row">
+                <div class="row-number">{{ row }}</div>
+                <div class="seat-section">
+                    <template v-for="col in 19" :key="col">
+                        <!-- 插入空隙 -->
+                        <div v-if="col === 5 || col === 15"
+                             class="seat gap"></div>
+
+                        <!-- 正常座位 -->
+                        <div v-else
+                             class="seat"
+                             v-bind:class="{
+                    selected: isSelected(row, col),
+                    unavailable: isUnavailable(row, col)
+                  }"
+                             v-on:click="toggleSeat(row, col)">
+                            {{ col }}
+                        </div>
+                    </template>
+                </div>
+                <div class="row-number">{{ row }}</div>
+            </div>
+        </div>
+
+        <div class="bottom-buttons">
+            <button class="btn btn-success" v-on:click="completeBooking">
+                訂票完成
+            </button>
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://unpkg.com/vue@3.2.45/dist/vue.global.js"></script>
+
+<!-- ✅ 引入 Axios -->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<script>
+    const { createApp, ref, reactive, computed } = Vue;
+
+    createApp({
+        setup() {
+            const movies = ref([{ id: 1, name: "獅子王" }]);
+            const theaters = ref([
+                { value: 1, text: "影廳1" },
+                { value: 2, text: "影廳2" },
+            ]);
+            const showTimes = ref([]); // 正確定義 showTimes
+            const dates = ref([]);
+            const times = ref([]);
+            const screeningId = ref([]);
+
+            const ticket = ref([]);
+            const ticketSales = ref([]);
+            const ticketTypes = ref([]);
+            const ticketPrice = ref([]);
+
+
+            const selectedMovie = ref(null);
+            const selectedTheater = ref(null);
+            const selectedDate = ref(null);
+            const selectedTime = ref(null);
+            const selectedTicketSale = ref(null);
+            const selectedTicketType = ref(null);
+            const selectedTicketPrice = ref(null);
+            const showSeats = ref(false);
+
+
+
+            // 座位相關
+            const selectedSeats = reactive(new Set());
+            const unavailableSeats = reactive(
+                new Set([
+                    "1-2", "1-3", "1-4",
+                    "5-5", "5-6", "5-7", "5-8",
+                    "10-18"
+                ])
+            );
+
+            const totalPrice = computed(() => {
+                if (selectedTicketPrice.value && selectedTicketType.value && selectedTicketType.value.quantity) {
+                    return selectedTicketPrice.value.Price * selectedTicketType.value.quantity;
+                }
+                return 0;
+            });
+
+            const selectMovie = (movie) => (selectedMovie.value = movie);
+            // 選擇影廳
+            const selectTheater = (theater) => {
+                selectedTheater.value = theater;
+                console.log("選擇的影廳 ID:", theater.value);
+
+                axios.post('/Tickets/GetShowTimes', { theaterId: theater.value })
+                    .then(response => {
+                        console.log("伺服器回應:", response);
+
+                        if (response.data && response.data.success) {
+                            if (response.data.data && Array.isArray(response.data.data)) {
+                                showTimes.value = response.data.data;
+
+                                const parsedDates = [...new Set(response.data.data.map(item => item.Televising))];
+                                dates.value = parsedDates;
+
+                                times.value = [];
+                                selectedDate.value = null;
+                                selectedTime.value = null;
+                            } else {
+                                console.error("伺服器回傳的資料格式不正確:", response.data.data);
+                                alert("伺服器回傳的資料格式不正確。");
+                            }
+                        } else {
+                            const errorMessage = response.data ? response.data.message : "未知的錯誤";
+                            console.error("伺服器回傳錯誤:", errorMessage);
+                            alert("伺服器回傳錯誤: " + errorMessage);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('請求發生錯誤:', error); // 保留原始錯誤訊息
+
+                        let errorMessage = "與伺服器通訊時發生錯誤。"; // 預設錯誤訊息
+
+                        if (error.response) {
+                            // 伺服器回傳錯誤
+                            errorMessage = `伺服器錯誤：${error.response.status} - ${error.response.data?.message || "請稍後再試"}`; // 包含狀態碼和伺服器訊息
+                            console.error("伺服器回傳錯誤:", error.response.status, error.response.data); // 輸出詳細的伺服器錯誤資訊
+                        } else if (error.request) {
+                            // 沒有收到回應
+                            errorMessage = "無法連線到伺服器，請檢查網路連線。";
+                        }
+
+                        alert(errorMessage); // 只顯示一個 alert
+                    });
+            };
+
+            const selectDate = (date) => {
+                selectedDate.value = date;
+                //console.log("showTimes.value: ", showTimes.value)
+
+                times.value = showTimes.value
+                    .filter(item => {
+                        const itemDate = new Date(item.Televising);
+                        const selectedDateObj = new Date(date);
+                        return itemDate.getFullYear() === selectedDateObj.getFullYear() &&
+                            itemDate.getMonth() === selectedDateObj.getMonth() &&
+                            itemDate.getDate() === selectedDateObj.getDate();
+                    })
+                    .map(item => {
+                        //console.log("轉換項目:", item);
+                        //console.log("item.StartTime:", item.StartTime);
+
+                        if (!item.StartTime) {
+                            console.log("item.StartTime 是 undefined 或 null");
+                            return null;
+                        }
+
+                        return item.StartTime;
+
+                    }).filter(time => time !== null);
+
+                screeningId.value = showTimes.value
+                    .filter(item => {
+                        const itemDate = new Date(item.Televising);
+                        const selectedDateObj = new Date(date);
+                        return itemDate.getFullYear() === selectedDateObj.getFullYear() &&
+                            itemDate.getMonth() === selectedDateObj.getMonth() &&
+                            itemDate.getDate() === selectedDateObj.getDate();
+                    })
+                    .map(item => {
+                        //console.log("轉換項目:", item);
+                        //console.log("item.StartTime:", item.StartTime);
+
+                        if (!item.Id) {
+                            console.log("item.Id 是 undefined 或 null");
+                            return null;
+                        }
+
+                        return item.Id;
+                    })
+
+                console.log("ScreeningId:", screeningId.value);
+
+                console.log("篩選後的時間:", times.value);
+            };
+
+            const selectTime = (time) => {
+                selectedTime.value = time;
+
+                // 檢查 screeningId 是否有值
+                if (!screeningId.value || screeningId.value.length === 0) {
+                    console.error('沒有場次編號');
+                    alert('請先選擇場次');
+                    return;
+                }
+
+                // 準備請求資料
+                const requestData = {
+                    screeningId: parseInt(screeningId.value)  // 確保轉換為數字
+                };
+
+                console.log('發送的資料：', requestData);  // 偵錯用
+
+                axios.post('/Tickets/GetTicket', requestData)
+                    .then(response => {
+                        if (response.data && response.data.success) {
+                            ticket.value = response.data.data;
+                            console.log('取得的票券資料：', ticket.value);
+
+                            if (Array.isArray(response.data.data)) {
+                                ticketSales.value = [...new Set(response.data.data.map(item => item.SalesType))];
+
+                                // 建立一個按銷售類型分組的票券資料結構
+                                const ticketGroups = {};
+
+                                // 將票券資料依照 SalesType 分組
+                                response.data.data.forEach(item => {
+                                    if (!ticketGroups[item.SalesType]) {
+                                        ticketGroups[item.SalesType] = [];
+                                    }
+                                    // 避免重複的票種
+                                    if (!ticketGroups[item.SalesType].some(t => t.TicketType === item.TicketType)) {
+                                        ticketGroups[item.SalesType].push({
+                                            TicketType: item.TicketType,
+                                            Price: item.Price
+                                        });
+                                    }
+                                });
+
+                                // 更新 reactive 資料
+                                ticketTypes.value = ticketGroups;
+                                console.log('整理後的票種資料：', ticketTypes.value);
+                            }
+                        } else {
+                            alert(response.data.message || '取得票券資料失敗');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('錯誤：', error);
+                        alert('發生錯誤，請稍後再試');
+                    });
+            };
+
+            const selectTicketSale = (ticketSale) => {
+                selectedTicketSale.value = ticketSale;
+                console.log("ticketSale:", ticketSale);
+            };
+
+            const selectTicketType = (ticketType) => {
+                selectedTicketType.value = ticketType;
+                console.log("ticketType:", ticketType);
+
+                // 假設 ticketType 物件中有 Price 屬性
+                if (!ticketPrice.value.some(item => item.Price === ticketType.Price)) {
+                    ticketPrice.value.push(ticketType);
+                }
+                console.log('已選擇的票券類型:', selectedTicketType.value);
+                console.log('所有已選擇的票券類型:', ticketPrice.value);
+            };
+
+            const selectTicketPrice = (price) => {
+                selectedTicketPrice.value = price;
+                console.log('已選擇的票價:', selectedTicketPrice.value);
+            };
+
+
+            const selectSeats = () => (showSeats.value = true);
+            const goBack = () => (showSeats.value = false);
+
+            const isSelected = (row, col) => {
+                return selectedSeats.has(`${row}-${col}`);
+            };
+
+            const isUnavailable = (row, col) => {
+                return unavailableSeats.has(`${row}-${col}`);
+            };
+
+
+            const toggleSeat = (row, col) => {
+                const seatId = `${row}-${col}`;
+                if (unavailableSeats.has(seatId)) return;
+
+                if (selectedSeats.has(seatId)) {
+                    selectedSeats.delete(seatId);
+                } else {
+                    if (selectedSeats.size >= (selectedTicketType.value?.quantity || 0)) {
+                        alert("已達到所選票數上限！");
+                        return;
+                    }
+                    selectedSeats.add(seatId);
+                }
+            };
+
+            const completeBooking = () => {
+                if (
+                    selectedSeats.size < (selectedTicketType.value?.quantity || 0)
+                ) {
+                    alert("請選擇足夠的座位！");
+                    return;
+                }
+                alert(
+                    `訂票完成！\n已選擇座位：${Array.from(selectedSeats).join(
+                        ", "
+                    )}\n總價：${totalPrice.value}元`
+                );
+            };
+
+            return {
+                movies,
+                theaters,
+                dates,
+                times,
+                screeningId,
+                ticket,
+                ticketSales,
+                ticketTypes,
+                selectedMovie,
+                selectedTheater,
+                selectedDate,
+                selectedTime,
+                selectedTicketSale,
+                selectedTicketType,
+                selectedTicketPrice,
+                showSeats,
+                totalPrice,
+                selectMovie,
+                selectTheater,
+                selectDate,
+                selectTime,
+                selectSeats,
+                selectTicketSale,
+                selectTicketType,
+                selectTicketPrice,
+                goBack,
+                isSelected,
+                isUnavailable,
+                toggleSeat,
+                completeBooking,
+            };
+        },
+    }).mount("#app");
+</script>
+
+@section styles
+{
+    <link href="~/Content/Ticket.css" rel="stylesheet">
+}
