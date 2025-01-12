@@ -44,7 +44,7 @@ namespace ClientSide.Models.DAOs
 								 .Select(d => new TicketVm
 								 {
 									 Id = d.Id,
-
+									 ScreeningId = d.ScreeningId,
 									 SalesType = d.SalesType,
 									 TicketType = d.TicketType,
 									 Price = d.Price,
@@ -54,6 +54,24 @@ namespace ClientSide.Models.DAOs
 			return data;
 		}
 
-		
+		public List<SeatStatusVm> GetSeatStatus(int screeningId)
+		{
+			var db = new AppDbContext();
+
+			var data = db.SeatStatus.Where(d => d.ScreeningId == screeningId)
+									.Include(d => d.Seat)
+									.Select(d => new SeatStatusVm
+									{
+										Id = d.Id,
+										ScreeningId = d.ScreeningId,
+										SeatId = d.SeatId,
+										Status = d.Status,
+										Row = d.Seat.Row,
+										Number = d.Seat.Number,
+										IsDisabled = d.Seat.IsDisabled,
+									}).ToList();
+			if (data == null) throw new Exception("找不到此場次做位");
+			return data;
+		}
 	}
 }

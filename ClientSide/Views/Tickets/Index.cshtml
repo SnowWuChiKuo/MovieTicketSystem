@@ -78,31 +78,29 @@
                 <h3 class="mt-4" v-if="selectedTicketSale">選擇票的類型</h3>
                 <div v-if="selectedTicketSale">
                     <select class="form-control" v-model="selectedTicketType">
-                        <option v-for="(type, index) in ticketTypes[selectedTicketSale]"
+                        <option v-for="(type, index) in ticketTypes"
                                 :key="index"
+                                :value="type"
                                 v-bind:class="{ selected: selectedTicketType === type }"
                                 v-on:click="selectedTicketType(ticketType)">
-                            {{ type.TicketType }}
+                            {{ type }}
                         </option>
                     </select>
                 </div>
                 <div v-if="selectedTicketType" class="mt-4">
-                    <h4 v-for="(price, index) in ticketTypes[selectedTicketSale]"
-                        :key="index"
-                        v-bind:class="{ selected: selectedTicketPrice === price }"
-                        v-on:click="selectTicketPrice(price)"
-                        >
-                        單價: {{ price.Price }} 元
+                    <h4 v-bind:class="{ selected: selectedTicketPrice === ticketPrices[selectedTicketType] }"
+                        v-on:click="selectedTicketPrice = ticketPrices[selectedTicketType]">
+                        單價: {{ ticketPrices[selectedTicketType] }}  元
                     </h4>
                     <div class="form-group">
                         <label>數量</label>
-                        <select  class="form-control" v-model="selectedTicketType.quantity">
+                        <select class="form-control" v-model="selectedQuantity">
                             <option v-for="n in 6" :key="n" :value="n">{{ n }}</option>
                         </select>
                     </div>
                     <h3 class="mt-4">總共價錢: {{ totalPrice }} 元</h3>
                     <button class="btn btn-success"
-                            v-if="selectedTicketType.quantity > 0"
+                            v-if="selectedQuantity > 0"
                             v-on:click="selectSeats">
                         選擇座位
                     </button>
@@ -197,7 +195,7 @@
             const ticket = ref([]);
             const ticketSales = ref([]);
             const ticketTypes = ref([]);
-            const ticketPrice = ref([]);
+            const ticketPrices = ref({});
 
 
             const selectedMovie = ref(null);
@@ -206,10 +204,7 @@
             const selectedTime = ref(null);
             const selectedTicketSale = ref(null);
             const selectedTicketType = ref(null);
-            const selectedTicketPrice = ref(null);
             const showSeats = ref(false);
-
-
 
             // 座位相關
             const selectedSeats = reactive(new Set());
@@ -221,11 +216,14 @@
                 ])
             );
 
+            const selectedTicketPrice = ref(0);
+            const selectedQuantity = ref(1);  // 預設數量為 1
+
+
+            // 計算總價的邏輯保持不變
             const totalPrice = computed(() => {
-                if (selectedTicketPrice.value && selectedTicketType.value && selectedTicketType.value.quantity) {
-                    return selectedTicketPrice.value.Price * selectedTicketType.value.quantity;
-                }
-                return 0;
+                if (!selectedTicketType.value || !selectedQuantity.value) return 0;
+                return ticketPrices.value[selectedTicketType.value] * selectedQuantity.value;
             });
 
             const selectMovie = (movie) => (selectedMovie.value = movie);
@@ -350,28 +348,32 @@
                             console.log('取得的票券資料：', ticket.value);
 
                             if (Array.isArray(response.data.data)) {
+
                                 ticketSales.value = [...new Set(response.data.data.map(item => item.SalesType))];
 
-                                // 建立一個按銷售類型分組的票券資料結構
-                                const ticketGroups = {};
 
-                                // 將票券資料依照 SalesType 分組
+                                // 儲存票種
+                                const ticketTypesSet = new Set();
+                                // 儲存票價
+                                const ticketPricesMap = {};
+
+                                // 遍歷票券資料
                                 response.data.data.forEach(item => {
-                                    if (!ticketGroups[item.SalesType]) {
-                                        ticketGroups[item.SalesType] = [];
-                                    }
-                                    // 避免重複的票種
-                                    if (!ticketGroups[item.SalesType].some(t => t.TicketType === item.TicketType)) {
-                                        ticketGroups[item.SalesType].push({
-                                            TicketType: item.TicketType,
-                                            Price: item.Price
-                                        });
+                                    // 加入票種
+                                    ticketTypesSet.add(item.TicketType);
+
+                                    // 設定票價
+                                    if (!ticketPricesMap[item.TicketType]) {
+                                        ticketPricesMap[item.TicketType] = item.Price;
                                     }
                                 });
 
                                 // 更新 reactive 資料
-                                ticketTypes.value = ticketGroups;
-                                console.log('整理後的票種資料：', ticketTypes.value);
+                                ticketTypes.value = Array.from(ticketTypesSet);
+                                ticketPrices.value = ticketPricesMap;
+
+                                console.log('票種資料：', ticketTypes.value);
+                                console.log('票價資料：', ticketPrices.value);
                             }
                         } else {
                             alert(response.data.message || '取得票券資料失敗');
@@ -390,14 +392,12 @@
 
             const selectTicketType = (ticketType) => {
                 selectedTicketType.value = ticketType;
-                console.log("ticketType:", ticketType);
 
-                // 假設 ticketType 物件中有 Price 屬性
-                if (!ticketPrice.value.some(item => item.Price === ticketType.Price)) {
-                    ticketPrice.value.push(ticketType);
-                }
-                console.log('已選擇的票券類型:', selectedTicketType.value);
-                console.log('所有已選擇的票券類型:', ticketPrice.value);
+                // 自動設定對應的票價
+                selectedTicketPrice.value = ticketPrices.value[ticketType];
+
+                console.log("已選擇票種:", ticketType);
+                console.log("對應票價:", selectedTicketPrice.value);
             };
 
             const selectTicketPrice = (price) => {
@@ -456,6 +456,7 @@
                 ticket,
                 ticketSales,
                 ticketTypes,
+                ticketPrices,
                 selectedMovie,
                 selectedTheater,
                 selectedDate,
@@ -463,6 +464,7 @@
                 selectedTicketSale,
                 selectedTicketType,
                 selectedTicketPrice,
+                selectedQuantity,
                 showSeats,
                 totalPrice,
                 selectMovie,

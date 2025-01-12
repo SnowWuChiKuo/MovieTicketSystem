@@ -60,5 +60,26 @@ namespace ClientSide.Controllers
 				return Json(new { success = false, message = ex.Message });
 			}
 		}
+
+		[HttpPost]
+		public JsonResult GetSeatStatus(int? screeningId)
+		{
+			try
+			{
+				if (!screeningId.HasValue)
+				{
+					return Json(new { success = false, message = "場次編號不可為空" });
+				}
+
+				var service = new TicketService();
+				var seat = service.GetSeatStatus(screeningId.Value);
+
+				return Json(new { success = true, data = seat });
+			}
+			catch (Exception ex)
+			{
+				return Json(new { success = false, message = ex.Message });
+			}
+		}
 	}
 }

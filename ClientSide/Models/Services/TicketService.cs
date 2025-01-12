@@ -22,6 +22,13 @@ namespace ClientSide.Models.Services
 			return dao.GetTicket(screeningId);
 		}
 
-		
+		public List<SeatStatusVm> GetSeatStatus(int screeningId)
+		{
+			var dao = new TicketEFDao();
+			return dao.GetSeatStatus(screeningId);
+		}
+
+
+
 	}
 }

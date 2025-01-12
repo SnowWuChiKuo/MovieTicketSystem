@@ -180,6 +180,7 @@
     <Compile Include="Models\ViewModels\ResetPasswordVm.cs" />
     <Compile Include="Models\ViewModels\ScreeningChangeDateVm.cs" />
     <Compile Include="Models\ViewModels\ScreeningVm.cs" />
+    <Compile Include="Models\ViewModels\SeatStatusVm.cs" />
     <Compile Include="Models\ViewModels\TicketVm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
