@@ -169,9 +169,11 @@ namespace ClientSide.Models.EFModels
 				.Property(e => e.Email)
 				.IsUnicode(false);
 
-			modelBuilder.Entity<User>()
-				.Property(e => e.PasswordHash)
-				.IsUnicode(false);
-		}
-	}
+            modelBuilder.Entity<User>()
+                .Property(e => e.PasswordHash)
+                .IsUnicode(false);
+        }
+
+        public System.Data.Entity.DbSet<ClientSide.Models.ViewModels.MovieDetailVm> MovieDetailVms { get; set; }
+    }
 }

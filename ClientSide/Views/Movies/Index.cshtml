@@ -1,4 +1,5 @@
-﻿
+﻿@model ClientSide.Models.ViewModels.MovieIndexListVm
+
 @{
     Layout = null;
 }
@@ -13,13 +14,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@200..900&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&family=Noto+Sans+TC:wght@100..900&family=Noto+Serif+TC:wght@200..900&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="~/Content/MovieMainPageCss.css"/>
+    <link rel="stylesheet" href="~/Content/MovieMainPageCss.css" />
+    <link href="https://unpkg.com/element-plus/dist/index.css" rel="stylesheet">
 </head>
 <body>
     <!--NAVBAR Start-->
-    <nav class="navbar navbar-expand-lg bg-dark text-white fixed-top">
+    <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
-            <a class="navbar-brand fw-bold fs-4 mx-3 text-white siteName" href="#" style="font-family: 'Noto Sans TC';">網站名稱</a>
+            <a class="navbar-brand fw-bold fs-4 mx-3 siteName" href="#" style="font-family: 'Noto Sans TC';">網站名稱</a>
             <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -27,15 +29,15 @@
             <div class="collapse navbar-collapse siteAction" id="navbarTogglerDemo01">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active fw-medium ms-4 text-white" aria-current="page" href="#" style="font-family: 'Noto Sans TC';">電影全覽</a>
+                        <a class="nav-link active fw-medium ms-4" aria-current="page" href="#" style="font-family: 'Noto Sans TC';">電影全覽</a>
                     </li>
                 </ul>
                 <div class="d-flex flex-lg-row flex-column me-lg-5 userAction">
                     <div class="mb-2 mb-lg-0">
-                        <a href="#" class="me-2 btn btn-sm fw-medium border-1 fs-6 ms-3 text-white">登入</a>
+                        <a href="#" class="me-2 btn btn-sm fw-medium border-1 fs-6 ms-3 btn-login">登入</a>
                     </div>
                     <div>
-                        <a href="#" class="me-2 btn btn-sm fw-medium border-1 fs-6 ms-3 text-white">註冊</a>
+                        <a href="#" class="me-2 btn btn-sm fw-medium border-1 fs-6 ms-3 btn-register">註冊</a>
                     </div>
                 </div>
             </div>
@@ -51,16 +53,15 @@
         <div class="container">
             <p class="fw-bolder pTitleNewestMv mt-3 mb-1" id="textNewMovie">最新電影</p>
         </div>
-        <div id="carouselExampleAutoplaying" class="carousel slide h-25 mb-4" data-bs-ride="carousel">
+        <div id="carouselExampleAutoplaying" class="carousel slide carousel-fade h-25 mb-4" data-bs-ride="carousel" data-bs-interval="5000">
             <div class="carousel-inner mb-4">
                 <div class="carousel-item"
                      :key="index"
                      v-for="(movie,index) in movies"
                      v-bind:class="{active:index===0}">
-                    <img v-bind:src="movie.imgUrl" class="d-block w-100" v-bind:alt="movie.name">
+                    <img v-bind:src="movie.PosterURL" class="d-block w-100" v-bind:alt="movie.Title">
                     <div class="carousel-caption d-none d-md-block">
-                        <h5>{{ movie.name }}</h5>
-                        <p>{{ movie.description }}</p>
+                        <h5>{{ movie.Title }}</h5>
                     </div>
                 </div>
             </div>
@@ -76,22 +77,32 @@
         <!--最新電影輪播 End-->
         <!--最多人觀看 Start-->
         <div class="container mt-5">
-            <p class="fw-bolder my-5 pTitle mb-3">最多人觀看</p>
+            <p class="fw-bolder my-5 pTitle mb-3">熱門電影</p>
         </div>
         <div class="container mvblock position-relative mb-5">
             <button class="scroll-btn btn-left" v-on:click="scrollLeft('mostViewed')"><</button>
             <div class="movie-card-container" ref="mostViewedCardRow">
-                <div class="card-item" v-for="(movie, index) in movies" :key="index">
-                    <figure class="movie-card" v-on:click="viewMovie(movie)" style="cursor: pointer;">
-                        <h1>{{ movie.name }}</h1>
-                        <img v-bind:src="movie.imgUrl" v-bind:alt="movie.name">
-                        <figcaption>
-                            <h3>{{ movie.name }}</h3>
-                            <p>{{ movie.description }}</p>
-                            <button class="btn-book">訂票</button>
-                        </figcaption>
-                    </figure>
-                </div>
+                <!-- Skeleton loading -->
+                <template v-if="loading">
+                    <div class="card-item" v-for="n in 6" :key="'skeleton-'+n">
+                        <figure class="movie-card skeleton">
+                        </figure>
+                    </div>
+                </template>
+                <!-- Actual content -->
+                <template v-else>
+                    <div class="card-item" v-for="(movie, index) in mostViewedMovies" :key="movie.Id">
+                        <figure class="movie-card" v-on:click="viewMovie(movie)" style="cursor: pointer;">
+                            <h1>{{ movie.Title }}</h1>
+                            <img v-bind:src="movie.PosterURL" v-bind:alt="movie.Title">
+                            <figcaption>
+                                <h3>{{ movie.Title }}</h3>
+                                <p>{{movie.ReleaseDate}}</p>
+                                <button class="btn-book">訂票</button>
+                            </figcaption>
+                        </figure>
+                    </div>
+                </template>
             </div>
             <button class="scroll-btn btn-right" v-on:click="scrollRight('mostViewed')">></button>
         </div>
@@ -103,13 +114,13 @@
         <div class="container mvblock position-relative mb-5">
             <button class="scroll-btn btn-left" v-on:click="scrollLeft('mostCommented')"><</button>
             <div class="movie-card-container" ref="mostCommentedCardRow">
-                <div class="card-item" v-for="(movie, index) in movies" :key="index">
+                <div class="card-item" v-for="(movie, index) in mostCommentedMovies" :key="movie.Id">
                     <figure class="movie-card" v-on:click="viewMovie(movie)" style="cursor: pointer;">
-                        <h1>{{ movie.name }}</h1>
-                        <img v-bind:src="movie.imgUrl" v-bind:alt="movie.name">
+                        <h1>{{ movie.Title }}</h1>
+                        <img v-bind:src="movie.PosterURL" v-bind:alt="movie.Title">
                         <figcaption>
-                            <h3>{{ movie.name }}</h3>
-                            <p>{{ movie.description }}</p>
+                            <h3>{{ movie.Title }}</h3>
+                            <p>{{movie.ReleaseDate}}</p>
                             <button class="btn-book">訂票</button>
                         </figcaption>
                     </figure>
@@ -118,54 +129,17 @@
             <button class="scroll-btn btn-right" v-on:click="scrollRight('mostCommented')">></button>
         </div>
         <!--最多評論電影 End-->
-        <!--全部電影 Start-->
-        <div class="container mt-5">
-            <p class="fw-bolder my-5 pTitle mb-3">全部電影</p>
-        </div>
-        <div class="container mvblock position-relative mb-5">
-            <button class="scroll-btn btn-left" v-on:click="scrollLeft('allMovies')"><</button>
-            <div class="movie-card-container" ref="allMoviesCardRow">
-                <div class="card-item" v-for="(movie, index) in movies" :key="index">
-                    <figure class="movie-card" v-on:click="viewMovie(movie)" style="cursor: pointer;">
-                        <h1>{{ movie.name }}</h1>
-                        <img v-bind:src="movie.imgUrl" v-bind:alt="movie.name">
-                        <figcaption>
-                            <h3>{{ movie.name }}</h3>
-                            <p>{{ movie.description }}</p>
-                            <button class="btn-book">訂票</button>
-                        </figcaption>
-                    </figure>
-                </div>
-            </div>
-            <button class="scroll-btn btn-right" v-on:click="scrollRight('allMovies')">></button>
-        </div>
-        <!--全部電影 End-->
-        <!--分頁列 Start-->
-        <nav aria-label="Page navigation example mvPagination">
-            <ul class="pagination justify-content-center mvPagination my-5">
-                <li class="page-item disabled">
-                    <a class="page-link">Previous</a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="#">Next</a>
-                </li>
-            </ul>
-        </nav>
-        <!--分頁列 End-->
         <!--頁尾 Start-->
-        <footer class="text-center text-lg-start bg-body-tertiary text-muted mvFooter">
+        <footer class="text-center text-lg-start mvFooter">
             <!-- Section: Links  -->
             <section class="">
-                <div class="container text-center text-md-start mt-5">
+                <div class="container text-center text-md-start mt-3">
                     <!-- Grid row -->
                     <div class="row mt-3">
                         <!-- Grid column -->
                         <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
                             <!-- Content -->
-                            <h6 class="text-uppercase fw-bold mb-4">
+                            <h6 class="text-uppercase fw-bold mb-4 text-light">
                                 <i class="fas fa-gem me-3"></i>關於網站
                             </h6>
                             <p>
@@ -176,12 +150,13 @@
                         <!-- Grid column -->
                         <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
                             <!-- Links -->
-                            <h6 class="text-uppercase fw-bold mb-4">
+                            <h6 class="text-uppercase fw-bold mb-4 text-light">
                                 會員資訊
                             </h6>
                             <p>
                                 <a href="#!" class="text-reset text-decoration-none">
-                                    <i class="fa-solid fa-user-plus"></i>&nbsp 加入會員</a>
+                                    <i class="fa-solid fa-user-plus"></i>&nbsp 加入會員
+                                </a>
                             </p>
                             <p>
                                 <a href="#!" class="text-reset text-decoration-none">
@@ -193,7 +168,9 @@
                         <!-- Grid column -->
                         <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4 ">
                             <!-- Links -->
-                            <h6 class="text-uppercase fw-bold mb-4">聯絡我們</h6>
+                            <h6 class="text-uppercase fw-bold mb-4 text-light">
+                                聯絡我們
+                            </h6>
                             <p><i class="fas fa-home me-3"></i> New York, NY 10012, US</p>
                             <p>
                                 <i class="fas fa-envelope me-3"></i>
@@ -217,9 +194,16 @@
         <!--頁尾 End-->
     </div>
 
+    <script>
+        window.moviesData = @Html.Raw(Json.Encode(Model.LatestMovies));
+        window.mostReviewedMoviesData = @Html.Raw(Json.Encode(Model.MostReviewedMovies));
+        window.upcomingMoviesData = @Html.Raw(Json.Encode(Model.UpcomingMovies));
+    </script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/vue@3.3.4/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/element-plus@2.2.30/dist/index.full.js"></script>
     <script src="~/Scripts/MovieMainPageJS.js"></script>
-    
+
 </body>
 </html>
