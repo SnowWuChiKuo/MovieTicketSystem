@@ -1,0 +1,295 @@
+﻿@model ClientSide.Models.DTOs.MovieDetailDto
+
+@{
+    ViewBag.Title = "Movie";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="zh-tw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>電影詳情</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@200..900&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&family=Noto+Sans+TC:wght@100..900&family=Noto+Serif+TC:wght@200..900&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link href="https://unpkg.com/element-plus/dist/index.css" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="CSS/Main.css"/> -->
+    <link rel="stylesheet" href="~/Content/Movie.css" />
+</head>
+<body>
+    <!--NAVBAR Start-->
+    <nav class="navbar navbar-expand-lg bg-dark text-white">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold fs-4 mx-3 text-white siteName" href="#" style="font-family: 'Noto Sans TC';">網站名稱</a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!--摺疊清單-->
+            <div class="collapse navbar-collapse siteAction" id="navbarTogglerDemo01">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active fw-medium ms-4 text-white" aria-current="page" href="#" style="font-family: 'Noto Sans TC';">電影全覽</a>
+                    </li>
+                </ul>
+                <div class="d-flex flex-lg-row flex-column me-lg-5 userAction">
+                    <div class="mb-2 mb-lg-0">
+                        <a href="#" class="me-2 btn btn-sm fw-medium border-1 fs-6 ms-3 text-white btn-login">登入</a>
+                    </div>
+                    <div>
+                        <a href="#" class="me-2 btn btn-sm fw-medium border-1 fs-6 ms-3 text-white btn-register">註冊</a>
+                    </div>
+                </div>
+            </div>
+            <!--摺疊清單-->
+        </div>
+    </nav>
+    <!-- NAVBAR End -->
+
+    <div id="movie-detail-app">
+        <div class="container mvInfo">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="mvTitle mb-4 mt-4">電影簡介</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <img :src="movie.poster" :alt="movie.title">
+                </div>
+                <div class="col-lg-6 info-container">
+                    <el-card class="box-card">
+                        <h3 class="info-title mb-3 infoCard">{{ movie.title }}</h3>
+                        <el-descriptions :column="1" border:false class="movie-info">
+                            <el-descriptions-item label="種類">
+                                {{ movie.genre }}
+                            </el-descriptions-item>
+                            <el-descriptions-item label="級別">
+                                {{ movie.rating }}
+                            </el-descriptions-item>
+                            <el-descriptions-item label="片長">
+                                {{ movie.duration }}
+                            </el-descriptions-item>
+                            <el-descriptions-item label="上映日">
+                                {{ movie.releaseDate }}
+                            </el-descriptions-item>
+                            <el-descriptions-item label="導演">
+                                {{ movie.director }}
+                            </el-descriptions-item>
+                        </el-descriptions>
+                    </el-card>
+                </div>
+            </div>
+            <!-- 評分區塊 -->
+            <div class="row mt-4">
+                <div class="col-lg-6">
+                    <div class="rating-container">
+                        <div class="rating-content">
+                            <el-rate v-model="movie.rating_score"
+                                     disabled
+                                     show-score
+                                     text-color="#ff9900"
+                                     score-template="{value} 分"
+                                     size="large">
+                            </el-rate>
+                            <span class="rating-count">{{ movie.rating_count }} 人評分</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <el-button type="primary" class="booking-btn" v-on:click="bookTicket">
+                        立即訂票
+                    </el-button>
+                </div>
+            </div>
+            <!-- 電影簡介區塊 -->
+            <div class="row mt-5">
+                <div class="col-lg-12">
+                    <div class="description-container">
+                        <h3 class="description-title">劇情簡介</h3>
+                        <div class="description-content">
+                            {{ movie.description }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 演員區塊 -->
+            <div class="row mt-5">
+                <div class="col-lg-12">
+                    <div class="description-container">
+                        <h3 class="description-title">電影演員</h3>
+                        <div class="description-content">
+                            {{ movie.cast }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 評論區塊 -->
+            <div class="container comment-section mt-5">
+                <!-- 展開/收合按鈕區域 -->
+                <div class="comment-header" v-on:click="toggleComments">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="d-flex align-items-center gap-3">
+                            <h3 class="section-title mb-0">評論區</h3>
+                            <span class="review-stats">
+                                <el-rate v-model="movie.rating_score" disabled show-score></el-rate>
+                                <span class="review-count">({{ movie.rating_count }}則評論)</span>
+                            </span>
+                        </div>
+                        <i class="fas" :class="isCommentsOpen ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+                    </div>
+                </div>
+
+                <!-- 評論內容區 -->
+                <el-collapse-transition>
+                    <div v-show="isCommentsOpen" class="comment-container">
+                        <!-- 評論輸入區 - 僅在登入且有訂單時顯示 -->
+                        <div v-if="isLoggedIn && movie.canReview" class="review-input-section mb-4">
+                            <div class="current-user-comment">
+                                <div class="d-flex align-items-center gap-2 mb-2">
+                                    <span class="current-user-name">{{ currentUserName }}</span>
+                                </div>
+                                <div class="comment-input-group">
+                                    <div class="rating-input mb-2">
+                                        <el-rate v-model="newReview.rating"
+                                                 :texts="['極差', '差', '一般', '好', '極好']"
+                                                 show-text>
+                                        </el-rate>
+                                    </div>
+                                    <el-input v-model="newReview.comment"
+                                              type="textarea"
+                                              :autosize="{ minRows: 3, maxRows: 6 }"
+                                              placeholder="寫下您的評論..."
+                                              resize="none"
+                                              class="custom-textarea" />
+                                    <div class="button-container mt-2">
+                                        <el-button type="primary"
+                                                   class="comment-submit"
+                                                   :disabled="!canSubmitReview"
+                                                   :loading="isSubmitting"
+                                                   v-on:click="submitReview">
+                                            發表評論
+                                        </el-button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 登入提示 - 僅在未登入時顯示 -->
+                        <div v-if="isLoggedIn && !movie.canReview" class="alert alert-info mb-4" role="alert">
+                            完成本電影的訂票並觀賞後，即可發表評論。
+                        </div>
+                        <div v-if="!isLoggedIn" class="alert alert-info mb-4" role="alert">
+                            <a href="/Members/Login" class="alert-link">登入</a>&nbsp並完成訂票後，即可發表評論。
+                        </div>
+
+                        <!-- 評論列表 - 所有人都能看到 -->
+                        <div class="reviews-list">
+                            <template v-if="movie.reviews && movie.reviews.length > 0">
+                                <div v-for="review in movie.reviews"
+                                     :key="review.id"
+                                     class="review-item mb-4">
+                                    <div class="review-header d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <div class="reviewer-name">{{ review.memberName }}</div>
+                                            <div class="review-date text-muted">
+                                                {{ formatDate(review.createdAt) }}
+                                            </div>
+                                        </div>
+                                        <div class="review-rating">
+                                            <el-rate v-model="review.rating"
+                                                     disabled
+                                                     show-score
+                                                     text-color="#ff9900">
+                                            </el-rate>
+                                        </div>
+                                    </div>
+                                    <div class="review-content mt-2">
+                                        {{ review.comment }}
+                                    </div>
+                                </div>
+                            </template>
+                            <div v-else class="no-reviews text-center py-4">
+                                <p class="text-muted">目前還沒有評論</p>
+                            </div>
+                        </div>
+                    </div>
+                </el-collapse-transition>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-center text-lg-start mvFooter">
+        <!-- Section: Links  -->
+        <section>
+            <div class="container text-center text-md-start mt-3">
+                <!-- Grid row -->
+                <div class="row mt-3">
+                    <!-- Grid column -->
+                    <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+                        <!-- Content -->
+                        <h6 class="text-uppercase fw-bold mb-4">
+                            <i class="fas fa-gem me-3"></i>關於網站
+                        </h6>
+                        <p>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo, hic eaque soluta est minus neque fugiat itaque odio culpa dolor, voluptate officiis eum corrupti perferendis ea.
+                        </p>
+                    </div>
+                    <!-- Grid column -->
+                    <!-- Grid column -->
+                    <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+                        <!-- Links -->
+                        <h6 class="text-uppercase fw-bold mb-4">
+                            會員資訊
+                        </h6>
+                        <p>
+                            <a href="#!" class="text-reset text-decoration-none">
+                                <i class="fa-solid fa-user-plus"></i>&nbsp;加入會員
+                            </a>
+                        </p>
+                        <p>
+                            <a href="#!" class="text-reset text-decoration-none">
+                                <i class="fa-solid fa-user"></i>&nbsp;&nbsp;會員專區
+                            </a>
+                        </p>
+                    </div>
+                    <!-- Grid column -->
+                    <!-- Grid column -->
+                    <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+                        <!-- Links -->
+                        <h6 class="text-uppercase fw-bold mb-4">聯絡我們</h6>
+                        <p><i class="fas fa-home me-3"></i> New York, NY 10012, US</p>
+                        <p>
+                            <i class="fas fa-envelope me-3"></i>
+                            info@example.com
+                        </p>
+                        <p><i class="fas fa-phone me-3"></i> + 01 234 567 88</p>
+                    </div>
+                    <!-- Grid column -->
+                </div>
+                <!-- Grid row -->
+            </div>
+        </section>
+        <!-- Section: Links  -->
+        <!-- Copyright -->
+        <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.08);">
+            © 2024 Copyright :
+            <a class="text-reset fw-bold text-decoration-none" href="#">網站名稱</a>
+        </div>
+        <!-- Copyright -->
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/vue@3.3.4/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/element-plus@2.2.30/dist/index.full.js"></script>
+    <script>
+        const movieData = @Html.Raw(Json.Encode(Model));
+    </script>
+    <script src="~/Scripts/Movie.js"></script>
+</body>
+</html>

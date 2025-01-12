@@ -167,5 +167,7 @@ namespace ClientSide.Models.EFModels
                 .Property(e => e.PasswordHash)
                 .IsUnicode(false);
         }
+
+        public System.Data.Entity.DbSet<ClientSide.Models.ViewModels.MovieDetailVm> MovieDetailVms { get; set; }
     }
 }

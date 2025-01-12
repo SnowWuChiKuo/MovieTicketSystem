@@ -1,9 +1,26 @@
-﻿.movie-card-wrapper {
+﻿:root {
+    --primary-bg: #F5F5F1; /* 主要背景色 - 象牙白 */
+    --secondary-bg: #FFFFFF; /* 次要背景 - 純白 */
+    --nav-footer-bg: #1A1D24; /* Navbar 和 Footer 背景 - 深色背景 */
+    --accent-color: #E0A96D; /* 強調色 - 暖金色 */
+    --text-primary: #2C3639; /* 主要文字 - 深灰藍 */
+    --text-secondary: #526D82; /* 次要文字 - 灰藍色 */
+    --text-light: #F5F5F1; /* 淺色文字 */
+    --border-color: #DDE6ED; /* 邊框顏色 - 淺灰 */
+    --footer-text: #E2E8F0; /* Footer 文字顏色 - 淺灰白 */
+    --footer-link: #A6ADBA; /* Footer 連結顏色 - 中灰 */
+    --footer-copyright-bg: #242b2d; /* Footer 版權區背景色 - 深一點的灰藍 */
+    --skeleton-bg: #E2E8F0; /* Skeleton 背景色 */
+    --primary-navy: #1A1D24; /* 主要深藍色 */
+    --skeleton-highlight: #F8FAFC; /* Skeleton 高亮色 */
+}
+
+.movie-card-wrapper {
     display: flex;
     align-items: center;
     justify-content: center;
-    position: relative; 
-    padding: 0 40px; 
+    position: relative;
+    padding: 0 40px;
 }
 
 .movie-card {
@@ -17,9 +34,9 @@
     width: 240px;
     height: 360px;
     border-radius: 4px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.15);
     overflow: hidden;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0));
+    background: var(--secondary-bg);
 }
 
     .movie-card:hover {
@@ -28,49 +45,49 @@
     }
 
 
-    /* hover效果 */
-    .movie-card:hover h1 {
-        opacity: 0;
-        transform: scale(0.6);
+        /* hover效果 */
+        .movie-card:hover h1 {
+            opacity: 0;
+            transform: scale(0.6);
+        }
+
+        .movie-card:hover img {
+            transform: scale(1.035);
+        }
+
+        .movie-card:hover figcaption {
+            bottom: 0;
+        }
+
+    .movie-card h1 {
+        position: absolute;
+        top: 25px;
+        left: 25px;
+        margin: 0;
+        padding: 0;
+        color: white;
+        font-size: 1.2rem !important;
+        font-weight: 100;
+        line-height: 1;
+        opacity: 1;
+        transform: scale(1);
+        transition: 0.45s ease;
+        z-index: 999;
+        font-family: 'Lexend Deca','Noto Sans TC' !important;
+        font-weight: 300;
     }
 
-    .movie-card:hover img {
-        transform: scale(1.035);
+    .movie-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 50%;
+        background: linear-gradient(to bottom, rgba(26, 29, 36, 0.6), rgba(26, 29, 36, 0));
+        z-index: 1;
+        pointer-events: none;
     }
-
-.movie-card:hover figcaption {
-    bottom: 0;
-}
-
-.movie-card h1 {
-    position: absolute;
-    top: 25px;
-    left: 25px;
-    margin: 0;
-    padding: 0;
-    color: white;
-    font-size: 2rem;
-    font-weight: 100;
-    line-height: 1;
-    opacity: 1;
-    transform: scale(1);
-    transition: 0.45s ease;
-    z-index: 999;
-    font-family: 'Lexend Deca','Noto Sans TC' !important;
-    font-weight: 300;
-}
-
-.movie-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 50%;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
-    z-index: 1;
-    pointer-events: none;
-}
 
     .movie-card img {
         width: 100%;
@@ -89,7 +106,7 @@
         width: 100%;
         margin: 0;
         padding: 20px 20px;
-        background-color: rgba(0, 0, 0, 0.85);
+        background-color: rgba(26, 29, 36, 0.85);
         box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
         color: white;
         line-height: 1;
@@ -107,9 +124,9 @@
 
         .movie-card figcaption p {
             margin-bottom: 10px;
-            max-height: 70px; 
+            max-height: 70px;
             overflow: hidden;
-            font-size: 14px; 
+            font-size: 14px;
             line-height: 1.5;
         }
 
@@ -118,38 +135,50 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 20px 0 0; 
-    padding: 10px 30px; 
+    margin: 20px 0 0;
+    padding: 10px 30px;
     background-color: #1abc9c;
     border: none;
     border-radius: 5px;
     color: white;
-    font-size: 14px; 
+    font-size: 14px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
-.btn-book:hover {
-    background-color: #168a73;
-}
+    .btn-book:hover {
+        background-color: #168a73;
+    }
 
 #carouselExampleAutoplaying {
-    height: 500px !important;
-    margin-top: 25px !important;
+    height: 360px !important;
+    margin-top: 1rem !important;
     margin-bottom: 3rem !important;
     overflow: hidden;
+    background-color: #000000;
+    z-index: 800;
 }
 
 .carousel-inner,
 .carousel-item {
     height: 100% !important;
+    background-color: #000000;
+    transition: transform 0.8s ease-in-out;
 }
 
-.carousel-inner img {
-    height: 500px !important;
-    width: 100% !important;
-    object-fit: cover !important;
-}
+    .carousel-item.active,
+    .carousel-item-next,
+    .carousel-item-prev {
+        display: block;
+        transition: transform 0.8s ease-in-out;
+    }
+
+    .carousel-inner img {
+        height: 360px !important;
+        width: 100% !important;
+        object-fit: contain !important;
+        transition: transform 0.8s ease-in-out;
+    }
 
 .carousel-caption {
     position: absolute;
@@ -159,33 +188,53 @@
     background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0));
     padding: 20px;
     text-align: center;
+    transition: opacity 0.5s ease-in-out;
 }
-
-.navbar {
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1000;
-    height: 70px;
-    font-family: 'Lexend Deca','Noto Sans TC' !important;
-    border-bottom: 1px solid #000000;
-}
-
-.navbar.fixed-top {
-    position: fixed;
-    width: 100%;
-}
-
-.navbar-collapse {
-    background-color: inherit; 
-}
-
+/*
 .mvFooter {
     font-family: 'Lexend Deca','Noto Sans TC' !important;
-    border-top: 1px solid #000000;
+    border-top: 2px solid var(--accent-color);
     text-decoration: none;
+    background-color: var(--primary-bg);
+    color: var(--accent-color);
 }
 
+    .mvFooter * {
+        color: var(--accent-color) !important;
+    }
+
+    .mvFooter a {
+        color: var(--accent-color) !important;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+        .mvFooter a:hover {
+            color: #B07F3A !important;
+        }
+
+    .mvFooter .fw-bold {
+        color: var(--text-light);
+    }
+
+    .mvFooter .text-center.p-4 {
+        background-color: var(--secondary-bg);
+        color: var(--footer-text);
+    }
+
+    .mvFooter .container {
+        padding-top: 2rem;
+        padding-bottom: 1rem;
+    }
+
+    .mvFooter i {
+        color: var(--accent-color);
+    }
+
+    .mvFooter h6 {
+        font-weight: 500;
+    }
+*/
 .mvblock {
     max-height: 450px;
 }
@@ -194,19 +243,20 @@ html, body {
     height: 100%;
     margin: 0;
     padding: 0;
+    background-color: var(--primary-bg);
+    color: var(--text-primary);
 }
 
 body {
-    padding-top: 70px;
     font-family: 'Noto Sans TC', serif;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    min-height: 100vh; 
+    min-height: 100vh;
 }
 
 main {
-    flex: 1; 
+    flex: 1;
 }
 
 .movie-card-container {
@@ -219,35 +269,49 @@ main {
     scrollbar-width: none;
     scroll-behavior: smooth;
 }
-.movie-card-container::-webkit-scrollbar {
-    display: none;
-}
+
+    .movie-card-container::-webkit-scrollbar {
+        display: none;
+    }
+
 .scroll-btn {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background-color: #000000;
-    border: none;
-    color: white;
-    font-size: 1.5rem;
+    background: var(--primary-bg);
+    border: 1px solid var(--primary-bg);
+    color: var(--text-primary);
+    font-size: 1.2rem;
     cursor: pointer;
-    z-index: 1000;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    opacity: 0.8;
+    z-index: 500;
+    width: 32px;
+    height: 280px; /* 設為 card 高度的 80% */
+    opacity: 0.9;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(2px);
+    border-radius: 4px;
 }
 
-.scroll-btn:hover {
-    opacity: 1;
-}
+    .scroll-btn:hover {
+        opacity: 1;
+        background-color: var(--primary-bg);
+        color: var(--accent-color);
+        border-color: var(--accent-color);
+    }
 
 .btn-left {
     left: 0;
+    margin-left: 8px;
+    border-radius: 0 4px 4px 0;
 }
 
 .btn-right {
     right: 0;
+    margin-right: 8px;
+    border-radius: 4px 0 0 4px;
 }
 
 .card-item {
@@ -260,44 +324,309 @@ main {
 .pTitleNewestMv {
     font-size: 2rem;
     font-weight: 700;
-    padding-top: 70px;
+    padding-top: 1rem;
+    color: var(--accent-color);
 }
 
 .pTitle {
     font-size: 2rem;
     font-weight: 700;
+    color: var(--accent-color);
 }
 
-.navbar a {
-    text-decoration: none !important;
+/* 添加電影詳情頁面的額外間距 */
+#movie-detail-app {
+    padding-top: 20px;
 }
 
+/* 調整卡片中的連結樣式 */
+.movie-card a {
+    text-decoration: none;
+    color: inherit;
+}
+
+    .movie-card a:hover {
+        text-decoration: underline;
+    }
+
+/* Skeleton 效果 */
+.skeleton-container {
+    position: relative;
+    overflow: hidden;
+}
+
+.movie-card.skeleton {
+    background: var(--skeleton-bg);
+}
+
+    .movie-card.skeleton::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient( 90deg, var(--skeleton-bg) 0%, var(--skeleton-highlight) 50%, var(--skeleton-bg) 100% );
+        animation: shimmer 1.5s infinite;
+    }
+
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+/* 調整頁尾標題顏色 */
+/*.mvFooter h6.text-uppercase {
+    color: var(--accent-color) !important;
+    font-weight: 500;
+    margin-bottom: 1.2rem;
+}*/
+
+/* 調整頁尾文字顏色 */
+/*.mvFooter p {
+    color: var(--accent-color) !important;
+    margin-bottom: 0.8rem;
+}*/
+
+/* 當滑鼠移到電影卡片容器上時顯示按鈕 */
+.mvblock:hover .scroll-btn {
+    opacity: 0.9;
+}
+
+/* 調整容器樣式以配合新的按鈕 */
+.mvblock {
+    position: relative;
+    padding: 0 8px;
+}
+
+.movie-card-container {
+    margin: 0 40px;
+}
+
+/* 優化輪播控制按鈕的過渡效果 */
+.carousel-control-prev,
+.carousel-control-next {
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* 添加淡入淡出效果 */
+.carousel-fade .carousel-item {
+    opacity: 0;
+    transition-duration: .8s;
+    transition-property: opacity;
+}
+
+    .carousel-fade .carousel-item.active,
+    .carousel-fade .carousel-item-next.carousel-item-start,
+    .carousel-fade .carousel-item-prev.carousel-item-end {
+        opacity: 1;
+    }
+
+.carousel-fade .active.carousel-item-start,
+.carousel-fade .active.carousel-item-end {
+    opacity: 0;
+}
+
+/* 更新 Footer 基本樣式 */
+.mvFooter {
+    background-color: var(--nav-footer-bg);
+    color: #E2E8F0;
+    border-top: 2px solid var(--accent-color);
+    width: 100%;
+    margin-top: 2rem;
+    z-index: 1000;
+}
+
+    .mvFooter h6 {
+        color: #E2E8F0 !important;
+        font-weight: 500;
+    }
+
+    .mvFooter p {
+        color: #E2E8F0 !important;
+        margin-bottom: 1rem;
+    }
+
+    .mvFooter a {
+        color: #E2E8F0 !important;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+        .mvFooter a:hover {
+            color: var(--accent-color) !important;
+        }
+
+    .mvFooter .fas,
+    .mvFooter .fa-solid {
+        color: #E2E8F0 !important;
+    }
+
+    .mvFooter .container {
+        padding: 2rem 1rem;
+    }
+
+    .mvFooter .text-center.p-4 {
+        background-color: rgba(0, 0, 0, 0.2);
+        padding: 1rem !important;
+    }
+
+/* 響應式調整 */
+@media (max-width: 768px) {
+    .mvFooter .col-md-3,
+    .mvFooter .col-md-2,
+    .mvFooter .col-md-4 {
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+
+        .mvFooter .col-md-3:last-child,
+        .mvFooter .col-md-2:last-child,
+        .mvFooter .col-md-4:last-child {
+            margin-bottom: 0;
+        }
+}
+
+/* Footer 排版樣式 */
+.mvFooter {
+    text-decoration: none;
+}
+
+    .mvFooter .container {
+        padding-top: 2rem;
+        padding-bottom: 1rem;
+    }
+
+/* =======================
+   導航欄 (Navbar) 樣式
+   ======================= */
+
+/* Navbar 基本樣式 */
+.navbar {
+    background-color: var(--nav-footer-bg) !important;
+    border-bottom: 2px solid var(--accent-color);
+    height: 70px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding: 0 15px;
+}
+
+/* Navbar 品牌名稱 */
+.navbar-brand {
+    font-size: 1.5rem !important;
+    padding: 0 !important;
+    color: #E2E8F0 !important;
+    font-family: 'Noto Sans TC', sans-serif;
+}
+
+/* Navbar 連結樣式 */
+.navbar .nav-link {
+    font-size: 1.1rem;
+    padding: 0.5rem 1rem !important;
+    color: #E2E8F0 !important;
+    font-family: 'Noto Sans TC', sans-serif;
+    transition: color 0.3s ease;
+}
+
+    /* Navbar 連結懸停效果 */
+    .navbar .nav-link:hover {
+        color: var(--accent-color) !important;
+    }
+
+/* Navbar 按鈕樣式 */
+.navbar .btn {
+    font-size: 1rem !important;
+    padding: 0.5rem 1rem !important;
+    transition: color 0.3s ease;
+    color: #E2E8F0 !important;
+}
+
+/* Navbar 漢堡選單按鈕 */
 .navbar-toggler {
-    color: #ffffff;
+    padding: 0.5rem;
+    border: none;
+    color: #E2E8F0;
+    background: none;
 }
 
+/* 自定義漢堡圖標 */
 .navbar-toggler-icon {
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
 }
 
-.movie-card h1 {
-    font-size: 1.5em;
+/* 手機版導航樣式 */
+@media (max-width: 991px) {
+    .navbar-collapse {
+        background-color: var(--nav-footer-bg);
+        padding: 1rem;
+        border-radius: 8px;
+        margin-top: 0.5rem;
+    }
+
+    .navbar .btn {
+        width: 100%;
+        text-align: left;
+        padding: 0.75rem 1rem !important;
+    }
 }
 
-.mvPagination .page-item .page-link {
-    font-family: 'Lexend Deca','Noto Sans TC' !important;
-    color: #000000 !important;
-    border: 0px !important;
-}
-/*畫面large時navbar功能外距*/
+/* 桌面版導航樣式 */
 @media (min-width: 992px) {
     .userAction {
         margin-right: 8rem !important;
     }
-}
 
-@media (min-width: 992px) {
     .siteName {
         margin-left: 8rem !important;
     }
+}
+
+/* 評分區域樣式 */
+.rating-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.rating-content {
+    display: flex;
+    align-items: center; /* 確保所有元素垂直居中對齊 */
+    gap: 8px;
+}
+
+/* 評分數字樣式 */
+.el-rate__text {
+    line-height: 1; /* 調整行高 */
+    vertical-align: middle; /* 垂直居中 */
+    margin-top: -2px; /* 微調位置 */
+}
+
+/* 評分人數樣式 */
+.rating-count {
+    line-height: 1; /* 調整行高 */
+    vertical-align: middle; /* 垂直居中 */
+}
+
+/* 星星樣式 */
+.el-rate {
+    display: inline-flex;
+    align-items: center;
+}
+
+/* 漢堡選單圖標顏色 */
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+}
+
+/* 主要內容區域樣式 */
+#app {
+    padding-top: 70px;
 }
