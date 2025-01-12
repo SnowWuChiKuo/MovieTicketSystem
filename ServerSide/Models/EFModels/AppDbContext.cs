@@ -271,9 +271,14 @@ public partial class AppDbContext : DbContext
 
         modelBuilder.Entity<Seat>(entity =>
         {
+            entity.Property(e => e.Number)
+                .IsRequired()
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .IsFixedLength();
             entity.Property(e => e.Row)
                 .IsRequired()
-                .HasMaxLength(1)
+                .HasMaxLength(2)
                 .IsUnicode(false)
                 .IsFixedLength();
 

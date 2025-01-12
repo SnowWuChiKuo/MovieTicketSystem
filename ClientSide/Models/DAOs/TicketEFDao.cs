@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
 using ClientSide.Models.ViewModels;
+using System.Web.UI.WebControls;
 
 namespace ClientSide.Models.DAOs
 {
@@ -66,8 +67,8 @@ namespace ClientSide.Models.DAOs
 										ScreeningId = d.ScreeningId,
 										SeatId = d.SeatId,
 										Status = d.Status,
-										Row = d.Seat.Row,
-										Number = d.Seat.Number,
+										Row = (d.Seat.Row).Count(),
+										Number = (d.Seat.Number).Count(),
 										IsDisabled = d.Seat.IsDisabled,
 									}).ToList();
 			if (data == null) throw new Exception("找不到此場次做位");

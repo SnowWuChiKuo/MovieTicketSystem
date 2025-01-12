@@ -8,7 +8,7 @@ namespace ClientSide.Models.EFModels
 	public partial class AppDbContext : DbContext
 	{
 		public AppDbContext()
-			: base("name=AppDbContext12")
+			: base("name=AppDbContext13")
 		{
 		}
 
@@ -26,6 +26,7 @@ namespace ClientSide.Models.EFModels
 		public virtual DbSet<Screening> Screenings { get; set; }
 		public virtual DbSet<Seat> Seats { get; set; }
 		public virtual DbSet<SeatStatu> SeatStatus { get; set; }
+		public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
 		public virtual DbSet<Theater> Theaters { get; set; }
 		public virtual DbSet<Ticket> Tickets { get; set; }
 		public virtual DbSet<TicketSeat> TicketSeats { get; set; }
@@ -117,6 +118,11 @@ namespace ClientSide.Models.EFModels
 
 			modelBuilder.Entity<Seat>()
 				.Property(e => e.Row)
+				.IsFixedLength()
+				.IsUnicode(false);
+
+			modelBuilder.Entity<Seat>()
+				.Property(e => e.Number)
 				.IsFixedLength()
 				.IsUnicode(false);
 

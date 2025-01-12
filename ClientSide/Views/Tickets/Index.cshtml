@@ -110,6 +110,7 @@
     </div>
 
     <!-- 座位選擇區 -->
+    <!-- 座位選擇區域的 HTML 部分 -->
     <div v-if="showSeats">
         <div class="top-buttons">
             <button class="btn btn-danger" v-on:click="goBack">回上一步</button>
@@ -121,7 +122,7 @@
         <div class="legend">
             <div class="legend-item">
                 <div class="legend-box"></div>
-                <span>座位狀況</span>
+                <span>可選座位</span>
             </div>
             <div class="legend-item">
                 <div class="legend-box selected"></div>
@@ -138,23 +139,21 @@
 
         <!-- 座位區域 -->
         <div class="seat-container">
-            <div v-for="row in 10" :key="row" class="seat-row">
+            <div v-for="row in uniqueRows" :key="row" class="seat-row">
                 <div class="row-number">{{ row }}</div>
                 <div class="seat-section">
-                    <template v-for="col in 19" :key="col">
-                        <!-- 插入空隙 -->
-                        <div v-if="col === 5 || col === 15"
-                             class="seat gap"></div>
+                    <template v-for="seat in getSeatsForRow(row)" :key="seat.Id">
+                        <!-- 插入走道空隙 -->
+                        <div v-if="shouldAddGap(seat.Number)" class="seat gap"></div>
 
-                        <!-- 正常座位 -->
-                        <div v-else
-                             class="seat"
+                        <!-- 座位 -->
+                        <div class="seat"
                              v-bind:class="{
-                    selected: isSelected(row, col),
-                    unavailable: isUnavailable(row, col)
-                  }"
-                             v-on:click="toggleSeat(row, col)">
-                            {{ col }}
+                            selected: isSelected(seat.Row, seat.Number),
+                            unavailable: seat.IsDisabled || seat.Status === 'Occupied'
+                         }"
+                             v-on:click="toggleSeat(seat.Row, seat.Number)">
+                            {{ seat.Number }}
                         </div>
                     </template>
                 </div>
@@ -163,11 +162,12 @@
         </div>
 
         <div class="bottom-buttons">
-            <button class="btn btn-success" v-on:click="completeBooking">
+            <button class="btn btn-success"
+                    v-if="selectedSeats.size === selectedQuantity"
+                    v-on:click="completeBooking">
                 訂票完成
             </button>
         </div>
-
     </div>
 
 </div>
@@ -204,9 +204,18 @@
             const selectedTime = ref(null);
             const selectedTicketSale = ref(null);
             const selectedTicketType = ref(null);
-            const showSeats = ref(false);
+            const selectedTicketPrice = ref(0);
+            const selectedQuantity = ref(1);  // 預設數量為 1
+
+            // 計算總價的邏輯保持不變
+            const totalPrice = computed(() => {
+                if (!selectedTicketType.value || !selectedQuantity.value) return 0;
+                return ticketPrices.value[selectedTicketType.value] * selectedQuantity.value;
+            });
 
             // 座位相關
+            const showSeats = ref(false);
+            const seatStatus = ref([]);
             const selectedSeats = reactive(new Set());
             const unavailableSeats = reactive(
                 new Set([
@@ -216,15 +225,26 @@
                 ])
             );
 
-            const selectedTicketPrice = ref(0);
-            const selectedQuantity = ref(1);  // 預設數量為 1
-
-
-            // 計算總價的邏輯保持不變
-            const totalPrice = computed(() => {
-                if (!selectedTicketType.value || !selectedQuantity.value) return 0;
-                return ticketPrices.value[selectedTicketType.value] * selectedQuantity.value;
+            // 計算所有唯一的排數
+            const uniqueRows = computed(() => {
+                if (!seatStatus.value) return [];
+                return [...new Set(seatStatus.value.map(seat => seat.Row))].sort();
             });
+
+            // 獲取特定排的所有座位
+            const getSeatsForRow = (row) => {
+                return seatStatus.value
+                    .filter(seat => seat.Row === row)
+                    .sort((a, b) => a.Number - b.Number);
+            };
+
+            // 判斷是否需要插入走道空隙
+            const shouldAddGap = (seatNumber) => {
+                return seatNumber === 4 || seatNumber === 14; // 可以根據實際需求調整
+            };
+
+
+            
 
             const selectMovie = (movie) => (selectedMovie.value = movie);
             // 選擇影廳
@@ -405,8 +425,48 @@
                 console.log('已選擇的票價:', selectedTicketPrice.value);
             };
 
+            const selectSeats = () => {
+                // 檢查 screeningId 是否有值
+                if (!screeningId.value || screeningId.value.length === 0) {
+                    console.error('沒有場次編號');
+                    alert('請先選擇場次');
+                    return;
+                }
 
-            const selectSeats = () => (showSeats.value = true);
+                // 準備請求資料
+                const requestData = {
+                    screeningId: parseInt(screeningId.value)
+                };
+
+                console.log('發送座位狀態請求：', requestData);
+
+                // 呼叫 API 獲取座位狀態
+                axios.post('/Tickets/GetSeatStatus', requestData)
+                    .then(response => {
+                        if (response.data && response.data.success) {
+                            seatStatus.value = response.data.data;
+                            console.log('取得的座位狀態：', seatStatus.value);
+
+                            // 更新不可用座位集合
+                            unavailableSeats.clear();
+                            seatStatus.value.forEach(seat => {
+                                if (seat.IsDisabled || seat.Status === "Occupied") {
+                                    unavailableSeats.add(`${seat.Row}-${seat.Number}`);
+                                }
+                            });
+
+                            // 顯示座位選擇區域
+                            showSeats.value = true;
+                        } else {
+                            alert(response.data.message || '取得座位狀態失敗');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('錯誤：', error);
+                        alert('發生錯誤，請稍後再試');
+                    });
+            };
+
             const goBack = () => (showSeats.value = false);
 
             const isSelected = (row, col) => {
@@ -418,33 +478,40 @@
             };
 
 
+            // 修改 toggleSeat 函數
             const toggleSeat = (row, col) => {
                 const seatId = `${row}-${col}`;
-                if (unavailableSeats.has(seatId)) return;
+
+                // 檢查座位是否可選
+                const seat = seatStatus.value.find(s => s.Row === row && s.Number === col);
+                if (seat && (seat.IsDisabled || seat.Status === 'Occupied')) {
+                    return;
+                }
 
                 if (selectedSeats.has(seatId)) {
                     selectedSeats.delete(seatId);
                 } else {
-                    if (selectedSeats.size >= (selectedTicketType.value?.quantity || 0)) {
-                        alert("已達到所選票數上限！");
+                    if (selectedSeats.size >= selectedQuantity.value) {
+                        alert(`最多只能選擇 ${selectedQuantity.value} 個座位！`);
                         return;
                     }
                     selectedSeats.add(seatId);
                 }
             };
 
+            // 修改完成訂票函數
             const completeBooking = () => {
-                if (
-                    selectedSeats.size < (selectedTicketType.value?.quantity || 0)
-                ) {
-                    alert("請選擇足夠的座位！");
+                if (selectedSeats.size < selectedQuantity.value) {
+                    alert(`請選擇 ${selectedQuantity.value} 個座位！`);
                     return;
                 }
-                alert(
-                    `訂票完成！\n已選擇座位：${Array.from(selectedSeats).join(
-                        ", "
-                    )}\n總價：${totalPrice.value}元`
-                );
+
+                const selectedSeatsList = Array.from(selectedSeats).map(seatId => {
+                    const [row, number] = seatId.split('-');
+                    return `${row}排${number}號`;
+                }).join('、');
+
+                alert(`訂票完成！\n已選擇座位：${selectedSeatsList}\n總價：${totalPrice.value}元`);
             };
 
             return {
@@ -457,6 +524,10 @@
                 ticketSales,
                 ticketTypes,
                 ticketPrices,
+                seatStatus,
+                uniqueRows,
+                getSeatsForRow,
+                shouldAddGap,
                 selectedMovie,
                 selectedTheater,
                 selectedDate,

@@ -13,12 +13,13 @@ namespace ServerSide.Models.ViewModels
         
         [Display(Name = "座位行號")]
         [Required]
-        [StringLength(1, ErrorMessage = "座位行號不可超過1個英文字")]
+        [StringLength(2, ErrorMessage = "座位行號不可超過2個數字")]
         public string Row { get; set; }
         
         [Display(Name = "座位編號")]
         [Required]
-        public int Number { get; set; }
+		[StringLength(2, ErrorMessage = "座位行號不可超過2個數字")]
+		public string Number { get; set; }
 
         [Display(Name = "無障礙座位狀態")]
         public bool IsDisabled { get; set; }
