@@ -10,10 +10,13 @@ namespace ClientSide.Models.ViewModels
 	//接收網頁評論區表單資料
 	public class ReviewSubmitVm
 	{
+		public int MovieId { get; set; }
+
 		[Required]
 		[Range(1, 5)]
 		public int Rating { get; set; }
 
+		[Required]
 		[StringLength(2000)]
 		public string Comment { get; set; }
 	}

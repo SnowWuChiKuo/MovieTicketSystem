@@ -152,6 +152,7 @@
     <Compile Include="Models\DAOs\OrderEFDao.cs" />
     <Compile Include="Models\DAOs\OrderItemEFDao.cs" />
     <Compile Include="Models\DAOs\TicketEFDao.cs" />
+    <Compile Include="Models\DTOs\AllMoviesDto.cs" />
     <Compile Include="Models\DTOs\MovieDetailDto.cs" />
     <Compile Include="Models\DTOs\MovieIndexDto.cs" />
     <Compile Include="Models\DTOs\RegisterDto.cs" />
@@ -187,6 +188,7 @@
     <Compile Include="Models\Services\MemberService.cs" />
     <Compile Include="Models\Services\OrderItemService.cs" />
     <Compile Include="Models\Services\OrderService.cs" />
+    <Compile Include="Models\ViewModels\AllMoviesVm.cs" />
     <Compile Include="Models\ViewModels\CartItemVm.cs" />
     <Compile Include="Models\Services\TicketService.cs" />
     <Compile Include="Models\Services\MovieService.cs" />
@@ -226,6 +228,7 @@
     <Content Include="codetemplates\PackageVersions5.2.7.xml" />
     <Content Include="codetemplates\PackageVersions5.2.8.xml" />
     <Content Include="codetemplates\PackageVersions5.2.9.xml" />
+    <Content Include="Content\AllMovie.css" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap-grid.rtl.css" />
@@ -246,6 +249,7 @@
     <Content Include="Content\Movie.css" />
     <Content Include="Content\MovieMainPageCss.css" />
     <Content Include="Content\Shared\_FooterStyles.css" />
+    <Content Include="Content\Shared\_Layout.css" />
     <Content Include="Content\Shared\_NavbarStyles.css" />
     <Content Include="Content\Shared\_Variables.css" />
     <Content Include="Content\Ticket.css" />
@@ -320,6 +324,7 @@
     <Content Include="MoviePosters\風暴來襲：戰火蔓延 預告.jpg" />
     <Content Include="MoviePosters\鬼面信號 預告.jpg" />
     <Content Include="MoviePosters\鬼面信號.jpg" />
+    <Content Include="Scripts\AllMovie.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
@@ -449,6 +454,7 @@
     <Content Include="Views\OrderItems\Detail.cshtml" />
     <Content Include="Views\Shared\_NavbarPartial.cshtml" />
     <Content Include="Views\Shared\_FooterPartial.cshtml" />
+    <Content Include="Views\Movies\AllMovies.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

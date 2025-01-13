@@ -175,5 +175,7 @@ namespace ClientSide.Models.EFModels
         }
 
         public System.Data.Entity.DbSet<ClientSide.Models.ViewModels.MovieDetailVm> MovieDetailVms { get; set; }
+
+        public System.Data.Entity.DbSet<ClientSide.Models.ViewModels.AllMoviesVm> AllMoviesVms { get; set; }
     }
 }

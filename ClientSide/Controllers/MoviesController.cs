@@ -60,6 +60,19 @@ namespace ClientSide.Controllers
 		}
 
 		
+		public ActionResult AllMovies()
+		{
+			var allMovies = _service.GetAllMovies();
+			var allMoviesVm = allMovies.Select(dto => new AllMoviesVm
+			{
+				Id = dto.Id,
+				Title = dto.Title,
+				ReleaseDate = dto.ReleaseDate,
+				PosterURL = $"/MoviePosters/{dto.Title}.jpg",
+			}).ToList();
+
+			return View(allMoviesVm);
+		}
 
 		/// <summary>
 		/// 單一電影頁面
@@ -116,33 +129,32 @@ namespace ClientSide.Controllers
 
 
 		[HttpPost]
-		[Authorize]
-		[ValidateAntiForgeryToken]
-		public ActionResult SubmitReview(int movieId,ReviewSubmitVm model)
+		public ActionResult SubmitReview(int movieId, ReviewSubmitVm model)
 		{
-			if (!ModelState.IsValid)
-			{
-				return Json(new { success = false,message = "請確認評分是否填寫!"});
-			}
-
 			try
 			{
-				var account = User.Identity.Name;
-				if (!_service.CheckUserHasValidOrder(account, movieId))
+				if (!ModelState.IsValid)
 				{
-					return Json(new { success = false, message = "您沒有本電影的訂票紀錄!" });
+					return Json(new { success = false, message = "評論內容不完整" });
 				}
-				//新增評論，把傳來的頁面電影Id跟提交表單資料用Dto傳入
-				var review = _service.AddReview(account ,new ReviewCreateDto
+
+				if (!User.Identity.IsAuthenticated)
+				{
+					return Json(new { success = false, message = "請先登入" });
+				}
+
+				var dto = new ReviewCreateDto
 				{
 					MovieId = movieId,
-					Comment = model.Comment,
-					Rating = model.Rating
-				});
+					Rating = model.Rating,
+					Comment = model.Comment
+				};
+
+				var review = _service.AddReview(User.Identity.Name, dto);
 
 				return Json(new { 
-					success = true,
-					data = new{
+					success = true, 
+					data = new {
 						id = review.Id,
 						memberName = review.MemberName,
 						comment = review.Comment,
@@ -150,14 +162,11 @@ namespace ClientSide.Controllers
 						rating = review.Rating
 					}
 				});
-
 			}
 			catch (Exception ex)
 			{
-				return Json(new { success = false, message = "評論發表失敗" });
+				return Json(new { success = false, message = ex.Message });
 			}
-
-
 		}
 
 	}

@@ -21,15 +21,25 @@
     <link href="~/Content/Shared/_Variables.css" rel="stylesheet">
     <link href="~/Content/Shared/_NavbarStyles.css" rel="stylesheet">
     <link href="~/Content/Shared/_FooterStyles.css" rel="stylesheet">
+    <link href="~/Content/Shared/_Layout.css" rel="stylesheet" />
 
     @RenderSection("Styles", required: false)
+
+    <!-- 確保這些引用存在且順序正確 -->
+    <link href="https://unpkg.com/element-plus/dist/index.css" rel="stylesheet">
+    <script src="https://unpkg.com/vue@3"></script>
+    <script src="https://unpkg.com/element-plus"></script>
 </head>
 <body>
-    @Html.Partial("_NavbarPartial")
+    <div class="layout-container">
+        @Html.Partial("_NavbarPartial")
+        
+        <main class="main-content">
+            @RenderBody()
+        </main>
 
-    @RenderBody()
-
-    @Html.Partial("_FooterPartial")
+        @Html.Partial("_FooterPartial")
+    </div>
 
     <!-- 核心框架 - 注意引用順序 -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

@@ -24,6 +24,11 @@ namespace ClientSide.Models.Services
 			return _repo.GetIndexMovie();
 		}
 
+		public List<AllMoviesDto> GetAllMovies()
+		{
+			return _repo.GetAllMovies();
+		}
+
 		public List<MovieIndexDto> GetLatestMovies()
 		{
 			return _repo.GetLatestMovies();

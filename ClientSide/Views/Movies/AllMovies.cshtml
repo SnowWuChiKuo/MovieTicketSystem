@@ -1,0 +1,49 @@
+﻿@model IEnumerable<ClientSide.Models.ViewModels.AllMoviesVm>
+
+@{
+    ViewBag.Title = "全部電影";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <link href="~/Content/AllMovie.css" rel="stylesheet" />
+}
+
+<div id="movie-list-app" class="movie-list-container">
+    <div class="container main-container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="mvTitle mb-4 mt-4">全部電影</h1>
+            </div>
+        </div>
+        
+        <div class="movie-list">
+            <div v-for="movie in movies" 
+                 :key="movie.Id" 
+                 class="movie-card"
+                 v-on:click="goToMovie(movie.Id)">
+                <div class="movie-poster">
+                    <img :src="movie.PosterURL" :alt="movie.Title">
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">{{ movie.Title }}</h3>
+                    <div class="movie-meta">
+                        <div class="review-count" v-if="movie.ReviewCount > 0">
+                            {{ movie.ReviewCount }} 則評論
+                        </div>
+                        <div class="release-date">
+                            上映日期：{{ formatDate(movie.ReleaseDate) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const moviesData = @Html.Raw(Json.Encode(Model));
+    </script>
+    <script src="~/Scripts/AllMovie.js"></script>
+}
