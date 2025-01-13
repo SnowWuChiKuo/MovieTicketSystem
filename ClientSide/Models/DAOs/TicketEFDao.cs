@@ -80,12 +80,14 @@ namespace ClientSide.Models.DAOs
 										ScreeningId = d.ScreeningId,
 										SeatId = d.SeatId,
 										Status = d.Status,
-                                        Row = d.Seat.Row,         // 直接使用座位的 Row 值
-                                        Number = d.Seat.Number,   // 直接使用座位的 Number 值
-                                        IsDisabled = d.Seat.IsDisabled,
+										Row = d.Seat.Row,         // 直接使用座位的 Row 值
+										Number = d.Seat.Number,   // 直接使用座位的 Number 值
+										IsDisabled = d.Seat.IsDisabled,
 									}).ToList();
 			if (data == null) throw new Exception("找不到此場次做位");
 			return data;
 		}
-	}
+
+
+    }
 }
