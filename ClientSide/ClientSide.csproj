@@ -195,6 +195,7 @@
     <Compile Include="Models\ViewModels\ReviewCreateDto.cs" />
     <Compile Include="Models\ViewModels\ReviewDisplayVm.cs" />
     <Compile Include="Models\ViewModels\ReviewSubmitVm.cs" />
+    <Compile Include="Models\ViewModels\TheaterVm.cs" />
     <Compile Include="Models\ViewModels\TicketVm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

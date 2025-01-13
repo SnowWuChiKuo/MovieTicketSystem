@@ -19,7 +19,28 @@ namespace ClientSide.Controllers
 			return View();
         }
 
-		[HttpPost]
+        [HttpPost]
+        public JsonResult GetTheaters(int? movieId)
+        {
+            try
+            {
+                if (!movieId.HasValue)
+                {
+                    return Json(new { success = false, message = "影廳編號不可為空" });
+                }
+
+                var service = new TicketService();
+                var showtime = service.GetTheaters(movieId.Value);
+
+                return Json(new { success = true, data = showtime }, JsonRequestBehavior.AllowGet); // 加上 JsonRequestBehavior
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+        [HttpPost]
 		public JsonResult GetShowTimes(int? theaterId)
 		{
 			try

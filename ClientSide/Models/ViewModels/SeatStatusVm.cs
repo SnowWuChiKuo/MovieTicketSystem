@@ -16,9 +16,9 @@ namespace ClientSide.Models.ViewModels
 
 		public string Status { get; set; }
 
-		public int Row { get; set; }
+		public string Row { get; set; }
 
-		public int Number { get; set; }
+		public string Number { get; set; }
 
 		public bool IsDisabled { get; set; }
 	}
