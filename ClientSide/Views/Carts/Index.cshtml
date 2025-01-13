@@ -27,15 +27,27 @@
                         </div>
                     </div>
                     <div class="text-center " style="margin-top: 80px">
-                        <a href="~/Carts/Checkout" class="btn btn-danger " >前往結帳</a>
+                        @*<a href="~/Carts/Checkout" class="btn btn-danger ">前往結帳</a>*@
+                        <form asp-action="Checkout" id="deleteUserForm">
+                            <div class="mb-3">
+                                <input type="submit" value="前往結帳" class="btn btn-danger" />
+                            </div>
+                        </form>
                     </div>
                 }
             }
             else
             {
-                <h1 style="text-align: center; margin-top: 100px;" class="" asp-action="Edit">訂票夾是空的</h1>
+                <h1 style="text-align: center; margin-top: 100px;" class="" asp-action="Checkout">訂票夾是空的</h1>
 
             }
         }
     </div>
 </div>
+@if (ViewBag.ShouldReload != null && ViewBag.ShouldReload == true)
+{
+    <script>
+        window.location.reload();
+        window.location.reload();
+    </script>
+}

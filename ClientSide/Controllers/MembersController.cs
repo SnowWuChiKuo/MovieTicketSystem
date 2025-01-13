@@ -133,7 +133,8 @@ namespace ClientSide.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("" ,ex.Message);
+                //ModelState.AddModelError("" ,ex.Message);
+                TempData["ErrorMessage"] = ex.Message; //SweetAlert message =  ex.Message
                 return View(model);
             }
         }

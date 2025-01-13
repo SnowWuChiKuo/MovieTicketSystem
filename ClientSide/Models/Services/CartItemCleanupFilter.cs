@@ -21,6 +21,7 @@ namespace ClientSide.Models.Services
         /// <param name="filterContext">提供 Action 執行上下文的 ActionExecutingContext 物件。</param>
         public override async void OnActionExecuting(ActionExecutingContext filterContext)
         {
+            bool shouldReload = false;
             // 檢查請求路徑是否以 "/Carts" 或 "/CartItems" 開頭 (忽略大小寫)。
             if (filterContext.HttpContext.Request.Path.StartsWith("/Carts", System.StringComparison.OrdinalIgnoreCase) ||
                 filterContext.HttpContext.Request.Path.StartsWith("/CartItems", System.StringComparison.OrdinalIgnoreCase))
@@ -30,9 +31,10 @@ namespace ClientSide.Models.Services
 
                 // 確保 _service 不是 null，如果存在，呼叫 ClearExpiredCartItems 方法。
                 if (_dao != null)
-                    await _dao.ClearExpiredCartItems(); // 使用 _dao 執行清理方法
+                    //await _dao.ClearExpiredCartItems(); // 使用 _dao 執行清理方法
+                    shouldReload = await _dao.ClearExpiredCartItems(); // 使用 _dao 執行清理方法
             }
-
+            filterContext.Controller.ViewBag.ShouldReload = shouldReload; // 將是否需要重新整理的值，存在 ViewBag
             // 呼叫基底類別的方法，繼續執行 Action 方法。
             base.OnActionExecuting(filterContext);
         }
