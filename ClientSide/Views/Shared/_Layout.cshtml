@@ -32,19 +32,17 @@
                         <a class="nav-link active" href="~/Carts/Index">訂票夾</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="#"></a>
+                        <a class="nav-link active" href="~/Order/Index">訂票紀錄</a>
                     </li>
                 </ul>
                 <div>
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <a href="~/Carts/Index" class="cart-img me-2"><i class="fa-solid fa-cart-shopping"></i></a>
                         <a href="~/Members/Index" class="btn btn-primary mx-2">個人資訊</a>
                         <a href="~/Members/Logout" class="btn btn-danger mx-2">登出</a>
                     }
                     else
                     {
-                        <a href="~/Carts/Index" class="cart-img me-2"><i class="fa-solid fa-cart-shopping"></i></a>
                         <a href="~/Members/Register" class="btn btn-primary mx-2">註冊</a>
                         <a href="~/Members/Login" class="btn btn-danger mx-2">登入</a>
                     }

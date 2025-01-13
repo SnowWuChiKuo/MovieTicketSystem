@@ -536,25 +536,49 @@
                     return `${row}排${number}號`;
                 }).join('、');
 
-                // 準備要傳送的資料
-                const cartData = {
+                // 取得票券 ID
+                const ticketId = findTicketId.value;
+                if (!ticketId) {
+                    alert('找不到對應的票券，請重新選擇票種');
+                    return;
+                }
+
+                console.log('準備發送請求，參數：', {
                     ticketId: ticketId,
                     qty: selectedQuantity.value
-                };
+                });
 
-                // 發送請求到購物車
-                axios.get(`/Cart/AddItem`, { params: cartData })
+                axios({
+                    method: 'get',
+                    url: '/Carts/AddItem',
+                    params: {
+                        ticketId: ticketId,
+                        qty: selectedQuantity.value
+                    }
+                })
                     .then(response => {
+                        console.log('請求成功：', response);
                         const selectedSeatsList = Array.from(selectedSeats).map(seatId => {
                             const [row, number] = seatId.split('-');
                             return `${row}排${number}號`;
                         }).join('、');
 
                         alert(`訂票完成！\n已選擇座位：${selectedSeatsList}\n總價：${totalPrice.value}元`);
+                        window.location.href = '/Carts/Index';
                     })
                     .catch(error => {
-                        console.error('加入購物車時發生錯誤：', error);
-                        alert('加入購物車失敗，請稍後再試');
+                        console.error('詳細錯誤資訊：', error.response);
+                        console.error('錯誤狀態：', error.response?.status);
+                        console.error('錯誤訊息：', error.response?.data);
+
+                        if (error.response && error.response.status === 401) {
+                            alert('請先登入會員');
+                            window.location.href = '/Account/Login';
+                        } else if (error.response && error.response.status === 500) {
+                            alert('伺服器處理請求時發生錯誤，請確認資料是否正確');
+                        } else {
+                            alert('加入購物車失敗，請稍後再試');
+                        }
                     });
                 
             };

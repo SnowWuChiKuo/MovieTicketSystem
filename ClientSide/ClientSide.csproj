@@ -141,12 +141,16 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MembersController.cs" />
     <Compile Include="Controllers\MoviesController.cs" />
+    <Compile Include="Controllers\OrderItemsController.cs" />
+    <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Controllers\TicketsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\DAOs\CartItemEFDao.cs" />
     <Compile Include="Models\DAOs\MemberEFDao.cs" />
+    <Compile Include="Models\DAOs\OrderEFDao.cs" />
+    <Compile Include="Models\DAOs\OrderItemEFDao.cs" />
     <Compile Include="Models\DAOs\TicketEFDao.cs" />
     <Compile Include="Models\DTOs\MovieDetailDto.cs" />
     <Compile Include="Models\DTOs\MovieIndexDto.cs" />
@@ -180,6 +184,8 @@
     <Compile Include="Models\Repository\MovieRepository.cs" />
     <Compile Include="Models\Services\CartService.cs" />
     <Compile Include="Models\Services\MemberService.cs" />
+    <Compile Include="Models\Services\OrderItemService.cs" />
+    <Compile Include="Models\Services\OrderService.cs" />
     <Compile Include="Models\ViewModels\CartItemVm.cs" />
     <Compile Include="Models\Services\TicketService.cs" />
     <Compile Include="Models\Services\MovieService.cs" />
@@ -191,6 +197,8 @@
     <Compile Include="Models\ViewModels\MovieDetailVm.cs" />
     <Compile Include="Models\ViewModels\MovieIndexListVm.cs" />
     <Compile Include="Models\ViewModels\MovieIndexVm.cs" />
+    <Compile Include="Models\ViewModels\OrderItemVm.cs" />
+    <Compile Include="Models\ViewModels\OrderVm.cs" />
     <Compile Include="Models\ViewModels\ProfileVm.cs" />
     <Compile Include="Models\ViewModels\RegisterVm.cs" />
     <Compile Include="Models\ViewModels\ResetPasswordVm.cs" />
@@ -432,6 +440,8 @@
     <Content Include="Views\CartItems\Detail.cshtml" />
     <Content Include="Views\Tickets\Index.cshtml" />
     <Content Include="Views\Movies\Movie.cshtml" />
+    <Content Include="Views\Orders\Index.cshtml" />
+    <Content Include="Views\OrderItems\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
