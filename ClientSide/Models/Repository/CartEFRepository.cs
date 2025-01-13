@@ -204,11 +204,11 @@ namespace ClientSide.Models.Repository
                 var order = new Order
                 {
                     MemberId = _db.Members.FirstOrDefault(m => m.Account == account).Id,
-                    CouponId = _db.Coupons.FirstOrDefault(co=>co.Code == model.CouponCode).Id,
+                    //CouponId = _db.Coupons.FirstOrDefault(co=>co.Code == model.CouponCode).Id,
                     TotalAmount = cart.Total,
                     CreatedAt = DateTime.Now,
                     Status = true ,//true : 預設已付款
-                    DiscountPrice = model.DiscountPrice
+                    //DiscountPrice = model.DiscountPrice
                 };//這裡不必叫用SaveChanges
 
                 //新增訂單明細檔

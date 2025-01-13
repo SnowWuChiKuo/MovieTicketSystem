@@ -8,17 +8,25 @@ using System.Web.Mvc;
 
 namespace ClientSide.Controllers
 {
+    [CartItemCleanupFilter]
     public class CartItemsController : Controller
     {
         private readonly CartItemService _service = new CartItemService();
 
         // GET: CartItems
         [Authorize]
-        public ActionResult Detail(int id)
+        public ActionResult Detail(int? id)
         {
-            CartItemDetailVm vm = _service.Get(id);
-            
-            return View(vm);
+            if (id.HasValue)
+            {
+                CartItemDetailVm vm = _service.Get(id.Value);
+
+                return View(vm);
+            }
+            else
+            {
+                return HttpNotFound();
+            }
         }
     }
 }

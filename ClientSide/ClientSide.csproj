@@ -175,6 +175,7 @@
     <Compile Include="Models\Infra\EmailService.cs" />
     <Compile Include="Models\Infra\HashUtility.cs" />
     <Compile Include="Models\Repository\CartEFRepository.cs" />
+    <Compile Include="Models\Services\CartItemCleanupFilter.cs" />
     <Compile Include="Models\Services\CartItemService.cs" />
     <Compile Include="Models\Repository\MovieRepository.cs" />
     <Compile Include="Models\Services\CartService.cs" />
@@ -427,10 +428,8 @@
     <Content Include="Views\Members\ErrorResetPassword.cshtml" />
     <Content Include="Views\Members\ResetPassword.cshtml" />
     <Content Include="Views\Members\ForgotPassword.cshtml" />
-    <Content Include="Views\Carts\Temp.cshtml" />
     <Content Include="Views\Carts\Index.cshtml" />
     <Content Include="Views\CartItems\Detail.cshtml" />
-    <Content Include="Views\Cart\Index.cshtml" />
     <Content Include="Views\Tickets\Index.cshtml" />
     <Content Include="Views\Movies\Movie.cshtml" />
   </ItemGroup>

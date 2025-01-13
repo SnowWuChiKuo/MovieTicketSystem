@@ -2,7 +2,9 @@
 using ClientSide.Models.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace ClientSide.Models.DAOs
@@ -10,6 +12,34 @@ namespace ClientSide.Models.DAOs
     public class CartItemEFDao
     {
         private readonly AppDbContext _db = new AppDbContext();
+
+        /// <summary>
+        /// 清除存在超過五分鐘的 CartItem 資料。
+        /// </summary>
+        /// <returns></returns>
+        public async Task ClearExpiredCartItems()
+        {
+            var threshold = DateTime.Now.AddMinutes(-5);
+            var now = DateTime.Now;
+
+            // 使用 Entity Framework Core 的 RemoveRange 方法，刪除過期的購物車項目
+            var expiredCartItems = _db.CartItems
+                 .Include(ci => ci.Ticket.Screening) // 加入 Ticket 和 Screening
+                                                     //.Where(ci => ci.CreatedAt < threshold ||
+                                                     //     DbFunctions.DiffMinutes(now, DbFunctions.CreateDateTime(ci.Ticket.Screening.Televising.Year,
+                                                     //     ci.Ticket.Screening.Televising.Month,
+                                                     //     ci.Ticket.Screening.Televising.Day,
+                                                     //     ci.Ticket.Screening.StartTime.Hours,
+                                                     //     ci.Ticket.Screening.StartTime.Minutes,
+                                                     //     0)) < 30
+                                                     // );
+            .Where(ci => ci.CreatedAt < threshold);
+
+            _db.CartItems.RemoveRange(expiredCartItems);
+            await _db.SaveChangesAsync();
+            _db.Set<CartItem>().Local.Clear();//使用 DbSet<T>.Local.Clear() 方法
+        }
+
         public CartItemDetailVm Get(int id)
         {
             CartItem cartitem = _db.CartItems.FirstOrDefault(ci => ci.Id == id);
