@@ -4,23 +4,60 @@
 
 }
 
-<div id="app" class="container mt-5 position-relative">
+
+<div id="app" class="container" style="margin-top: 120px">
     <!-- 動態內容 -->
-    <div class="mb-4">
-        <h3>選擇電影</h3>
-        <div>
-            <button class="btn btn-dark btn-custom"
-                    v-for="movie in movies"
-                    :key="movie.id"
-                    v-bind:class="{ selected: selectedMovie === movie }"
-                    v-on:click="selectMovie(movie)">
-                {{ movie.name }}
-            </button>
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="mvTitle mb-4 mt-4">電影簡介</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <el-card class="box-card poster-card leftCard">
+                <img :src="movie.poster" :alt="movie.title">
+                <div class="rating-container">
+                    <div class="rating-header">
+                        <h3 class="movie-title">{{ movie.title }}</h3>
+                        <div class="rating-content">
+                            <el-rate v-model="movie.rating_score"
+                                     disabled
+                                     show-score
+                                     text-color="#ff9900"
+                                     score-template="{value} 分"
+                                     size="large">
+                            </el-rate>
+                            <span class="rating-count">{{ movie.rating_count }} 人評分</span>
+                        </div>
+                    </div>
+                </div>
+            </el-card>
+        </div>
+        <div class="col-lg-6 info-container">
+            <el-card class="box-card">
+                <el-descriptions :column="1" border:false class="movie-info">
+                    <el-descriptions-item label="種類">
+                        {{ movie.genre }}
+                    </el-descriptions-item>
+                    <el-descriptions-item label="級別">
+                        {{ movie.rating }}
+                    </el-descriptions-item>
+                    <el-descriptions-item label="片長">
+                        {{ movie.duration }}
+                    </el-descriptions-item>
+                    <el-descriptions-item label="上映日">
+                        {{ movie.releaseDate }}
+                    </el-descriptions-item>
+                    <el-descriptions-item label="導演">
+                        {{ movie.director }}
+                    </el-descriptions-item>
+                </el-descriptions>
+            </el-card>
         </div>
     </div>
     <div v-if="!showSeats">
         <transition name="slide-up">
-            <div class="mb-4" v-if="selectedMovie">
+            <div class="mb-4 mt-3">
                 <h3>選擇影廳</h3>
                 <div>
                     <button class="btn btn-primary btn-custom"
@@ -160,33 +197,56 @@
                 <div class="row-number">{{ row }}</div>
             </div>
         </div>
-
-        <div class="bottom-buttons">
-            <button class="btn btn-success"
-                    v-if="selectedSeats.size === selectedQuantity"
-                    v-on:click="completeBooking">
-                訂票完成
-            </button>
-        </div>
+        @if (User.Identity.IsAuthenticated) 
+            { 
+                <div class="bottom-buttons">
+                    <button class="btn btn-success"
+                            v-if="selectedSeats.size === selectedQuantity"
+                            v-on:click="completeBooking">
+                        訂票完成
+                    </button>
+                </div>
+            }
+        else
+            {
+                <div class="bottom-buttons">
+                    <a class="btn btn-success" href="/Members/Login">
+                        訂票完成
+                    </a>
+                </div>
+            }
     </div>
 
 </div>
 
-<script src="https://unpkg.com/vue@3.2.45/dist/vue.global.js"></script>
+<script src="https://unpkg.com/vue@3.3.4/dist/vue.global.js"></script>
+<script src="https://unpkg.com/element-plus@2.2.30/dist/index.full.js"></script>
+<link href="https://unpkg.com/element-plus@2.2.30/dist/index.css" rel="stylesheet">
 
 <!-- ✅ 引入 Axios -->
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 <script>
-    const { createApp, ref, reactive, computed } = Vue;
+    const { createApp, ref, reactive, computed, onMounted } = Vue;
 
-    createApp({
+    // 解構 ElementPlus 中所需的組件
+    const { ElRate, ElCard, ElDescriptions, ElDescriptionsItem } = ElementPlus;
+
+    const app = createApp({
         setup() {
-            const movies = ref([{ id: 1, name: "獅子王" }]);
-            const theaters = ref([
-                { value: 1, text: "影廳1" },
-                { value: 2, text: "影廳2" },
-            ]);
+            const movie = ref({
+                poster: '',
+                title: '',
+                rating_score: 0,
+                rating_count: 0,
+                genre: '',
+                rating: '',
+                duration: '',
+                releaseDate: '',
+                director: ''
+            });
+            const movies = ref([]);
+            const theaters = ref([]);
             const showTimes = ref([]); // 正確定義 showTimes
             const dates = ref([]);
             const times = ref([]);
@@ -207,6 +267,60 @@
             const selectedTicketType = ref(null);
             const selectedTicketPrice = ref(0);
             const selectedQuantity = ref(1);  // 預設數量為 1
+
+            // 在組件掛載時載入電影資料
+            onMounted(async () => {
+                try {
+                    // 從 URL 獲取 movieId
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const movieId = urlParams.get('movieId');
+
+                    console.log("movieId: ", movieId);
+
+                    if (movieId) {
+                        // 獲取電影資料
+                        const response = await axios.post(`/Movies/GetMovie`, { movieId });
+                        if (response.data.success) {
+                            const movieData = response.data.data;
+                            movie.value = {
+                                id: movieData.Id,
+                                title: movieData.Title,
+                                poster: movieData.PosterURL,
+                                genre: movieData.GenreName,
+                                rating: movieData.RatingName,
+                                duration: `${movieData.RunTime}分鐘`,
+                                releaseDate: new Date(movieData.ReleaseDate).toLocaleDateString(),
+                                director: movieData.Director,
+                                cast: movieData.Cast,
+                                rating_score: movieData.AverageRating || 0,
+                                rating_count: movieData.ReviewCount,
+                                description: movieData.Description,
+                                canReview: movieData.CanReview,
+                                reviews: movieData.Reviews || []
+                            };
+                        }
+
+                        // 新增 API 請求來獲取包含該電影的影廳列表
+                        const theaterResponse = await axios.post(`/Tickets/GetTheaters`, { movieId });
+                        
+                        if (theaterResponse.data.success) {
+                            theaters.value = theaterResponse.data.data.map(theater => ({
+                                value: theater.Id,
+                                text: theater.Name
+                            }));
+                            console.log('包含該電影的影廳列表：', theaters.value);
+                        } else {
+                            console.error('無法取得影廳列表:', theaterResponse.data.message);
+                        }
+                    }
+                } catch (error) {
+                    console.error('載入資料時發生錯誤:', error);
+                    ElementPlus.ElMessage.error('載入資料失敗');
+                }
+            });
+
+            
+
 
             const findTicketId = computed(() => {
                 if (!selectedTicketSale.value || !selectedTicketType.value) {
@@ -258,21 +372,21 @@
             };
 
 
-            
-
             const selectMovie = (movie) => (selectedMovie.value = movie);
             // 選擇影廳
             const selectTheater = (theater) => {
                 selectedTheater.value = theater;
-                console.log("選擇的影廳 ID:", theater.value);
+                console.log("選擇的影廳 ID:", theater.text);
 
-                axios.post('/Tickets/GetShowTimes', { theaterId: theater.value })
+                axios.post('/Tickets/GetShowTimes', { theaterName: theater.text })
                     .then(response => {
                         console.log("伺服器回應:", response);
 
                         if (response.data && response.data.success) {
                             if (response.data.data && Array.isArray(response.data.data)) {
                                 showTimes.value = response.data.data;
+
+                                console.log("選擇的影廳時間:", showTimes.value);
 
                                 const parsedDates = [...new Set(response.data.data.map(item => item.Televising))];
                                 dates.value = parsedDates;
@@ -580,10 +694,11 @@
                             alert('加入購物車失敗，請稍後再試');
                         }
                     });
-                
+
             };
 
             return {
+                movie,
                 movies,
                 theaters,
                 dates,
@@ -625,10 +740,23 @@
                 completeBooking,
             };
         },
-    }).mount("#app");
+    })
+
+    // 使用 Element Plus
+    app.use(ElementPlus);
+
+    // 分別註冊需要的組件
+    app.component('el-rate', ElRate);
+    app.component('el-card', ElCard);
+    app.component('el-descriptions', ElDescriptions);
+    app.component('el-descriptions-item', ElDescriptionsItem);
+
+    // 掛載應用
+    app.mount("#app");
 </script>
 
 @section styles
 {
     <link href="~/Content/Ticket.css" rel="stylesheet">
 }
+

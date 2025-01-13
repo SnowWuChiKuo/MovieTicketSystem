@@ -15,24 +15,22 @@ namespace ClientSide.Models.DAOs
 		public List<TheaterVm> GetTheaters(int movieId)
 		{
             var db = new AppDbContext();
-			var data = db.Screenings.Include(x => x.Theater)
-									.Where(d => d.MovieId == movieId)
-									.Select(x => new TheaterVm
-									{
-										Id = x.Id,
-										Name = x.Theater.Name,
-									}).ToList();
+			var data = db.Theaters.Select(d => new TheaterVm
+										{
+											Id = d.Id,
+											Name = d.Name,
+										}).ToList();
 			return data;
         }
 
-        public List<ScreeningChangeDateVm> GetShowTimes(int theaterId)
+        public List<ScreeningChangeDateVm> GetShowTimes(string theaterName)
 		{
 			var db = new AppDbContext();
-			var data = db.Screenings.Where(d => d.TheaterId == theaterId)
+			var data = db.Screenings.Where(d => d.Theater.Name == theaterName)
 									.Select(d => new ScreeningVm 
 									{
-										Televising = d.Televising,
-										StartTime = d.StartTime,
+										Televising = GetTelevising(theaterName),
+										StartTime = GetStartTime(theaterName),
 										TheaterId = d.TheaterId,
 										Id = d.Id,
 									}).ToList();
@@ -49,6 +47,15 @@ namespace ClientSide.Models.DAOs
 			return formattedShowTimes;
 		}
 
+		private TimeSpan GetStartTime(string theaterName)
+		{
+			throw new NotImplementedException();
+		}
+
+		private DateTime GetTelevising(string theaterName)
+		{
+			throw new NotImplementedException();
+		}
 
 		public List<TicketVm> GetTicket(int screeningId)
 		{

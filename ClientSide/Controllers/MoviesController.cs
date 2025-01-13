@@ -160,5 +160,31 @@ namespace ClientSide.Controllers
 
 		}
 
+		[HttpPost]
+		public JsonResult GetMovie(int movieId)
+		{
+			var movie = _service.GetMovieById(movieId);
+			if (movie == null) return Json(new { success = false, message = "Movie not found" });
+						
+			var detailVm = new MovieDetailVm
+			{
+				Id = movie.Id,
+				Title = movie.Title,
+				Description = movie.Description,
+				Director = movie.Director,
+				Cast = movie.Cast,
+				RunTime = movie.RunTime,
+				ReleaseDate = movie.ReleaseDate,
+				PosterURL = movie.PosterURL = Url.Content($"~/MoviePosters/{movie.Title}.jpg"),
+				GenreName = movie.GenreName,
+				RatingName = movie.RatingName,
+				ReviewCount = movie.ReviewCount,
+				AverageRating = movie.AverageRating ?? 0,
+				CanReview = movie.CanReview,
+				IsLoggedIn = User.Identity.IsAuthenticated,
+			};
+
+			return Json(new { success = true, data = detailVm }, JsonRequestBehavior.AllowGet);
+		}
 	}
 }

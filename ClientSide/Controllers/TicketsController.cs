@@ -41,17 +41,12 @@ namespace ClientSide.Controllers
         }
 
         [HttpPost]
-		public JsonResult GetShowTimes(int? theaterId)
+		public JsonResult GetShowTimes(string theaterName)
 		{
 			try
 			{
-				if (!theaterId.HasValue)
-				{
-					return Json(new { success = false, message = "影廳編號不可為空" });
-				}
-
 				var service = new TicketService();
-				var showtime = service.GetShowTimes(theaterId.Value);
+				var showtime = service.GetShowTimes(theaterName);
 
 				return Json(new { success = true, data = showtime }, JsonRequestBehavior.AllowGet); // 加上 JsonRequestBehavior
 			}

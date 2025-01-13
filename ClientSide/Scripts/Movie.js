@@ -4,6 +4,7 @@ const { createApp, ref, onMounted } = Vue;
 createApp({
     setup() {
         const movie = ref({
+            id: movieData.Id,
             title: movieData.Title,
             poster: movieData.PosterURL, 
             genre: movieData.GenreName,
@@ -57,7 +58,7 @@ createApp({
             return new Date(date).toLocaleDateString();
         },
         bookTicket() {
-            window.location.href = '/Tickets/Index';
+                window.location.href = `/Tickets/Index?movieId=${this.movie.id}`;
         },
         async submitReview() {
             if (!this.canSubmitReview) return;
