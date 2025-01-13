@@ -12,6 +12,7 @@
                 <form asp-action="Edit" id="editCartItemForm">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="CartItemQty"  />
                     <div class="form-group">
                         <label asp-for="CartId" class="control-label"></label>
                         <input asp-for="CartId" class="form-control"  />
@@ -181,7 +182,7 @@
                             console.log("quantityToAdd:", quantityToAdd);
                             console.log("response.currentTotal + quantityToAdd:", response.currentTotal + quantityToAdd);
 
-                            if (response.currentTotal + quantityToAdd >= 6) {
+                            if (response.currentTotal + quantityToAdd > 6) {
                                 console.log("Swal.fire is about to be called");
                                 Swal.fire({
                                     title: '錯誤',

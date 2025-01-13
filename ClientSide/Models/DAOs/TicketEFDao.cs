@@ -12,7 +12,20 @@ namespace ClientSide.Models.DAOs
 {
 	public class TicketEFDao
 	{
-		public List<ScreeningChangeDateVm> GetShowTimes(int theaterId)
+		public List<TheaterVm> GetTheaters(int movieId)
+		{
+            var db = new AppDbContext();
+			var data = db.Screenings.Include(x => x.Theater)
+									.Where(d => d.MovieId == movieId)
+									.Select(x => new TheaterVm
+									{
+										Id = x.Id,
+										Name = x.Theater.Name,
+									}).ToList();
+			return data;
+        }
+
+        public List<ScreeningChangeDateVm> GetShowTimes(int theaterId)
 		{
 			var db = new AppDbContext();
 			var data = db.Screenings.Where(d => d.TheaterId == theaterId)
@@ -67,12 +80,14 @@ namespace ClientSide.Models.DAOs
 										ScreeningId = d.ScreeningId,
 										SeatId = d.SeatId,
 										Status = d.Status,
-										Row = (d.Seat.Row).Count(),
-										Number = (d.Seat.Number).Count(),
+										Row = d.Seat.Row,         // 直接使用座位的 Row 值
+										Number = d.Seat.Number,   // 直接使用座位的 Number 值
 										IsDisabled = d.Seat.IsDisabled,
 									}).ToList();
 			if (data == null) throw new Exception("找不到此場次做位");
 			return data;
 		}
-	}
+
+
+    }
 }

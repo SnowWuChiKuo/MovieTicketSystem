@@ -22,6 +22,29 @@ namespace ServerSide.Models.DAOs
             var entity = ConvertToEfEntity(dto);
             _db.Screenings.Add(entity);
             _db.SaveChanges();
+
+            // 2. 獲取影廳所有座位
+            var seats = _db.Seats
+                .AsNoTracking()  // 使用 AsNoTracking 提升性能
+                .Where(s => s.TheaterId == dto.TheaterId && !s.IsDisabled)  // 只取未停用的座位
+                .Select(s => new  // 明確選擇需要的欄位
+                {
+                    s.Id,
+                    s.TheaterId
+                })
+                .ToList();
+
+            // 3. 為每個座位創建 SeatStatus
+            var seatStatuses = seats.Select(seat => new SeatStatus
+            {
+                ScreeningId = entity.Id,
+                SeatId = seat.Id,
+                Status = "可使用", // 預設狀態為可選
+                UpdatedAt = DateTime.Now
+            }).ToList();
+
+            _db.SeatStatuses.AddRange(seatStatuses);
+            _db.SaveChanges();
         }
 
         public void Edit(ScreeningDto dto)

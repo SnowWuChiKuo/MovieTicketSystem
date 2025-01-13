@@ -4,21 +4,16 @@ using ClientSide.Models.Repository;
 using ClientSide.Models.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace ClientSide.Models.Services
 {
     public class CartService
     {
-        private readonly CartEFRepository _repo;
-
-        //private readonly OrderEFRepository _orderRp;
-        public CartService(CartEFRepository repo)
-        {
-            _repo = repo;
-        }
-
+        private readonly CartEFRepository _repo = new CartEFRepository();
         public CartVm GetCartInfo(string account)
         {
             CartVm cart = _repo.GetCartInfo(account);

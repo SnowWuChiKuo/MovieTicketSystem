@@ -11,12 +11,7 @@ namespace ClientSide.Models.Repository
 {
     public class CartEFRepository
     {
-        private readonly AppDbContext _db;
-
-        public CartEFRepository(AppDbContext db)
-        {
-            _db = db;
-        }
+        private readonly AppDbContext _db = new AppDbContext();
 
         /// <summary>
         /// 創建構物車
@@ -49,7 +44,7 @@ namespace ClientSide.Models.Repository
 		/// <returns></returns>
 		public CartVm GetCartInfo(string account)
         {
-
+            
             Cart cart = _db.Carts.Include(c => c.Member).FirstOrDefault(c => c.Member.Account == account);
 
             if (cart == null) //沒有購物車就新增一筆
@@ -58,7 +53,10 @@ namespace ClientSide.Models.Repository
             }
 
             //目前已經加入過的商品
-            List<CartItemVm> cartItems = _db.CartItems.Where(ci => ci.CartId == cart.Id).OrderBy(ci => ci.CreatedAt)
+            List<CartItemVm> cartItems = _db.CartItems
+                .Where(ci => ci.CartId == cart.Id)
+                .OrderBy(ci => ci.CreatedAt)
+                .ToList() // 先把資料抓出來 List<CartItem>
                 .Select(ci => new CartItemVm
                 {
                     Id = ci.Id,
@@ -69,8 +67,8 @@ namespace ClientSide.Models.Repository
                     ImgPath = GetImageName(ci.TicketId),
                     MovieTitle = GetMovieTitle(ci.TicketId),
                     MovieTime = GetScreeningTime(ci.TicketId)
-                }).ToList();
-
+                }).ToList(); // List<CartItemVm>
+            _db.Set<CartItem>().Local.Clear(); // 清除快取
             //建立購物車物件
             var cartVm = new CartVm
             {
@@ -93,7 +91,7 @@ namespace ClientSide.Models.Repository
             var ticket = _db.Tickets.FirstOrDefault(t => t.Id == ticketId);
             var screening = _db.Screenings.FirstOrDefault(s => s.Id == ticket.ScreeningId);
 
-            return $"{screening.Televising} {screening.StartTime} - {screening.EndTime}";
+            return $"{screening.Televising.ToString("yyyy-MM-dd")} {screening.StartTime} - {screening.EndTime}";
         }
 
         /// <summary>
@@ -206,11 +204,11 @@ namespace ClientSide.Models.Repository
                 var order = new Order
                 {
                     MemberId = _db.Members.FirstOrDefault(m => m.Account == account).Id,
-                    CouponId = _db.Coupons.FirstOrDefault(co=>co.Code == model.CouponCode).Id,
+                    //CouponId = _db.Coupons.FirstOrDefault(co=>co.Code == model.CouponCode).Id,
                     TotalAmount = cart.Total,
                     CreatedAt = DateTime.Now,
                     Status = true ,//true : 預設已付款
-                    DiscountPrice = model.DiscountPrice
+                    //DiscountPrice = model.DiscountPrice
                 };//這裡不必叫用SaveChanges
 
                 //新增訂單明細檔

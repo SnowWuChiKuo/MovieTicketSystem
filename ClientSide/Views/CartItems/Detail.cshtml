@@ -1,0 +1,72 @@
+﻿@model ClientSide.Models.ViewModels.CartItemDetailVm
+
+@{
+    ViewBag.Title = "Detail";
+}
+
+<h2>訂票細項</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.TheaterName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TheaterName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MovieTitle)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MovieTitle)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MovieTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MovieTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SeatName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SeatName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Qty)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Qty)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SubTotal)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SubTotal)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    <a href="~/Carts/Index" class="btn btn-outline-primary">回訂票夾</a>
+</p>

@@ -31,7 +31,16 @@ namespace ServerSide.Models.Services
 
             _dao.Create(model);
         }
-        private void CheckCartTotalQuantity(int cartId, int quantityToAdd, int? ticketIdToExclude = null)
+        public void CheckCartTotalQuantityForEdit(int cartId, int quantityToAdd, int cartItemQty)
+        {
+            int currentExcludeTotal = _dao.GetTotalQuantityInCartForEdit(cartId, cartItemQty);
+
+            if (currentExcludeTotal + quantityToAdd > 6)
+            {
+                throw new Exception($"購物車內商品總數量不能超過 6。 目前數量: {currentExcludeTotal} ，您想新增數量: {quantityToAdd}");
+            }
+        }
+        public void CheckCartTotalQuantity(int cartId, int quantityToAdd, int? ticketIdToExclude = null)
         {
             int currentTotal = _dao.GetTotalQuantityInCart(cartId, ticketIdToExclude);
 
@@ -40,6 +49,7 @@ namespace ServerSide.Models.Services
                 throw new Exception($"購物車內商品總數量不能超過 6。 目前數量: {currentTotal} ，您想新增數量: {quantityToAdd}");
             }
         }
+
         public int GetTotalQuantityInCart(int cartId)
         {
             return _dao.GetTotalQuantityInCart(cartId); 
@@ -87,7 +97,7 @@ namespace ServerSide.Models.Services
             return _dao.GetTicketById(ticketId);
         }
 
-        public void Edit(CartItemDto dto)
+        public void Edit(CartItemDto dto ,int cartItemQty)
         {
             // 檢查單一商品數量是否超過 6
             if (dto.Qty > 6)
@@ -96,7 +106,7 @@ namespace ServerSide.Models.Services
             }
 
             // 檢查購物車總數量是否超過 6，並且排除自身數量
-            CheckCartTotalQuantity(dto.CartId, dto.Qty, dto.TicketId);
+            CheckCartTotalQuantityForEdit(dto.CartId, dto.Qty, cartItemQty);
 
             _dao.Edit(dto);
         }
