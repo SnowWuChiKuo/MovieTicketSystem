@@ -118,6 +118,7 @@ namespace ServerSide.Controllers
                 SubTotal = cartItemDto.SubTotal,
                 CreatedAt = cartItemDto.CreatedAt, // 設定創建時間
                 UpdatedAt = cartItemDto.UpdatedAt, // 設定更新時間
+                CartItemQty = cartItemDto.Qty
             };
             return View(model);
         }
@@ -130,10 +131,9 @@ namespace ServerSide.Controllers
             if (!ModelState.IsValid) return View(model);
 
             CartItemDto dto = _service.ConvertToDtoForEdit(model);
-
             try
             {
-                _service.Edit(dto);
+                _service.Edit(dto ,model.CartItemQty);
                 return RedirectToAction("Index");
             }
             catch (Exception ex)

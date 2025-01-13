@@ -11,14 +11,7 @@ namespace ClientSide.Models.Services
 {
     public class CartService
     {
-        private readonly CartEFRepository _repo;
-
-        //private readonly OrderEFRepository _orderRp;
-        public CartService(CartEFRepository repo)
-        {
-            _repo = repo;
-        }
-
+        private readonly CartEFRepository _repo = new CartEFRepository();
         public CartVm GetCartInfo(string account)
         {
             CartVm cart = _repo.GetCartInfo(account);

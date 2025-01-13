@@ -133,13 +133,15 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\CartController.cs" />
+    <Compile Include="Controllers\CartsController.cs" />
+    <Compile Include="Controllers\CartItemsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MembersController.cs" />
     <Compile Include="Controllers\MoviesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\DAOs\CartItemEFDao.cs" />
     <Compile Include="Models\DAOs\MemberEFDao.cs" />
     <Compile Include="Models\DTOs\RegisterDto.cs" />
     <Compile Include="Models\EFModels\AppDbContext.cs" />
@@ -164,8 +166,10 @@
     <Compile Include="Models\Infra\EmailService.cs" />
     <Compile Include="Models\Infra\HashUtility.cs" />
     <Compile Include="Models\Repository\CartEFRepository.cs" />
+    <Compile Include="Models\Services\CartItemService.cs" />
     <Compile Include="Models\Services\CartService.cs" />
     <Compile Include="Models\Services\MemberService.cs" />
+    <Compile Include="Models\ViewModels\CartItemVm.cs" />
     <Compile Include="Models\ViewModels\CartVm.cs" />
     <Compile Include="Models\ViewModels\ChangePasswordVm.cs" />
     <Compile Include="Models\ViewModels\CheckoutVm.cs" />
@@ -339,7 +343,9 @@
     <Content Include="Views\Members\ErrorResetPassword.cshtml" />
     <Content Include="Views\Members\ResetPassword.cshtml" />
     <Content Include="Views\Members\ForgotPassword.cshtml" />
-    <Content Include="Views\Cart\Index.cshtml" />
+    <Content Include="Views\Carts\Temp.cshtml" />
+    <Content Include="Views\Carts\Index.cshtml" />
+    <Content Include="Views\CartItems\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

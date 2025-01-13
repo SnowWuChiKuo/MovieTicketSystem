@@ -9,24 +9,24 @@ using System.Web.Services.Description;
 
 namespace ClientSide.Controllers
 {   
-    public class CartController : Controller
+    public class CartsController : Controller
     {
-        private readonly CartService _service;
-
-        public CartController(CartService service)
-        {
-            _service = service;
-        }
-
-        public CartController()
-        {
-            
-        }
+        private readonly CartService _service = new CartService();
 
         // GET: Cart
+        [Authorize]
         public ActionResult Index()
         {
+            string account = User.Identity.Name;
+            CartVm cart =  GetCartInfo(account);
+
+            return View(cart);
+        }
+
+        public ActionResult Temp()
+        {
             return View();
+
         }
 
         [Authorize]
@@ -40,6 +40,7 @@ namespace ClientSide.Controllers
 
             return new EmptyResult();
         }
+
         private void Add2Cart(string account, int productId, int qty)
         {
             //取得目前購物車，若沒購物車則新增一筆

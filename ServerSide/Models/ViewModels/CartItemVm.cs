@@ -89,6 +89,8 @@ namespace ServerSide.Models.ViewModels
 
         [Display(Name = "更新時間")]
         public DateTime? UpdatedAt { get; set; }
+
+        public int CartItemQty { get; set; }
     }
 
 }

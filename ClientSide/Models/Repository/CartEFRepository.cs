@@ -11,12 +11,7 @@ namespace ClientSide.Models.Repository
 {
     public class CartEFRepository
     {
-        private readonly AppDbContext _db;
-
-        public CartEFRepository(AppDbContext db)
-        {
-            _db = db;
-        }
+        private readonly AppDbContext _db = new AppDbContext();
 
         /// <summary>
         /// 創建構物車
@@ -58,7 +53,10 @@ namespace ClientSide.Models.Repository
             }
 
             //目前已經加入過的商品
-            List<CartItemVm> cartItems = _db.CartItems.Where(ci => ci.CartId == cart.Id).OrderBy(ci => ci.CreatedAt)
+            List<CartItemVm> cartItems = _db.CartItems
+                .Where(ci => ci.CartId == cart.Id)
+                .OrderBy(ci => ci.CreatedAt)
+                .ToList() // 先把資料抓出來 List<CartItem>
                 .Select(ci => new CartItemVm
                 {
                     Id = ci.Id,
@@ -69,7 +67,7 @@ namespace ClientSide.Models.Repository
                     ImgPath = GetImageName(ci.TicketId),
                     MovieTitle = GetMovieTitle(ci.TicketId),
                     MovieTime = GetScreeningTime(ci.TicketId)
-                }).ToList();
+                }).ToList(); // List<CartItemVm>
 
             //建立購物車物件
             var cartVm = new CartVm
@@ -93,7 +91,7 @@ namespace ClientSide.Models.Repository
             var ticket = _db.Tickets.FirstOrDefault(t => t.Id == ticketId);
             var screening = _db.Screenings.FirstOrDefault(s => s.Id == ticket.ScreeningId);
 
-            return $"{screening.Televising} {screening.StartTime} - {screening.EndTime}";
+            return $"{screening.Televising.ToString("yyyy-MM-dd")} {screening.StartTime} - {screening.EndTime}";
         }
 
         /// <summary>
