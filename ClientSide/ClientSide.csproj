@@ -47,6 +47,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.2.1.35\lib\net461\Dapper.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -138,12 +141,17 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MembersController.cs" />
     <Compile Include="Controllers\MoviesController.cs" />
+    <Compile Include="Controllers\TicketsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\DAOs\CartItemEFDao.cs" />
     <Compile Include="Models\DAOs\MemberEFDao.cs" />
+    <Compile Include="Models\DAOs\TicketEFDao.cs" />
+    <Compile Include="Models\DTOs\MovieDetailDto.cs" />
+    <Compile Include="Models\DTOs\MovieIndexDto.cs" />
     <Compile Include="Models\DTOs\RegisterDto.cs" />
+    <Compile Include="Models\DTOs\TicketDto.cs" />
     <Compile Include="Models\EFModels\AppDbContext.cs" />
     <Compile Include="Models\EFModels\Cart.cs" />
     <Compile Include="Models\EFModels\CartItem.cs" />
@@ -159,6 +167,7 @@
     <Compile Include="Models\EFModels\Screening.cs" />
     <Compile Include="Models\EFModels\Seat.cs" />
     <Compile Include="Models\EFModels\SeatStatu.cs" />
+    <Compile Include="Models\EFModels\sysdiagram.cs" />
     <Compile Include="Models\EFModels\Theater.cs" />
     <Compile Include="Models\EFModels\Ticket.cs" />
     <Compile Include="Models\EFModels\TicketSeat.cs" />
@@ -167,17 +176,30 @@
     <Compile Include="Models\Infra\HashUtility.cs" />
     <Compile Include="Models\Repository\CartEFRepository.cs" />
     <Compile Include="Models\Services\CartItemService.cs" />
+    <Compile Include="Models\Repository\MovieRepository.cs" />
     <Compile Include="Models\Services\CartService.cs" />
     <Compile Include="Models\Services\MemberService.cs" />
     <Compile Include="Models\ViewModels\CartItemVm.cs" />
+    <Compile Include="Models\Services\TicketService.cs" />
+    <Compile Include="Models\Services\MovieService.cs" />
     <Compile Include="Models\ViewModels\CartVm.cs" />
     <Compile Include="Models\ViewModels\ChangePasswordVm.cs" />
     <Compile Include="Models\ViewModels\CheckoutVm.cs" />
     <Compile Include="Models\ViewModels\ForgotPasswordVm.cs" />
     <Compile Include="Models\ViewModels\LoginVm.cs" />
+    <Compile Include="Models\ViewModels\MovieDetailVm.cs" />
+    <Compile Include="Models\ViewModels\MovieIndexListVm.cs" />
+    <Compile Include="Models\ViewModels\MovieIndexVm.cs" />
     <Compile Include="Models\ViewModels\ProfileVm.cs" />
     <Compile Include="Models\ViewModels\RegisterVm.cs" />
     <Compile Include="Models\ViewModels\ResetPasswordVm.cs" />
+    <Compile Include="Models\ViewModels\ScreeningChangeDateVm.cs" />
+    <Compile Include="Models\ViewModels\ScreeningVm.cs" />
+    <Compile Include="Models\ViewModels\SeatStatusVm.cs" />
+    <Compile Include="Models\ViewModels\ReviewCreateDto.cs" />
+    <Compile Include="Models\ViewModels\ReviewDisplayVm.cs" />
+    <Compile Include="Models\ViewModels\ReviewSubmitVm.cs" />
+    <Compile Include="Models\ViewModels\TheaterVm.cs" />
     <Compile Include="Models\ViewModels\TicketVm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -212,6 +234,7 @@
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="Content\dropdown-style.css" />
+    <Content Include="Content\Movie.css" />
     <Content Include="Content\MovieMainPageCss.css" />
     <Content Include="Content\Ticket.css" />
     <Content Include="favicon.ico" />
@@ -225,6 +248,66 @@
     <Content Include="Images\mv6.jpg" />
     <Content Include="Images\mv7.jpg" />
     <Content Include="Images\mv8.jpg" />
+    <Content Include="MoviePosters\his.jpg" />
+    <Content Include="MoviePosters\OUT 預告.jpg" />
+    <Content Include="MoviePosters\上岸的魚.jpg" />
+    <Content Include="MoviePosters\亡魂索命.jpg" />
+    <Content Include="MoviePosters\享宴Hold不住.jpg" />
+    <Content Include="MoviePosters\他叫簡單，他是我兄弟.jpg" />
+    <Content Include="MoviePosters\出門在外 預告.jpg" />
+    <Content Include="MoviePosters\午餐殺戮時刻.jpg" />
+    <Content Include="MoviePosters\厄夜追緝令.jpg" />
+    <Content Include="MoviePosters\古樓鎮陵宮 預告.jpg" />
+    <Content Include="MoviePosters\古樓鎮陵宮.jpg" />
+    <Content Include="MoviePosters\在回家之後重新開始.jpg" />
+    <Content Include="MoviePosters\大監獄行動.jpg" />
+    <Content Include="MoviePosters\天上再見.jpg" />
+    <Content Include="MoviePosters\天使追殺令.jpg" />
+    <Content Include="MoviePosters\尋找快樂的15種方法.jpg" />
+    <Content Include="MoviePosters\岸邊露伴在羅浮 預告.jpg" />
+    <Content Include="MoviePosters\岸邊露伴在羅浮.jpg" />
+    <Content Include="MoviePosters\幸福的拉札洛.jpg" />
+    <Content Include="MoviePosters\引渡追緝令.jpg" />
+    <Content Include="MoviePosters\心靈遊戲.jpg" />
+    <Content Include="MoviePosters\意外製造公司.jpg" />
+    <Content Include="MoviePosters\愛情無論如何.jpg" />
+    <Content Include="MoviePosters\愛離巢 預告.jpg" />
+    <Content Include="MoviePosters\愛，留在海灘那一天.jpg" />
+    <Content Include="MoviePosters\憤怒.jpg" />
+    <Content Include="MoviePosters\我本少年.jpg" />
+    <Content Include="MoviePosters\我的巴黎舅舅.jpg" />
+    <Content Include="MoviePosters\戰馬一號 預告.jpg" />
+    <Content Include="MoviePosters\搖滾樂殺人事件.jpg" />
+    <Content Include="MoviePosters\時尚教父的福音.jpg" />
+    <Content Include="MoviePosters\暗處.jpg" />
+    <Content Include="MoviePosters\最後的犧牲.jpg" />
+    <Content Include="MoviePosters\最後那五年.jpg" />
+    <Content Include="MoviePosters\最酷的旅伴.jpg" />
+    <Content Include="MoviePosters\末日列車.jpg" />
+    <Content Include="MoviePosters\歡迎光臨奇幻城堡.jpg" />
+    <Content Include="MoviePosters\澤水困.jpg" />
+    <Content Include="MoviePosters\無言之聲.jpg" />
+    <Content Include="MoviePosters\狂暴巨蜥 預告.jpg" />
+    <Content Include="MoviePosters\狂暴巨蜥.jpg" />
+    <Content Include="MoviePosters\登入火星.jpg" />
+    <Content Include="MoviePosters\維和防暴隊 預告.jpg" />
+    <Content Include="MoviePosters\腦海中的橡皮擦%28數位修復版%29 預告.jpg" />
+    <Content Include="MoviePosters\蒙古英豪.jpg" />
+    <Content Include="MoviePosters\蛇皮美人 預告.jpg" />
+    <Content Include="MoviePosters\蛇皮美人.jpg" />
+    <Content Include="MoviePosters\要命真相.jpg" />
+    <Content Include="MoviePosters\角落小夥伴電影版：魔法繪本裡的新朋友%28國%29.jpg" />
+    <Content Include="MoviePosters\角落小夥伴電影版：魔法繪本裡的新朋友%28日%29.jpg" />
+    <Content Include="MoviePosters\貓妖奇譚 預告.jpg" />
+    <Content Include="MoviePosters\超能追緝.jpg" />
+    <Content Include="MoviePosters\追愛敢死隊.jpg" />
+    <Content Include="MoviePosters\追愛首爾行.jpg" />
+    <Content Include="MoviePosters\速食遊戲.jpg" />
+    <Content Include="MoviePosters\鋼鐵英雄.jpg" />
+    <Content Include="MoviePosters\順雲.jpg" />
+    <Content Include="MoviePosters\風暴來襲：戰火蔓延 預告.jpg" />
+    <Content Include="MoviePosters\鬼面信號 預告.jpg" />
+    <Content Include="MoviePosters\鬼面信號.jpg" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
@@ -314,6 +397,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\Movie.js" />
     <Content Include="Scripts\MovieMainPageJS.js" />
     <Content Include="Scripts\Ticket.js" />
     <Content Include="Scripts\vue.global.js" />
@@ -331,7 +415,7 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Movies\Main.cshtml" />
+    <Content Include="Views\Movies\Index.cshtml" />
     <Content Include="Views\Members\Register.cshtml" />
     <Content Include="Views\Members\RegisterConfirm.cshtml" />
     <Content Include="Views\Members\ActiveRegister.cshtml" />
@@ -346,6 +430,9 @@
     <Content Include="Views\Carts\Temp.cshtml" />
     <Content Include="Views\Carts\Index.cshtml" />
     <Content Include="Views\CartItems\Detail.cshtml" />
+    <Content Include="Views\Cart\Index.cshtml" />
+    <Content Include="Views\Tickets\Index.cshtml" />
+    <Content Include="Views\Movies\Movie.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

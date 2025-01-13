@@ -1,10 +1,124 @@
 ﻿.selected {
-	background-color: yellow;
-	color: black;
+	background-color: #28a745 !important;
+	color: white !important;
+}
+
+.unavailable {
+	background-color: #ffc107 !important;
+	color: black !important;
 }
 
 .btn-custom {
 	margin: 5px;
+}
+
+	.btn-custom.selected {
+		background-color: yellow;
+		color: black;
+	}
+
+.seat-container {
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	align-items: center;
+	margin-top: 20px;
+}
+
+.seat-row {
+	display: flex;
+	align-items: center;
+	margin: 2px 0;
+	gap: 30px; /* 走道寬度 */
+}
+
+.seat-section {
+	display: flex;
+	gap: 1px;
+}
+
+.row-number {
+	width: 30px;
+	text-align: center;
+	margin: 0 5px;
+}
+/* 控制座位區的樣式 */
+.seat {
+	width: 35px;
+	height: 35px;
+	border: 1px solid #ccc;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	margin: 1px;
+	background-color: white;
+	font-size: 14px;
+}
+
+	/* 走道空隙樣式 */
+	.seat.gap {
+		width: 35px;
+		height: 35px;
+		border: none;
+		background-color: transparent;
+	}
+
+.screen {
+	width: 80%;
+	height: 40px;
+	background: linear-gradient(to bottom, #666, #333);
+	margin: 20px auto;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: white;
+	border-radius: 5px;
+	transform: perspective(200px) rotateX(-10deg);
+	box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+}
+
+.legend {
+	display: flex;
+	justify-content: center;
+	margin: 20px 0;
+	gap: 20px;
+}
+
+.legend-item {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+}
+
+.legend-box {
+	width: 20px;
+	height: 20px;
+	border: 1px solid #ccc;
+}
+
+	.legend-box.selected {
+		background-color: #28a745;
+	}
+
+	.legend-box.unavailable {
+		background-color: #ffc107;
+	}
+
+.top-buttons {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	display: flex;
+	gap: 10px;
+}
+
+.bottom-buttons {
+	position: absolute;
+	bottom: -60px;
+	right: 10px;
+	display: flex;
+	gap: 10px;
 }
 
 .slide-up-enter-active,
@@ -18,4 +132,23 @@
 	opacity: 0;
 }
 
+.top-right {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+}
 
+.bottom-right {
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+}
+
+/* 隱藏座位的樣式 */
+.hidden-seat {
+	width: 35px;
+	height: 35px;
+	background-color: transparent;
+	border: none;
+	cursor: default;
+}

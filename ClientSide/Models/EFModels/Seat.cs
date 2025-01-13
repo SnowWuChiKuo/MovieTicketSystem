@@ -20,10 +20,12 @@ namespace ClientSide.Models.EFModels
         public int TheaterId { get; set; }
 
         [Required]
-        [StringLength(1)]
+        [StringLength(2)]
         public string Row { get; set; }
 
-        public int Number { get; set; }
+        [Required]
+        [StringLength(2)]
+        public string Number { get; set; }
 
         public bool IsDisabled { get; set; }
 

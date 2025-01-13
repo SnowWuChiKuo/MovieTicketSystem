@@ -20,7 +20,7 @@ namespace ServerSide.Models.Services
         public void Create(SeatStatusDto dto)
         {
             if (dto.Status == null) throw new Exception("請選擇座位狀態!");
-            if (dto.Status != "可以用" || dto.Status != "不可用") throw new Exception("請選擇可以用或不可用");
+            if (dto.Status != "可使用" || dto.Status != "不可使用") throw new Exception("請選擇可以用或不可用");
             _dao.Create(dto);
         }
 

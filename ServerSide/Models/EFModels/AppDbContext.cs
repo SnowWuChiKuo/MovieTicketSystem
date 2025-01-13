@@ -110,8 +110,6 @@ public partial class AppDbContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PK_Users");
 
-            entity.HasIndex(e => e.Account, "IX_Members").IsUnique();
-
             entity.Property(e => e.Account)
                 .IsRequired()
                 .HasMaxLength(30)
@@ -273,9 +271,14 @@ public partial class AppDbContext : DbContext
 
         modelBuilder.Entity<Seat>(entity =>
         {
+            entity.Property(e => e.Number)
+                .IsRequired()
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .IsFixedLength();
             entity.Property(e => e.Row)
                 .IsRequired()
-                .HasMaxLength(1)
+                .HasMaxLength(2)
                 .IsUnicode(false)
                 .IsFixedLength();
 
@@ -345,8 +348,6 @@ public partial class AppDbContext : DbContext
         modelBuilder.Entity<User>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK_Users_1");
-
-            entity.HasIndex(e => e.Account, "IX_Users").IsUnique();
 
             entity.Property(e => e.Account)
                 .IsRequired()
