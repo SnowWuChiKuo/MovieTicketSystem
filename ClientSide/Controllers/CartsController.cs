@@ -8,25 +8,20 @@ using System.Web.Mvc;
 using System.Web.Services.Description;
 
 namespace ClientSide.Controllers
-{   
-    public class CartController : Controller
+{
+    [CartItemCleanupFilter]
+    public class CartsController : Controller
     {
-        private readonly CartService _service;
-
-        public CartController(CartService service)
-        {
-            _service = service;
-        }
-
-        public CartController()
-        {
-            
-        }
+        private readonly CartService _service = new CartService();
 
         // GET: Cart
+        [Authorize]
         public ActionResult Index()
         {
-            return View();
+            string account = User.Identity.Name;
+            CartVm cart =  GetCartInfo(account);
+
+            return View(cart);
         }
 
         [Authorize]
@@ -40,6 +35,7 @@ namespace ClientSide.Controllers
 
             return new EmptyResult();
         }
+
         private void Add2Cart(string account, int productId, int qty)
         {
             //取得目前購物車，若沒購物車則新增一筆
@@ -57,19 +53,19 @@ namespace ClientSide.Controllers
             return _service.GetCartInfo(account);
         }
 
-        [Authorize]
-        public ActionResult Checkout()
-        {
-            string account = User.Identity.Name;
-            CartVm cart = GetCartInfo(account);
+        //[Authorize]
+        //public ActionResult Checkout()
+        //{
+        //    string account = User.Identity.Name;
+        //    CartVm cart = GetCartInfo(account);
 
-            if(cart.AllowCheckout == false)
-            {
-                return Content("購物車內沒有商品，無法結帳!");
-            }
+        //    if(cart.AllowCheckout == false)
+        //    {
+        //        return Content("購物車內沒有商品，無法結帳!");
+        //    }
 
-            return View();
-        }
+        //    return View();
+        //}
 
 
         /// <summary>
@@ -83,18 +79,20 @@ namespace ClientSide.Controllers
         public ActionResult Checkout(CheckoutVm model)
         {
             string account = User.Identity.Name;
+            CartVm cart = GetCartInfo(account);
 
+            if (cart.AllowCheckout == false)
+            {
+                return Content("購物車內沒有商品，無法結帳!");
+            }
             //建立訂單主檔/明細檔
             _service.CreateOrder(account, model);
 
             //清空購物車
             _service.EmptyCart(account);
 
-            return View("ConfirmCheckout");  // 結帳成功畫面
+            return View("訂票紀錄");  // 結帳成功畫面
         }
-
-        
-
 
     }
 }

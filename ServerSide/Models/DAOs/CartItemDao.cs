@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using ServerSide.Models.DTOs;
 using ServerSide.Models.EFModels;
 using ServerSide.Models.ViewModels;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace ServerSide.Models.DAOs
 {
@@ -255,7 +256,7 @@ namespace ServerSide.Models.DAOs
         // GetTotalQuantityInCart() 會回傳指定的 cart 內所有 cartItems 的數量總和，並且會排除 ticketIdToExclude 的數量。
         public int GetTotalQuantityInCart(int cartId, int? ticketIdToExclude = null)
         {
-            var query = _db.CartItems.Where(ci => ci.CartId == cartId);
+            IQueryable<CartItem> query = _db.CartItems.Where(ci => ci.CartId == cartId);
 
             if (ticketIdToExclude.HasValue)
             {
@@ -265,6 +266,16 @@ namespace ServerSide.Models.DAOs
             return query.Sum(ci => ci.Qty);
         }
 
+        public int GetTotalQuantityInCartForEdit(int cartId, int cartItemQty)
+        {
+            var cartItems = _db.CartItems.Where(ci => ci.CartId == cartId);
+
+            var currentItemTotalQty =  cartItems.Sum(ci => ci.Qty);
+
+            var currentItemExcludeQty = currentItemTotalQty - cartItemQty;
+
+            return currentItemExcludeQty;
+        }
 
     }
 }
