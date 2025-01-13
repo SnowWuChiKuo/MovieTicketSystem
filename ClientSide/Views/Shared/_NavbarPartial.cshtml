@@ -11,23 +11,29 @@
                 <li class="nav-item">
                     <a class="nav-link active fw-medium ms-2" aria-current="page" href="~/Movies/Index" style="font-family: 'Noto Sans TC';">電影全覽</a>
                 </li>
+
+                <li class="nav-item">
+                    <a class="nav-link active" href="~/Carts/Index">訂票夾</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="~/Orders/Index">訂單紀錄</a>
+                </li>
+
             </ul>
             <div class="d-flex flex-lg-row flex-column me-lg-5 userAction">
                 @if (User.Identity.IsAuthenticated)
                 {
 
                     <div class="mb-2 mb-lg-0">
-                        <a href="~/Carts/Index" class="cart-img me-2"><i class="fa-solid fa-cart-shopping"></i></a>
-                        <a href="~/Members/Index" class="me-2 btn btn-sm fw-medium border-1 fs-6 ms-3 btn-login">個人資訊</a>
+                        <a href="~/Members/Index" class="me-2 btn btn-sm fw-medium text-light border-1 fs-6 ms-3 btn-login">個人資訊</a>
                     </div>
                     <div>
-                        <a href="~/Members/Logout" class="me-2 btn btn-sm fw-medium border-1 fs-6 ms-3 btn-register">登出</a>
+                        <a href="~/Members/Logout" class="me-2 btn btn-sm fw-medium text-light border-1 fs-6 ms-3 btn-register">登出</a>
                     </div>
                 }
                 else
                 {
                     <div class="mb-2 mb-lg-0">
-                        <a href="~/Carts/Index" class="cart-img me-2"><i class="fa-solid fa-cart-shopping"></i></a>
                         <a href="~/Members/Login" class="me-2 btn btn-sm fw-medium fs-6 ms-3 text-white btn-login">登入</a>
                     </div>
                     <div>
