@@ -1,25 +1,32 @@
 ﻿// 初始化 Vue 應用
-const { createApp } = Vue;
+const { createApp, ref, onMounted } = Vue;
 
 createApp({
-    data() {
+    setup() {
+        const movie = ref({
+            title: movieData.Title,
+            poster: movieData.PosterURL, 
+            genre: movieData.GenreName,
+            rating: movieData.RatingName,
+            duration: `${movieData.RunTime}分鐘`,
+            releaseDate: new Date(movieData.ReleaseDate).toLocaleDateString(),
+            director: movieData.Director,
+            cast: movieData.Cast,
+            rating_score: movieData.AverageRating || 0,
+            rating_count: movieData.ReviewCount,
+            description: movieData.Description,
+            canReview: movieData.CanReview,
+            reviews: movieData.Reviews || []
+        });
+        
+        onMounted(() => {
+            // 更新頁面標題
+            document.title = `${movieData.Title} - 電影訂票網`;
+        });
+
         return {
             activeNames: ['1'], 
-            movie: {
-                title: movieData.Title,
-                poster: movieData.PosterURL, 
-                genre: movieData.GenreName,
-                rating: movieData.RatingName,
-                duration: `${movieData.RunTime}分鐘`,
-                releaseDate: new Date(movieData.ReleaseDate).toLocaleDateString(),
-                director: movieData.Director,
-                cast: movieData.Cast,
-                rating_score: movieData.AverageRating || 0,
-                rating_count: movieData.ReviewCount,
-                description: movieData.Description,
-                canReview: movieData.CanReview,
-                Reviews: movieData.Reviews || []
-            },
+            movie,
             isCommentsOpen: true,
             newReview: {
                 rating: 0,
@@ -49,6 +56,9 @@ createApp({
         formatDate(date) {
             return new Date(date).toLocaleDateString();
         },
+        bookTicket() {
+            window.location.href = '/Tickets/Index';
+        },
         async submitReview() {
             if (!this.canSubmitReview) return;
 
@@ -71,14 +81,14 @@ createApp({
                     // 將新評論加入列表
                     this.movie.reviews.unshift(result.data);
 
-                    // 更新評論數量和平均分數
+                    // 更新評論數量和平均分
                     this.movie.reviewCount++;
 
                     // 清空表單
                     this.newReview.rating = 0;
                     this.newReview.comment = '';
 
-                    // 顯示成功訊息
+                    // 顯示成功
                     ElementPlus.ElMessage({
                         message: '評論發表成功！',
                         type: 'success'

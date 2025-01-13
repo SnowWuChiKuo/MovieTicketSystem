@@ -1,0 +1,23 @@
+﻿:root {
+    /* 背景色系 */
+    --primary-bg: #F5F5F1; /* 主要背景色 - 象牙白 */
+    --secondary-bg: #FFFFFF; /* 次要背景 - 純白 */
+    --nav-footer-bg: #1A1D24; /* Navbar 和 Footer 背景 - 深色背景 */
+    --footer-copyright-bg: #242b2d; /* Footer 版權區背景色 */
+    /* 主題色系 */
+    --accent-color: #E0A96D; /* 強調色 - 暖金色 */
+    --primary-navy: #1A1D24; /* 主要深藍色 */
+    /* 文字色系 */
+    --text-primary: #2C3639; /* 主要文字 - 深灰藍 */
+    --text-secondary: #526D82; /* 次要文字 - 灰藍色 */
+    --text-light: #F5F5F1; /* 淺色文字 */
+    --text-muted: #A6ADBA; /* 淡化文字顏色 */
+    /* Footer 相關 */
+    --footer-text: #E2E8F0; /* Footer 文字顏色 - 淺灰白 */
+    --footer-link: #A6ADBA; /* Footer 連結顏色 - 中灰 */
+    /* 邊框與分隔 */
+    --border-color: #DDE6ED; /* 邊框顏色 - 淺灰 */
+    /* 載入動畫相關 */
+    --skeleton-bg: #E2E8F0; /* Skeleton 背景色 */
+    --skeleton-highlight: #F8FAFC; /* Skeleton 高亮色 */
+}

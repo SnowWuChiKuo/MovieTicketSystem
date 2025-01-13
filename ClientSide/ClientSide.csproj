@@ -149,6 +149,7 @@
     <Compile Include="Models\DTOs\MovieDetailDto.cs" />
     <Compile Include="Models\DTOs\MovieIndexDto.cs" />
     <Compile Include="Models\DTOs\RegisterDto.cs" />
+    <Compile Include="Models\DTOs\ReviewCreateDto.cs" />
     <Compile Include="Models\DTOs\TicketDto.cs" />
     <Compile Include="Models\EFModels\AppDbContext.cs" />
     <Compile Include="Models\EFModels\Cart.cs" />
@@ -192,7 +193,6 @@
     <Compile Include="Models\ViewModels\ScreeningChangeDateVm.cs" />
     <Compile Include="Models\ViewModels\ScreeningVm.cs" />
     <Compile Include="Models\ViewModels\SeatStatusVm.cs" />
-    <Compile Include="Models\ViewModels\ReviewCreateDto.cs" />
     <Compile Include="Models\ViewModels\ReviewDisplayVm.cs" />
     <Compile Include="Models\ViewModels\ReviewSubmitVm.cs" />
     <Compile Include="Models\ViewModels\TicketVm.cs" />
@@ -231,6 +231,9 @@
     <Content Include="Content\dropdown-style.css" />
     <Content Include="Content\Movie.css" />
     <Content Include="Content\MovieMainPageCss.css" />
+    <Content Include="Content\Shared\_FooterStyles.css" />
+    <Content Include="Content\Shared\_NavbarStyles.css" />
+    <Content Include="Content\Shared\_Variables.css" />
     <Content Include="Content\Ticket.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -381,6 +384,7 @@
     <Content Include="codetemplates\ODataControllerWithActions\Controller.vb.t4" />
     <Content Include="codetemplates\ODataControllerWithContext\Controller.cs.t4" />
     <Content Include="codetemplates\ODataControllerWithContext\Controller.vb.t4" />
+    <Content Include="libman.json" />
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.0.js" />
     <Content Include="Scripts\jquery-3.7.0.min.js" />
@@ -394,6 +398,7 @@
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\Movie.js" />
     <Content Include="Scripts\MovieMainPageJS.js" />
+    <Content Include="Scripts\Shared\navbar.js" />
     <Content Include="Scripts\Ticket.js" />
     <Content Include="Scripts\vue.global.js" />
     <Content Include="Web.config" />
@@ -425,6 +430,8 @@
     <Content Include="Views\Cart\Index.cshtml" />
     <Content Include="Views\Tickets\Index.cshtml" />
     <Content Include="Views\Movies\Movie.cshtml" />
+    <Content Include="Views\Shared\_NavbarPartial.cshtml" />
+    <Content Include="Views\Shared\_FooterPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

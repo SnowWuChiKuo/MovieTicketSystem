@@ -133,10 +133,9 @@ namespace ClientSide.Controllers
 					return Json(new { success = false, message = "您沒有本電影的訂票紀錄!" });
 				}
 				//新增評論，把傳來的頁面電影Id跟提交表單資料用Dto傳入
-				var review = _service.AddReview(new ReviewCreateDto
+				var review = _service.AddReview(account ,new ReviewCreateDto
 				{
 					MovieId = movieId,
-					Account = account,
 					Comment = model.Comment,
 					Rating = model.Rating
 				});

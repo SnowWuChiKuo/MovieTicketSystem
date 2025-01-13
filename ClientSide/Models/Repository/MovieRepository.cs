@@ -157,66 +157,83 @@ namespace ClientSide.Models.Repository
 			return _db.Orders
 				.Any(o => o.Member.Account == userAccount
 					 && o.OrderItems.Any(oi => oi.Ticket.Screening.MovieId == movieId)
-					 && o.Status == true); // 假設 Status=true 代表訂單完成
+					 && o.Status == true); // Status=true 代表訂單完成
 		}
 
 
-		public ReviewDisplayVm AddReview(ReviewCreateDto dto)
+		public ReviewDisplayVm AddReview(string account,ReviewCreateDto dto)
 		{
 
 			using (var conn = new SqlConnection(_conn))
 			{
+				//找是否有已存在評論
+				string checkReviewSql = @"
+						SELECT COUNT(1)
+						FROM Reviews r
+						JOIN Members m ON r.MmeberId = m.Id
+						WHERE m.Account = @Account AND r.MovieId = @MovieId";
+
+                //executeScalar 回傳第一列第一行的值，檢查是否有已存在的評論
+                int existingReview = conn.ExecuteScalar<int>(checkReviewSql, new { Account = account,dto.MovieId});
+
+				if(existingReview > 0)
+				{
+					throw new InvalidOperationException("您已評論過此電影!");
+				}
+
 				//找OrderId
-				string orderSql = @"SELECT o.Id 
-									FROM Orders o
-									JOIN OrderItems oi ON o.Id = oi.OrderId
-									JOIN Tickets t ON oi.TicketId = t.Id
-									JOIN Screenings s ON t.ScreeningId = s.Id
-									WHERE o.MemberId = (SELECT Id FROM Members WHERE Account = @Account)
-									AND s.MovieId = @MovieId
-									AND o.Status = 1";
-				var orderId = conn.QueryFirstOrDefault<int>(orderSql, new { dto.Account,dto.MovieId});
+				string orderSql = @"
+					SELECT TOP 1 o.Id
+					FROM Members m
+					JOIN Orders o ON m.Id = o.MembeId
+					JOIN OrderItems oi ON o.Id = oi.OrderId
+					JOIN Tickets t ON oi.TicketId = t.Id
+					JOIN Screenings s ON t.ScreeningId = s.Id
+					WHERE m.Account = @Account
+					AND s.MovieId = @MovieId
+					AND o.Status = 1";
+				var orderId = conn.QueryFirstOrDefault<int>(orderSql, new {Account = account,dto.MovieId});
 
+				if(orderId == 0)
+                {
+                    throw new InvalidOperationException("找不到有效訂單");
+                }
 
-				// 取得會員ID的SQL
-				//string memberIdSql = "SELECT Id FROM Members WHERE Account = @Account";
-				//var memberId = conn.QuerySingle<int>(memberIdSql,new { Account = dto.Account});
-
-				//新增評論的SQL
-				string insertReviewSql = @"INSERT INTO Reviews(MovieId,MemberId,OrderId,Rating,Comment,CreatedAt)
-											VALUES(
-												@MovieId,
-												(SELECT Id FROM Members WHERE Account = @Account),
-												@OrderId,
-												@Rating,
-												@Comment,
-												GETDATE()
-											)
-											SELECT CAST(SCOPE_IDENTITY() as int)";
+                //新增評論的SQL
+                string insertReviewSql = @"
+						INSERT INTO Reviews(MovieId,MemberId,OrderId,Rating,Comment,CreatedAt)
+							SELECT
+							@MovieId,
+							m.Id,
+							@OrderId,
+							@Rating,
+							@Comment,
+							GETDATE()
+						FROM Members m 
+						WHERE m.Accoutn = @Account
+						SELECT CAST(SCOPE_IDENTITY() as int)";
 				var reviewId = conn.QuerySingle<int>(insertReviewSql, new
 				{
-					MovieId = dto.MovieId,
-					Account = dto.Account,
+					dto.MovieId,
+					Account = account,
 					OrderId = orderId,
-					Rating = dto.Rating,
-					Comment = dto.Comment
+					dto.Rating,
+					dto.Comment
 				});
-				// 取得新增的評論
-				//string reviewSql = @"
-				//        SELECT 
-				//            r.Id,
-				//            m.Name as MemberName,
-				//            r.Comment,
-				//            r.CreatedAt,
-				//            r.Rating,
-				//            r.OrderId
-				//        FROM Reviews r
-				//        JOIN Members m ON r.MemberId = m.Id
-				//        WHERE r.Id = @ReviewId";
+				//取得新增的評論
+				string getReviewSql = @"
+				        SELECT 
+				            r.Id,
+				            m.Name as MemberName,
+				            r.Comment,
+				            r.CreatedAt,
+				            r.Rating,
+				            r.OrderId
+				        FROM Reviews r
+				        JOIN Members m ON r.MemberId = m.Id
+				        WHERE r.Id = @ReviewId";
 
-				//return conn.QuerySingle<ReviewDisplayVm>(reviewSql, new { ReviewId = reviewId });
-
-				return null;
+				return conn.QuerySingle<ReviewDisplayVm>(getReviewSql, new { ReviewId = reviewId });
 
 			}
 

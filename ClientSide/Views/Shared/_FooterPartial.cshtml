@@ -1,0 +1,72 @@
+﻿<!--頁尾 Start-->
+<footer class="text-center text-lg-start mvFooter">
+    <!-- Section: Links  -->
+    <section class="">
+        <div class="container text-center text-md-start mt-3">
+            <!-- Grid row -->
+            <div class="row mt-3">
+                <!-- Grid column -->
+                <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+                    <!-- Content -->
+                    <h6 class="text-uppercase fw-bold mb-4 text-light">
+                        <i class="fas fa-gem me-3"></i>關於網站
+                    </h6>
+                    <p>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo, hic eaque soluta est minus neque fugiat itaque odio culpa dolor, voluptate officiis eum corrupti perferendis ea.
+                    </p>
+                </div>
+                <!-- Grid column -->
+                <!-- Grid column -->
+                <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+                    <!-- Links -->
+                    <h6 class="text-uppercase fw-bold mb-4 text-light">
+                        <i class="fa-solid fa-user me-3"></i>會員資訊
+                    </h6>
+
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <p>
+                            <a href="~/Members/Index" class="text-reset text-decoration-none ms-4">
+                                會員專區
+                            </a>
+                        </p>
+                    }
+                    else
+                    {
+                        <p>
+                            <a href="~/Members/Register" class="text-reset text-decoration-none ms-4">
+                                加入會員
+                            </a>
+                        </p>
+                    }
+
+                </div>
+                <!-- Grid column -->
+                <!-- Grid column -->
+                <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4 ">
+                    <!-- Links -->
+                    <h6 class="text-uppercase fw-bold mb-4 text-light">
+                        <i class="fa fa-envelope me-3"></i>
+                        聯絡我們
+                    </h6>
+                    <p><i class="fas fa-home me-3"></i> New York, NY 10012, US</p>
+                    <p>
+                        <i class="fas fa-envelope me-3"></i>
+                        info@example.com
+                    </p>
+                    <p><i class="fas fa-phone me-3"></i> 0923-456-788</p>
+                </div>
+                <!-- Grid column -->
+            </div>
+            <!-- Grid row -->
+        </div>
+    </section>
+    <!-- Section: Links  -->
+    <!-- Copyright -->
+    <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.08);">
+        2025 :
+        <a class="text-reset fw-bold text-decoration-none" href="~/Movies/Index">北商大 第八組 電影票訂票系統</a>
+    </div>
+    <!-- Copyright -->
+</footer>
+<!--頁尾 End-->

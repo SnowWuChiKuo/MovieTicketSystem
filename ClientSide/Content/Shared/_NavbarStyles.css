@@ -1,0 +1,109 @@
+﻿/* =======================
+   導航欄 (Navbar) 樣式
+   ======================= */
+
+/* Navbar 基本樣式 */
+.navbar {
+    background-color: var(--nav-footer-bg) !important;
+    border-bottom: 2px solid var(--accent-color);
+    min-height: 80px !important; /* 改用 min-height */
+    height: auto !important; /* 確保自適應 */
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding: 0.5rem 15px !important; /* 添加上下內邊距 */
+}
+.cart-img {
+    color: var(--text-light);
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+    .cart-img:hover,
+    .cart-img:focus {
+        color: var(--accent-color);
+        text-decoration: none;
+    }
+    /* 確保內容垂直居中 */
+    .navbar .container-fluid {
+        min-height: 80px;
+        display: flex;
+        align-items: center;
+    }
+
+/* Navbar 品牌名稱 */
+.navbar-brand {
+    font-size: 1.5rem !important;
+    padding: 0 !important;
+    color: #E2E8F0 !important;
+    font-family: 'Noto Sans TC', sans-serif;
+}
+
+/* Navbar 連結樣式 */
+.navbar .nav-link {
+    font-size: 1.1rem;
+    padding: 0.5rem 1rem !important;
+    color: #E2E8F0 !important;
+    font-family: 'Noto Sans TC', sans-serif;
+    transition: color 0.3s ease;
+}
+
+    /* Navbar 連結懸停效果 */
+    .navbar .nav-link:hover {
+        color: var(--accent-color) !important;
+    }
+
+/* Navbar 按鈕樣式 */
+.navbar .btn {
+    font-size: 1rem !important;
+    padding: 0.5rem 1rem !important;
+    transition: color 0.3s ease;
+    /*    color: #E2E8F0 !important;*/
+}
+
+/* Navbar 漢堡選單按鈕 */
+.navbar-toggler {
+    padding: 0.5rem;
+    border: none;
+    color: #E2E8F0;
+    background: none;
+}
+
+/* 自定義漢堡圖標 */
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+}
+
+/* 漢堡選單圖標顏色 */
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+}
+
+/* 手機版導航樣式 */
+@media (max-width: 991px) {
+    .navbar-collapse {
+        background-color: var(--nav-footer-bg);
+        padding: 1rem;
+        border-radius: 8px;
+        margin-top: 0.5rem;
+    }
+
+    .navbar .btn {
+        width: 100%;
+        text-align: left;
+        padding: 0.75rem 1rem !important;
+    }
+}
+
+/* 桌面版導航樣式 */
+@media (min-width: 992px) {
+    .userAction {
+        margin-right: 8rem !important;
+    }
+
+    .siteName {
+        margin-left: 8rem !important;
+    }
+}

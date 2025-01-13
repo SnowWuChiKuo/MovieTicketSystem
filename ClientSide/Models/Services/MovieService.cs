@@ -43,9 +43,9 @@ namespace ClientSide.Models.Services
 			return _repo.CheckUserHasValidOrder(acc,movieId);
 		}
 
-		public ReviewDisplayVm AddReview(ReviewCreateDto dto)
+		public ReviewDisplayVm AddReview(string account,ReviewCreateDto dto)
 		{
-			return _repo.AddReview(dto);
+			return _repo.AddReview(account,dto);
 		}
 	}
 }

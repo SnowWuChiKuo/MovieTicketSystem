@@ -1,0 +1,43 @@
+﻿<!--NAVBAR Start-->
+<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+        <a class="navbar-brand fw-bold fs-4 mx-3 siteName" href="#" style="font-family: 'Noto Sans TC';">網站名稱</a>
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <!--摺疊清單-->
+        <div class="collapse navbar-collapse siteAction" id="navbarCollapse">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active fw-medium ms-2" aria-current="page" href="~/Movies/Index" style="font-family: 'Noto Sans TC';">電影全覽</a>
+                </li>
+            </ul>
+            <div class="d-flex flex-lg-row flex-column me-lg-5 userAction">
+                @if (User.Identity.IsAuthenticated)
+                {
+
+                    <div class="mb-2 mb-lg-0">
+                        <a href="~/Carts/Index" class="cart-img me-2"><i class="fa-solid fa-cart-shopping"></i></a>
+                        <a href="~/Members/Index" class="me-2 btn btn-sm fw-medium border-1 fs-6 ms-3 btn-login">個人資訊</a>
+                    </div>
+                    <div>
+                        <a href="~/Members/Logout" class="me-2 btn btn-sm fw-medium border-1 fs-6 ms-3 btn-register">登出</a>
+                    </div>
+                }
+                else
+                {
+                    <div class="mb-2 mb-lg-0">
+                        <a href="~/Carts/Index" class="cart-img me-2"><i class="fa-solid fa-cart-shopping"></i></a>
+                        <a href="~/Members/Login" class="me-2 btn btn-sm fw-medium fs-6 ms-3 text-white btn-login">登入</a>
+                    </div>
+                    <div>
+                        <a href="~/Members/Register" class="me-2 btn btn-sm fw-medium fs-6 ms-3 text-white btn-register">註冊</a>
+                    </div>
+                }
+
+            </div>
+        </div>
+        <!--摺疊清單-->
+    </div>
+</nav>
+<!--NAVBAR End-->
