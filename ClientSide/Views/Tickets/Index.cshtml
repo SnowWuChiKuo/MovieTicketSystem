@@ -9,7 +9,13 @@
     <!-- 動態內容 -->
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="mvTitle mb-4 mt-4">電影簡介</h1>
+            <h1 class="mvTitle mb-4 text-center">開始訂票</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h3 class="mvTitle mb-4">電影簡介</h3>
         </div>
     </div>
     <div class="row">
@@ -197,24 +203,24 @@
                 <div class="row-number">{{ row }}</div>
             </div>
         </div>
-        @if (User.Identity.IsAuthenticated) 
-            { 
-                <div class="bottom-buttons">
-                    <button class="btn btn-success"
-                            v-if="selectedSeats.size === selectedQuantity"
-                            v-on:click="completeBooking">
-                        訂票完成
-                    </button>
-                </div>
-            }
+        @if (User.Identity.IsAuthenticated)
+        {
+            <div class="bottom-buttons">
+                <button class="btn btn-success"
+                        v-if="selectedSeats.size === selectedQuantity"
+                        v-on:click="completeBooking">
+                    訂票完成
+                </button>
+            </div>
+        }
         else
-            {
-                <div class="bottom-buttons">
-                    <a class="btn btn-success" href="/Members/Login">
-                        訂票完成
-                    </a>
-                </div>
-            }
+        {
+            <div class="bottom-buttons">
+                <a class="btn btn-success" href="/Members/Login">
+                    訂票完成
+                </a>
+            </div>
+        }
     </div>
 
 </div>
