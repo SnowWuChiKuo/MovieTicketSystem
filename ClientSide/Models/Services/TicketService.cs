@@ -35,6 +35,5 @@ namespace ClientSide.Models.Services
 		}
 
 
-
-	}
+    }
 }

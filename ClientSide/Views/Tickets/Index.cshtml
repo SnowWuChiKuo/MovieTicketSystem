@@ -150,7 +150,7 @@
                         <div class="seat"
                              v-bind:class="{
                             selected: isSelected(seat.Row, seat.Number),
-                            unavailable: seat.IsDisabled || seat.Status === 'Occupied'
+                            unavailable: seat.IsDisabled || seat.Status === '不可使用'
                          }"
                              v-on:click="toggleSeat(seat.Row, seat.Number)">
                             {{ seat.Number }}
@@ -193,6 +193,7 @@
             const screeningId = ref([]);
 
             const ticket = ref([]);
+            const ticketId = ref([]);
             const ticketSales = ref([]);
             const ticketTypes = ref([]);
             const ticketPrices = ref({});
@@ -206,6 +207,19 @@
             const selectedTicketType = ref(null);
             const selectedTicketPrice = ref(0);
             const selectedQuantity = ref(1);  // 預設數量為 1
+
+            const findTicketId = computed(() => {
+                if (!selectedTicketSale.value || !selectedTicketType.value) {
+                    return null;
+                }
+
+                const foundTicket = ticket.value.find(t =>
+                    t.SalesType === selectedTicketSale.value &&
+                    t.TicketType === selectedTicketType.value
+                );
+
+                return foundTicket ? foundTicket.Id : null;
+            });
 
             // 計算總價的邏輯保持不變
             const totalPrice = computed(() => {
@@ -433,6 +447,16 @@
                     return;
                 }
 
+                // 檢查並取得票券 ID
+                const ticketId = findTicketId.value;
+                if (!ticketId) {
+                    console.error('找不到對應的票券');
+                    alert('請確認票種選擇');
+                    return;
+                }
+
+                console.log('選擇的票券 ID:', ticketId);
+
                 // 準備請求資料
                 const requestData = {
                     screeningId: parseInt(screeningId.value)
@@ -478,13 +502,13 @@
             };
 
 
-            // 修改 toggleSeat 函數
+            // 這裡在檢查和切割座位 ID
             const toggleSeat = (row, col) => {
-                const seatId = `${row}-${col}`;
+                const seatId = `${row}-${col}`;  // 這裡是在串接字串
 
                 // 檢查座位是否可選
                 const seat = seatStatus.value.find(s => s.Row === row && s.Number === col);
-                if (seat && (seat.IsDisabled || seat.Status === 'Occupied')) {
+                if (seat && (seat.IsDisabled || seat.Status === '不可使用')) {
                     return;
                 }
 
@@ -499,19 +523,40 @@
                 }
             };
 
-            // 修改完成訂票函數
+            // 完成訂票時的座位處理
             const completeBooking = () => {
+
                 if (selectedSeats.size < selectedQuantity.value) {
                     alert(`請選擇 ${selectedQuantity.value} 個座位！`);
                     return;
                 }
 
                 const selectedSeatsList = Array.from(selectedSeats).map(seatId => {
-                    const [row, number] = seatId.split('-');
+                    const [row, number] = seatId.split('-');  // 這裡把字串切開
                     return `${row}排${number}號`;
                 }).join('、');
 
-                alert(`訂票完成！\n已選擇座位：${selectedSeatsList}\n總價：${totalPrice.value}元`);
+                // 準備要傳送的資料
+                const cartData = {
+                    ticketId: ticketId,
+                    qty: selectedQuantity.value
+                };
+
+                // 發送請求到購物車
+                axios.get(`/Cart/AddItem`, { params: cartData })
+                    .then(response => {
+                        const selectedSeatsList = Array.from(selectedSeats).map(seatId => {
+                            const [row, number] = seatId.split('-');
+                            return `${row}排${number}號`;
+                        }).join('、');
+
+                        alert(`訂票完成！\n已選擇座位：${selectedSeatsList}\n總價：${totalPrice.value}元`);
+                    })
+                    .catch(error => {
+                        console.error('加入購物車時發生錯誤：', error);
+                        alert('加入購物車失敗，請稍後再試');
+                    });
+                
             };
 
             return {
@@ -521,6 +566,8 @@
                 times,
                 screeningId,
                 ticket,
+                findTicketId,
+                ticketId,
                 ticketSales,
                 ticketTypes,
                 ticketPrices,
@@ -536,6 +583,7 @@
                 selectedTicketType,
                 selectedTicketPrice,
                 selectedQuantity,
+                selectedSeats,
                 showSeats,
                 totalPrice,
                 selectMovie,
