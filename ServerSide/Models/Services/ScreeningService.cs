@@ -53,9 +53,15 @@ namespace ServerSide.Models.Services
             return _dao.GetMovieReleaseDate(movieId);
         }
 
+		public bool HasTimeConflict(int theaterId, DateOnly date, TimeOnly startTime, TimeOnly endTime, int excludeId = 0)
 
+		{
 
-        public void Create(ScreeningDto dto)
+			return _dao.HasTimeConflict(theaterId, date, startTime, endTime, excludeId);
+
+		}
+
+		public void Create(ScreeningDto dto)
         {
             _dao.Create(dto);
         }

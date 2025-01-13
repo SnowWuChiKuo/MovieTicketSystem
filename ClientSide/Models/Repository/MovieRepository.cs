@@ -102,6 +102,17 @@ namespace ClientSide.Models.Repository
 			}
 		}
 
+		public List<AllMoviesDto> GetAllMovies()
+		{
+			string sql = @"
+						SELECT m.Id,m.Title, m.ReleaseDate, m.PosterURL
+						FROM Movies m
+						ORDER BY m.ReleaseDate DESC";
+			using (var conn = new SqlConnection(_conn))
+			{
+				return conn.Query<AllMoviesDto>(sql).ToList();
+			}
+		}
 
 		/// <summary>
 		/// 獲取單頁電影資訊
@@ -124,8 +135,12 @@ namespace ClientSide.Models.Repository
 					WHERE m.Id = @Id";
 
 			string reviewsSql = @"
-					SELECT r.Id, m.Name as MemberName,
-						r.Comment, r.CreatedAt, r.Rating
+					SELECT 
+						r.Id, 
+						m.Name as MemberName,
+						r.Comment, 
+						r.CreatedAt, 
+						r.Rating
 					FROM Reviews r
 					JOIN Members m ON r.MemberId = m.Id
 					WHERE r.MovieId = @MovieId
@@ -134,11 +149,19 @@ namespace ClientSide.Models.Repository
 
 			using (var conn = new SqlConnection(_conn))
 			{
-				var  movie = conn.QueryFirstOrDefault<MovieDetailDto>(movieSql, new { Id = id });
+				var movie = conn.QueryFirstOrDefault<MovieDetailDto>(movieSql, new { Id = id });
 
 				if (movie != null)
 				{
-					movie.Reviews = conn.Query<ReviewDisplayVm>(reviewsSql, new { MovieId = id }).ToList();
+					movie.Reviews = conn.Query<ReviewDisplayVm>(reviewsSql, new { MovieId = id })
+						.Select(r => new ReviewDisplayVm
+						{
+							Id = r.Id,
+							MemberName = r.MemberName,
+							Comment = r.Comment,
+							CreatedAt = r.CreatedAt,
+							Rating = r.Rating
+						}).ToList();
 				}
 
 				return movie;
@@ -154,10 +177,23 @@ namespace ClientSide.Models.Repository
 		/// <returns></returns>
 		public bool CheckUserHasValidOrder(string userAccount, int movieId)
 		{
-			return _db.Orders
-				.Any(o => o.Member.Account == userAccount
-					 && o.OrderItems.Any(oi => oi.Ticket.Screening.MovieId == movieId)
-					 && o.Status == true); // Status=true 代表訂單完成
+			string checkOrderSql = @"
+				SELECT COUNT(1)
+				FROM Orders o
+				JOIN Members m ON o.MemberId = m.Id
+				JOIN OrderItems oi ON o.Id = oi.OrderId
+				JOIN Tickets t ON oi.TicketId = t.Id
+				JOIN Screenings s ON t.ScreeningId = s.Id
+				WHERE m.Account = @Account 
+				AND s.MovieId = @MovieId
+				AND o.Status = 1";
+
+			using (var conn = new SqlConnection(_conn))
+			{
+				int orderCount = conn.ExecuteScalar<int>(checkOrderSql, 
+					new { Account = userAccount, MovieId = movieId });
+				return orderCount > 0;
+			}
 		}
 
 
@@ -170,7 +206,7 @@ namespace ClientSide.Models.Repository
 				string checkReviewSql = @"
 						SELECT COUNT(1)
 						FROM Reviews r
-						JOIN Members m ON r.MmeberId = m.Id
+						JOIN Members m ON r.MemberId = m.Id
 						WHERE m.Account = @Account AND r.MovieId = @MovieId";
 
                 //executeScalar 回傳第一列第一行的值，檢查是否有已存在的評論
@@ -185,7 +221,7 @@ namespace ClientSide.Models.Repository
 				string orderSql = @"
 					SELECT TOP 1 o.Id
 					FROM Members m
-					JOIN Orders o ON m.Id = o.MembeId
+					JOIN Orders o ON m.Id = o.MemberId
 					JOIN OrderItems oi ON o.Id = oi.OrderId
 					JOIN Tickets t ON oi.TicketId = t.Id
 					JOIN Screenings s ON t.ScreeningId = s.Id
@@ -210,7 +246,7 @@ namespace ClientSide.Models.Repository
 							@Comment,
 							GETDATE()
 						FROM Members m 
-						WHERE m.Accoutn = @Account
+						WHERE m.Account = @Account
 						SELECT CAST(SCOPE_IDENTITY() as int)";
 				var reviewId = conn.QuerySingle<int>(insertReviewSql, new
 				{

@@ -219,7 +219,8 @@ namespace ServerSide.Models.DAOs
         }
 
 
-        public ScreeningDto ConvertToDto(Screening screening)
+
+		public ScreeningDto ConvertToDto(Screening screening)
         {
             return new ScreeningDto
             {
@@ -249,5 +250,9 @@ namespace ServerSide.Models.DAOs
             };
         }
 
+		public bool HasTimeConflict(int theaterId, DateOnly date, TimeOnly startTime, TimeOnly endTime, int excludeId = 0)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

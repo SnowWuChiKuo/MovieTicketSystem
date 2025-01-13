@@ -16,10 +16,27 @@ createApp({
             rating_score: movieData.AverageRating || 0,
             rating_count: movieData.ReviewCount,
             description: movieData.Description,
-            canReview: movieData.CanReview,
-            reviews: movieData.Reviews || []
+            canReview: movieData.CanReview || false,
+            reviews: movieData.Reviews?.map(r => ({
+                id: r.Id,
+                memberName: r.MemberName,
+                content: r.Comment,
+                createdAt: new Date(r.CreatedAt).toLocaleDateString('zh-TW', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit'
+                }),
+                rating: r.Rating
+            })) || []
         });
         
+        const newReview = ref({
+            rating: 0,
+            comment: ''
+        });
+
+        const isSubmitting = ref(false);
+
         onMounted(() => {
             // 更新頁面標題
             document.title = `${movieData.Title} - 電影訂票網`;
@@ -28,14 +45,11 @@ createApp({
         return {
             activeNames: ['1'], 
             movie,
-            isCommentsOpen: true,
-            newReview: {
-                rating: 0,
-                comment: ''
-            },
+            isCommentsOpen: ref(true),
+            newReview,
+            isSubmitting,
             isLoggedIn: movieData.IsLoggedIn || false,
             currentUserName: movieData.CurrentUserName || '',
-            isSubmitting: false
         }
     },
     computed: {
@@ -55,7 +69,11 @@ createApp({
     },
     methods: {
         formatDate(date) {
-            return new Date(date).toLocaleDateString();
+            return new Date(date).toLocaleDateString('zh-TW', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit'
+            });
         },
         bookTicket() {
                 window.location.href = `/Tickets/Index?movieId=${this.movie.id}`;
@@ -65,31 +83,46 @@ createApp({
 
             this.isSubmitting = true;
             try {
-                const response = await fetch(`/Movies/SubmitReview?movieId=${this.movie.id}`, {
+                const response = await fetch(`/Movies/SubmitReview`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
+                        movieId: movieData.Id,
                         rating: this.newReview.rating,
                         comment: this.newReview.comment
                     })
                 });
 
+                if (!response.ok) {
+                    throw new Error('網路請求失敗');
+                }
+
                 const result = await response.json();
 
                 if (result.success) {
                     // 將新評論加入列表
-                    this.movie.reviews.unshift(result.data);
+                    this.movie.reviews.unshift({
+                        id: result.data.id,
+                        memberName: this.currentUserName,
+                        content: result.data.comment,
+                        createdAt: new Date().toLocaleDateString('zh-TW', {
+                            year: 'numeric',
+                            month: '2-digit',
+                            day: '2-digit'
+                        }),
+                        rating: result.data.rating
+                    });
 
-                    // 更新評論數量和平均分
-                    this.movie.reviewCount++;
+                    // 更新評論數量
+                    this.movie.rating_count++;
 
                     // 清空表單
                     this.newReview.rating = 0;
                     this.newReview.comment = '';
 
-                    // 顯示成功
+                    // 顯示成功訊息
                     ElementPlus.ElMessage({
                         message: '評論發表成功！',
                         type: 'success'

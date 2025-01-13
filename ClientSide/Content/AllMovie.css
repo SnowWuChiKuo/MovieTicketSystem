@@ -1,0 +1,135 @@
+﻿/* 電影列表容器 */
+.movie-list-container {
+    padding: 2rem 0;
+    background-color: var(--primary-bg);
+    font-family: 'Lexend Deca', 'Noto Sans TC', sans-serif !important;
+}
+
+/* 主容器樣式 */
+.main-container {
+    background: var(--primary-bgwwwwwwwwwwwwwwwwwwwwww);
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+    max-width: 1200px;
+    margin: 0 auto;
+    border: 1px solid var(--border-color);
+}
+
+/* 標題樣式 */
+.mvTitle {
+    font-size: 2.5rem;
+    font-weight: 500;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 1rem;
+    color: var(--text-primary);
+    font-family: 'Lexend Deca', 'Noto Sans TC', sans-serif !important;
+}
+
+/* 電影列表 */
+.movie-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    padding: 1rem 0;
+}
+
+/* 電影卡片樣式 */
+.movie-card {
+    flex: 0 0 calc(33.333% - 1.334rem);
+    display: flex;
+    background: var(--secondary-bg);
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    border: 1.5px solid var(--border-color);
+}
+
+    .movie-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--accent-color);
+        box-shadow: 0 4px 12px rgba(224, 169, 109, 0.4);
+    }
+
+/* 海報容器 */
+.movie-poster {
+    flex: 0 0 180px;
+    position: relative;
+    overflow: hidden;
+    border-right: 1px solid var(--border-color);
+}
+
+    .movie-poster img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+.movie-card:hover .movie-poster img {
+    transform: scale(1.05);
+}
+
+/* 電影資訊 */
+.movie-info {
+    flex: 1;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.movie-title {
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    font-family: 'Lexend Deca', 'Noto Sans TC', sans-serif !important;
+}
+
+.movie-meta {
+    margin-top: auto;
+    color: var(--text-secondary);
+    font-size: 1rem;
+    font-family: 'Lexend Deca', 'Noto Sans TC', sans-serif !important;
+}
+
+.review-count {
+    margin-bottom: 0.5rem;
+}
+
+/* 確保所有文字元素使用相同字體 */
+.movie-card *:not(.fa, .fa-solid, .fa-regular, .fa-brands, [class*='fa-']) {
+    font-family: 'Lexend Deca', 'Noto Sans TC', sans-serif !important;
+}
+
+/* 響應式調整 */
+@media (max-width: 1200px) {
+    .movie-card {
+        flex: 0 0 calc(50% - 1rem);
+    }
+}
+
+@media (max-width: 768px) {
+    .movie-card {
+        flex: 0 0 100%;
+    }
+
+    .movie-poster {
+        flex: 0 0 140px;
+    }
+
+    .movie-title {
+        font-size: 1.2rem;
+    }
+    
+    .main-container {
+        padding: 1rem;
+    }
+    
+    .mvTitle {
+        font-size: 2rem;
+    }
+}
