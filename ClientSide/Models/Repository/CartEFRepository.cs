@@ -44,7 +44,7 @@ namespace ClientSide.Models.Repository
 		/// <returns></returns>
 		public CartVm GetCartInfo(string account)
         {
-
+            
             Cart cart = _db.Carts.Include(c => c.Member).FirstOrDefault(c => c.Member.Account == account);
 
             if (cart == null) //沒有購物車就新增一筆
@@ -68,7 +68,7 @@ namespace ClientSide.Models.Repository
                     MovieTitle = GetMovieTitle(ci.TicketId),
                     MovieTime = GetScreeningTime(ci.TicketId)
                 }).ToList(); // List<CartItemVm>
-
+            _db.Set<CartItem>().Local.Clear(); // 清除快取
             //建立購物車物件
             var cartVm = new CartVm
             {

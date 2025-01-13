@@ -17,7 +17,7 @@ namespace ClientSide.Models.DAOs
         /// 清除存在超過五分鐘的 CartItem 資料。
         /// </summary>
         /// <returns></returns>
-        public async Task ClearExpiredCartItems()
+        public async Task<bool> ClearExpiredCartItems()
         {
             var threshold = DateTime.Now.AddMinutes(-5);
             var now = DateTime.Now;
@@ -35,9 +35,15 @@ namespace ClientSide.Models.DAOs
                                                      // );
             .Where(ci => ci.CreatedAt < threshold);
 
-            _db.CartItems.RemoveRange(expiredCartItems);
-            await _db.SaveChangesAsync();
-            _db.Set<CartItem>().Local.Clear();//使用 DbSet<T>.Local.Clear() 方法
+            bool hasExpired = expiredCartItems.Any();
+            if (hasExpired)
+            {
+                _db.CartItems.RemoveRange(expiredCartItems);
+                await _db.SaveChangesAsync();
+                _db.Set<CartItem>().Local.Clear();//使用 DbSet<T>.Local.Clear() 方法
+            }
+
+            return hasExpired;
         }
 
         public CartItemDetailVm Get(int id)
@@ -116,7 +122,7 @@ namespace ClientSide.Models.DAOs
             var seatStatus = _db.SeatStatus.FirstOrDefault(ss => ss.ScreeningId == screening.Id);
             var seat = _db.Seats.FirstOrDefault(s=>s.Id == seatStatus.SeatId);
 
-            return $"{seat.Row}{seat.Number}";
+            return $"{seat.Row.Trim()}{seat.Number.Trim()}";
         }
 
         /// <summary>
