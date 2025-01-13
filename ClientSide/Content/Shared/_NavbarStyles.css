@@ -81,6 +81,51 @@
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
 }
 
+
+
+/* 登入按鈕樣式 */
+.btn-login {
+    background: none !important;
+    color: #E2E8F0 !important;
+    transition: all 0.3s ease;
+    border: none !important;
+    outline: none !important;
+}
+
+    /* 登入按鈕懸停效果 */
+    .btn-login:hover,
+    .btn-login:focus,
+    .btn-login:active {
+        color: var(--accent-color) !important;
+        background: none !important;
+        transform: none !important;
+        box-shadow: none !important;
+        border: none !important;
+        outline: none !important;
+    }
+
+/* 註冊按鈕樣式 */
+.btn-register {
+    background: none !important;
+    color: #E2E8F0 !important;
+    transition: all 0.3s ease;
+    border: none !important;
+    outline: none !important;
+}
+
+    /* 註冊按鈕懸停效果 */
+    .btn-register:hover,
+    .btn-register:focus,
+    .btn-register:active {
+        color: var(--accent-color) !important;
+        background: none !important;
+        transform: none !important;
+        box-shadow: none !important;
+        border: none !important;
+        outline: none !important;
+    }
+
+
 /* 手機版導航樣式 */
 @media (max-width: 991px) {
     .navbar-collapse {

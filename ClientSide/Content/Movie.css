@@ -55,34 +55,34 @@ html, body {
    ======================= */
 
 /* 登入按鈕樣式 */
-.btn-login {
+/*.btn-login {
     background: none !important;
     color: #E2E8F0 !important;
     transition: all 0.3s ease;
-}
+}*/
 
 /* 登入按鈕懸停效果 */
-.btn-login:hover {
+/*.btn-login:hover {
     color: var(--accent-color) !important;
     background: none !important;
     transform: none !important;
     box-shadow: none !important;
-}
+}*/
 
 /* 註冊按鈕樣式 */
-.btn-register {
+/*.btn-register {
     background: none !important;
     color: #E2E8F0 !important;
     transition: all 0.3s ease;
-}
+}*/
 
     /* 註冊按鈕懸停效果 */
-.btn-register:hover {
+/*.btn-register:hover {
     color: var(--accent-color) !important;
     background: none !important;
     transform: none !important;
     box-shadow: none !important;
-}
+}*/
 
 /* =======================
    主要內容區域樣式
