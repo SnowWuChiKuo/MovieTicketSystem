@@ -1,4 +1,5 @@
 ﻿// 初始化 Vue 應用
+
 const { createApp, ref, onMounted } = Vue;
 
 createApp({
@@ -10,7 +11,9 @@ createApp({
             genre: movieData.GenreName,
             rating: movieData.RatingName,
             duration: `${movieData.RunTime}分鐘`,
-            releaseDate: new Date(movieData.ReleaseDate).toLocaleDateString(),
+            releaseDate: movieData.ReleaseDate.replace(/\/Date\((-?\d+)\)\//, function (match, timestamp) {
+                return new Date(parseInt(timestamp)).toISOString().split('T')[0].replaceAll('-', '/');
+            }),
             director: movieData.Director,
             cast: movieData.Cast,
             rating_score: movieData.AverageRating || 0,
@@ -21,10 +24,12 @@ createApp({
                 id: r.Id,
                 memberName: r.MemberName,
                 content: r.Comment,
-                createdAt: new Date(r.CreatedAt).toLocaleDateString('zh-TW', {
-                    year: 'numeric',
-                    month: '2-digit',
-                    day: '2-digit'
+                createdAt: r.CreatedAt.replace(/\/Date\((-?\d+)\)\//, function (match, timestamp) {
+                    return new Date(parseInt(timestamp)).toLocaleDateString('zh-TW', {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit'
+                    });
                 }),
                 rating: r.Rating
             })) || []
@@ -69,11 +74,7 @@ createApp({
     },
     methods: {
         formatDate(date) {
-            return new Date(date).toLocaleDateString('zh-TW', {
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit'
-            });
+            return new Date(parseInt(timestamp)).toISOString().split('T')[0].replaceAll('-', '/');
         },
         bookTicket() {
                 window.location.href = `/Tickets/Index?movieId=${this.movie.id}`;

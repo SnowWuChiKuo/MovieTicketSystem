@@ -43,7 +43,7 @@ namespace ServerSide.Models.Services
             return _dao.GetMovieRunTime(movieId);
         }
 
-        public bool ValidateTelevisingDate(int movieId, DateOnly televising)
+        public bool IsValidTelevisingDate(int movieId, DateOnly televising)
         {
             return _dao.IsValidTelevisingDate(movieId, televising);
         }
@@ -53,11 +53,11 @@ namespace ServerSide.Models.Services
             return _dao.GetMovieReleaseDate(movieId);
         }
 
-		public bool HasTimeConflict(int theaterId, DateOnly date, TimeOnly startTime, TimeOnly endTime, int excludeId = 0)
+		public bool HasTimeConflict(int theaterId, DateOnly televising, TimeOnly startTime, TimeOnly endTime, int excludeId = 0)
 
 		{
 
-			return _dao.HasTimeConflict(theaterId, date, startTime, endTime, excludeId);
+			return _dao.HasTimeConflict(theaterId, televising, startTime, endTime, excludeId);
 
 		}
 

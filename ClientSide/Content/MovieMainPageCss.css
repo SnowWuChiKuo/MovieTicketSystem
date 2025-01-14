@@ -98,9 +98,9 @@
         margin-top: auto; /* 將按鈕推到底部 */
     }
 
-        .movie-card .btn-book:hover {
-            background-color: #c89655;
-        }
+    .movie-card .btn-book:hover {
+        background-color: #c89655;
+    }
 
     .movie-card::before,
     .movie-card figcaption {
@@ -140,7 +140,7 @@
 .carousel-inner img {
     height: 360px !important;
     width: 100% !important;
-    object-fit: cover !important;
+    object-fit: contain !important;
 }
 
 .carousel-caption {

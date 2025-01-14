@@ -32,7 +32,8 @@ namespace ClientSide.Models.DTOs
 		public int? RunTime { get; set; }
 
 		[JsonConverter(typeof(IsoDateTimeConverter))]
-		public DateTime ReleaseDate { get; set; }
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
+        public DateTime ReleaseDate { get; set; }
 
 		public string PosterURL { get; set; }
 

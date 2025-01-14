@@ -135,7 +135,7 @@ namespace ServerSide.Controllers
 
             try
             {
-                if (!_service.ValidateTelevisingDate(vm.MovieId, vm.Televising))
+                if (!_service.IsValidTelevisingDate(vm.MovieId, vm.Televising))
                 {
                     var releaseDate = _service.GetMovieReleaseDate(vm.MovieId);
                     ModelState.AddModelError("ScreeningDate",

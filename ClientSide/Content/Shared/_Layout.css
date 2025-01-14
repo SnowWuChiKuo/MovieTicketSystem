@@ -15,7 +15,7 @@ html, body {
 /* 主要內容區域 */
 .main-content {
     flex: 1 0 auto; /* 自動填充剩餘空間 */
-    padding-top: 80px; /* 與 navbar 高度相同 */
+    padding-top: 40px; /* 與 navbar 高度相同 */
     padding-bottom: 2rem; /* 底部間距 */
     width: 100%;
 }
@@ -30,6 +30,6 @@ html, body {
 /* 響應式調整 */
 @media (max-width: 768px) {
     .main-content {
-        padding-top: 70px; /* 較小螢幕上的間距 */
+        padding-top: 40px; /* 較小螢幕上的間距 */
     }
 } 
