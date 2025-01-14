@@ -22,7 +22,7 @@ namespace ClientSide.Models.DAOs
                 TheaterName = GetTheaterName(id),
                 MovieTitle = GetMovieTitle(id),
                 MovieTime = GetScreeningTime(id),
-                SeatName = GetSeatName(id),
+                SeatName = GetSeatNames(id),
                 Qty = cartitem.Qty,
                 Price = GetPrice(id),
                 SubTotal = cartitem.SubTotal
@@ -41,7 +41,7 @@ namespace ClientSide.Models.DAOs
             var cartItem = _db.CartItems.FirstOrDefault(ci => ci.Id == cartItemId);
             var ticket  = _db.Tickets.FirstOrDefault(t=>t.Id == cartItem.TicketId);  
             var screening = _db.Screenings.FirstOrDefault(s => s.Id == ticket.ScreeningId);
-            var theater = _db.Theaters.FirstOrDefault(th => th.Id == screening.Id);
+            var theater = _db.Theaters.FirstOrDefault(th => th.Id == screening.TheaterId);
 
             return theater.Name;
         }
@@ -49,7 +49,7 @@ namespace ClientSide.Models.DAOs
         /// <summary>
         /// 取得電影名稱
         /// </summary>
-        /// <param name="ticketId"></param>
+        /// <param name="cartItemId"></param>
         /// <returns></returns>
         public string GetMovieTitle(int cartItemId)
         {
@@ -64,7 +64,7 @@ namespace ClientSide.Models.DAOs
         /// <summary>
         /// 取得放映時間 時間 StartTime ~ EndTime
         /// </summary>
-        /// <param name="ticketId"></param>
+        /// <param name="cartItemId"></param>
         /// <returns></returns>
         public string GetScreeningTime(int cartItemId)
         {
@@ -76,11 +76,11 @@ namespace ClientSide.Models.DAOs
         }
 
         /// <summary>
-        /// 取得座位名稱
+        /// 取得座位名稱，若有多個座位就全部傳回，這個值在Ticket/Index就要傳
         /// </summary>
-        /// <param name="ticketId"></param>
+        /// <param name="cartItemId"></param>
         /// <returns></returns>
-        public string GetSeatName(int cartItemId) //row number
+        public string GetSeatNames(int cartItemId) //row number
         {
             var cartItem = _db.CartItems.FirstOrDefault(ci => ci.Id == cartItemId);
             var ticket = _db.Tickets.FirstOrDefault(t => t.Id == cartItem.TicketId);
@@ -94,7 +94,7 @@ namespace ClientSide.Models.DAOs
         /// <summary>
         /// 拿到單票價格
         /// </summary>
-        /// <param name="ticketId"></param>
+        /// <param name="cartItemId"></param>
         /// <returns></returns>
         public int GetPrice(int cartItemId)
         {
