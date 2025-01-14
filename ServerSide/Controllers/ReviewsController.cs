@@ -20,24 +20,24 @@ namespace ServerSide.Controllers
         }
 
         [HttpGet]
-        public IActionResult Search(string account,string title,string keyword, DateTime? startDate, DateTime? endDate)
+        public IActionResult Search(string Account,string Title,string Keyword, DateTime? StartDate, DateTime? EndDate)
         {
             var indexData = _service.GetAllReview();
-            if(!string.IsNullOrEmpty(account))
-                indexData = indexData.Where(i => i.MemberAccount == account).ToList();
+            if(!string.IsNullOrEmpty(Account))
+                indexData = indexData.Where(i => i.MemberAccount == Account).ToList();
 
-            if(!string.IsNullOrEmpty(title))
-                indexData = indexData.Where(i => i.MovieTitle.Contains(title,StringComparison.OrdinalIgnoreCase)).ToList();
+            if(!string.IsNullOrEmpty(Title))
+                indexData = indexData.Where(i => i.MovieTitle.Contains(Title, StringComparison.OrdinalIgnoreCase)).ToList();
 
-            if(!string.IsNullOrEmpty(keyword))
+            if(!string.IsNullOrEmpty(Keyword))
                 indexData = indexData
-                    .Where(i => !string.IsNullOrEmpty(i.Comment) && i.Comment.Contains(keyword, StringComparison.OrdinalIgnoreCase)).ToList();
+                    .Where(i => !string.IsNullOrEmpty(i.Comment) && i.Comment.Contains(Keyword, StringComparison.OrdinalIgnoreCase)).ToList();
 
-            if (startDate.HasValue)
-                indexData = indexData.Where(i => i.CreatedAt >= startDate.Value).ToList();
+            if (StartDate.HasValue)
+                indexData = indexData.Where(i => i.CreatedAt >= StartDate.Value).ToList();
 
-            if (endDate.HasValue)
-                indexData = indexData.Where(i => i.CreatedAt <= endDate.Value).ToList();
+            if (EndDate.HasValue)
+                indexData = indexData.Where(i => i.CreatedAt <= EndDate.Value).ToList();
 
             return View("Index", indexData);
         }

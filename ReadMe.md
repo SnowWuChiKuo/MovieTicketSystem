@@ -67,7 +67,21 @@
 		- 按下取消會員後導到 Logout action
 	- 其他 
 		- 使用sweetalert : 帳號開通頁， 編輯資料頁， 重設密碼頁
-
+    ### 電影系統
+	- 實作電影首頁 `Index` :
+		- 新增 ViewPage模型
+			- ``MovieIndexVm`` : 首頁顯示電影資料基本屬性，為物件List的型別。
+			- ``MovieIndexListVm``:封裝各個MovieCard-Container所用的電影資料List。
+		- 使用輪播元件跟水平滾動的MovieCard製作首頁，透過 **Vue.js** 生成資料填入。
+		- 在 `MoviesController` 中實作 ``Index action``，回傳 `MovieIndexListVm` 資料
+	- 單一電影頁面 ``Movie``
+		- 加入 ``MovieDetailVm``，包含電影基本資訊和評論功能。
+        - 使用 ``Vue.js`` 和 ``Element Plus`` 實作評分和評論系統。
+        - 在 ``MoviesController`` 中實作 ``Movie action``，處理電影詳情和評論功能。
+	- 全部電影頁面 ``AllMovies``
+        - 加入 ``AllMoviesVm``，顯示所有電影資訊。
+        - 使用 ``Vue.js`` 和 ``Element Plus`` 。
+        - 在 ``MoviesController`` 中實作 ``AllMovies action``。
 	### 訂單系統
     - 實作訂單系統功能:
 		- 加入 CartController ，確認訂單 Checkout() Get Post 、得到購物車資料 GetCartInfo()。
@@ -108,7 +122,7 @@
 	- 實作CRUD Action，建立對應View。
 	#### 3. 電影評論系統
 	- 加入 ```/Controllers/ReviewsController```，依賴介面。
-		- 實作IndexPage(範本List)、EditPage(範本Edit)、CreatePage(範本Create)。
+		- 實作IndexPage(範本List)、EditPage(範本Edit)。
 	- 加入 ReviewVm,ReviewDto / IReviewService,IReviewDao並實作、註冊。
 	- 實作CRUD Action，建立對應View。
    ### 電影票券管理
@@ -132,7 +146,8 @@
 		```
 		public class ScreeningEditVm
 		{
-			[ValidScreeningDate]  // 套用自定義驗證
+			[ValidScreeningDate]  // 套用自定義日期驗證
+			[ValidScreeningDate]  // 套用自定義時間驗證 
 			public DateTime ScreeningDate { get; set; }
 		} 
 		```
@@ -145,6 +160,7 @@
 	-**目的**
 	```
 	- 用於驗證場次日期是否符合電影上映日期規則
+	- 用於驗證場次時間不與當前既有場次衝突
 	- 確保場次日期不會早於電影的上映日期
 	```
 	-**實作**
