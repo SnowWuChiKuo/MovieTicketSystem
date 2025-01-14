@@ -30,7 +30,8 @@
                         </div>
                         <div class="text-center " style="margin-top: 80px">
                             @*<a href="~/Carts/Checkout" class="btn btn-danger ">前往結帳</a>*@
-                            <form asp-action="Checkout" id="deleteUserForm">
+                            <form action="~/Carts/Checkout" method="post" id="deleteUserForm">
+                                @Html.AntiForgeryToken()
                                 <div class="mb-3">
                                     <input type="submit" value="前往結帳" class="btn btn-danger" />
                                 </div>
