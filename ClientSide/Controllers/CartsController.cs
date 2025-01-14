@@ -32,7 +32,7 @@ namespace ClientSide.Controllers
 
             Add2Cart(account, ticketId, qty , seatName);
 
-            return new EmptyResult();
+            return RedirectToAction("Index");
         }
 
         private void Add2Cart(string account, int ticketId, int qty, string seatName)
