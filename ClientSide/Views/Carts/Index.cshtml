@@ -24,7 +24,6 @@
         .card2 img {
             max-width: 100px;
             display: flex;
-
             max-height: 100px;
         }
 
@@ -55,7 +54,7 @@
             @{
                 if (Model != null && Model.CartItems != null && Model.CartItems.Any())
                 {
-                        <div class="card1 card container">
+                    <div class="card1 card container">
                         @foreach (var item in Model.CartItems)
                         {
                             <div class="card2  ">
@@ -68,18 +67,22 @@
                                 </div>
                                 <div class="right-items">
                                     <a href="~/CartItems/Detail/@item.Id" class="btn btn-sm btn-outline-primary ">>進入票卷</a>
+                                    @*Get method*@
                                     <a class="btn btn-danger ms-3" href="~/CartItems/DeleteCartItem?id=@item.Id">刪除</a>
                                 </div>
                             </div>
                         }
-                        </div>
-                            <div class="text-center " style="margin-top: 80px">
-                                <form asp-action="Checkout" id="deleteUserForm">
-                                    <div class="mb-3">
-                                        <input type="submit" value="前往結帳" class="btn btn-success" />
-                                    </div>
-                                </form>
+                    </div>
+                    <div class="text-center " style="margin-top: 80px">
+                        @*<form asp-action="Checkout" id="deleteUserForm">
+                            <div class="mb-3">
+                                <input type="hidden" name="cartId" value="@Model.Id" />
+                                <input type="submit" value="前往結帳" class="btn btn-success" />
                             </div>
+                        </form>*@
+                        @*Get method*@
+                        <a class="btn btn-success" href="~/Carts/Checkout?cartId=@Model.Id">前往結帳</a>
+                    </div>
                 }
                 else
                 {
@@ -91,10 +94,19 @@
         </div>
     </div>
 </div>
-    @if (ViewBag.ShouldReload != null && ViewBag.ShouldReload == true)
-    {
-        <script>
-            window.location.reload();
-            window.location.reload();
-        </script>
-    }
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+       @if (TempData["ErrorMessage"] != null)
+        {
+            @:Swal.fire({
+            @:  icon: 'error',
+            @:  title: '錯誤!',
+            @:  text: '@TempData["ErrorMessage"]',
+            @:});
+            @:Console.log('@TempData["ErrorMessage"]');
+        }
+
+    });
+</script>
+

@@ -52,16 +52,13 @@ namespace ClientSide.Controllers
             return _service.GetCartInfo(account);
         }
 
-        /// <summary>
-        /// 結帳
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
         [Authorize]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Checkout(CheckoutVm model)
+        public ActionResult Checkout(int? cartId)
         {
+            if (!cartId.HasValue)
+            {
+                return Content("購物車 ID 無效，無法結帳!");
+            }
             string account = User.Identity.Name;
             CartVm cart = GetCartInfo(account);
 
@@ -69,13 +66,26 @@ namespace ClientSide.Controllers
             {
                 return Content("購物車內沒有商品，無法結帳!");
             }
-            //建立訂單主檔/明細檔
-            _service.CreateOrder(account, model);
 
-            //清空購物車
-            _service.EmptyCart(account);
+            List<int> cartItemIds = _service.GetCartItemIds(cartId.Value);
+            bool isValid = _service.CheckIfCartItemsValid(cartItemIds);
+            //驗證通過能結帳
+            if (isValid)
+            {
+                //建立訂單主檔/明細檔
+                _service.CreateOrder(account);
 
-            return Redirect("~/Orders/Index");  // 結帳成功畫面
+                //清空購物車
+                _service.EmptyCart(account);
+
+                return Redirect("~/Orders/Index");  // 結帳成功畫面
+            }
+            else 
+            {
+                TempData["ErrorMessage"] = "訂票夾中存在無效票，無法結帳，請移除後再試";
+
+                return RedirectToAction("Index");
+            }
         }
 
     }
