@@ -70,6 +70,10 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
+            entity.Property(e => e.SeatsName)
+                .IsRequired()
+                .HasMaxLength(20)
+                .IsUnicode(false);
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
 
             entity.HasOne(d => d.Cart).WithMany(p => p.CartItems)
@@ -328,6 +332,7 @@ public partial class AppDbContext : DbContext
 
             entity.HasOne(d => d.Screening).WithMany(p => p.Tickets)
                 .HasForeignKey(d => d.ScreeningId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Tickets_Screenings");
         });
 

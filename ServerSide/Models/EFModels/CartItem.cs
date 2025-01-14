@@ -21,6 +21,8 @@ public partial class CartItem
 
     public DateTime? UpdatedAt { get; set; }
 
+    public string SeatsName { get; set; }
+
     public virtual Cart Cart { get; set; }
 
     public virtual Ticket Ticket { get; set; }

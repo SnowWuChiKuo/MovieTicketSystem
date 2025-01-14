@@ -28,8 +28,6 @@ namespace ClientSide.Models.EFModels
         [StringLength(50)]
         public string TicketType { get; set; }
 
-        public int ReservedSeats { get; set; }
-
         public int Price { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
