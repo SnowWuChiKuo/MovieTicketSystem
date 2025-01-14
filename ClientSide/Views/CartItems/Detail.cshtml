@@ -3,6 +3,17 @@
 @{
     ViewBag.Title = "�票細項";
 }
+<div class="container mt-5" style="margin-bottom:200px">
+    <h2 class="text-center">訂票細項</h2>
+    <div class="card shadow-sm mt-4">
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.TheaterName)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.TheaterName)
+                </dd>
 
 <style>
     /* 主標題樣式 */

@@ -71,7 +71,6 @@ namespace ClientSide.Models.Repository
                     MovieTitle = GetMovieTitle(ci.TicketId),
                     MovieTime = GetScreeningTime(ci.TicketId)
                 }).ToList(); // List<CartItemVm>
-            _db.Set<CartItem>().Local.Clear(); // 清除快取
             //建立購物車物件
             var cartVm = new CartVm
             {
@@ -155,6 +154,8 @@ namespace ClientSide.Models.Repository
         /// <param name="seatName"></param>
         public void AddCartItem(int cartId, int ticketId, int qty , string seatName)
         {
+            seatName = RemoveSpaces(seatName);
+            //尋找是否存在相同項目
             var cartItemInDb = _db.CartItems.FirstOrDefault(ci => ci.CartId == cartId && ci.TicketId == ticketId);
             //已存在相同項目
             if (cartItemInDb != null)
@@ -222,7 +223,7 @@ namespace ClientSide.Models.Repository
         /// </summary>
         /// <param name="account"></param>
         /// <param name="model"></param>
-        public void CreateOrder(string account)
+        public void CreateOrder(string account, string seatIds, int screeningId)
         {
             
                 CartVm cart = GetCartInfo(account);
@@ -240,18 +241,18 @@ namespace ClientSide.Models.Repository
                 //新增訂單明細檔
                 foreach (var item in cart.CartItems)
                 {
-                var orderItem = new OrderItem
-                {
-                    Order = order, //用此法，可以與訂單主檔建立關聯，不必知道orderId
-                    TicketId = item.TicketId,
-                    TicketName = item.MovieTitle,
-                    Qty = item.Qty,
-                    Price = GetPrice(item.TicketId),
-                    SubTotal = item.SubTotal,
-                    SeatNames = item.SeatName
-                };
+                    var orderItem = new OrderItem
+                    {
+                        Order = order, //用此法，可以與訂單主檔建立關聯，不必知道orderId
+                        TicketId = item.TicketId,
+                        TicketName = item.MovieTitle,
+                        Qty = item.Qty,
+                        Price = GetPrice(item.TicketId),
+                        SubTotal = item.SubTotal,
+                        SeatNames = item.SeatName
+                    };
 
-                    UpdateSeatStatus(item.TicketId);
+                    UpdateSeatStatus(seatIds ,screeningId);
                     
                    _db.OrderItems.Add(orderItem);
                 }
@@ -263,17 +264,13 @@ namespace ClientSide.Models.Repository
                 
         }
 
-        private void UpdateSeatStatus(int ticketId)
+        private void UpdateSeatStatus(string seatIds, int screeningId)
         {
-            var ticket = _db.Tickets.FirstOrDefault(t => t.Id == ticketId);
-            var screening = _db.Screenings.FirstOrDefault(s => s.Id == ticket.ScreeningId);
-            var ticketSeat = _db.TicketSeats.FirstOrDefault(t => t.TicketId == ticket.Id);
-            var seatStatus = _db.SeatStatus.FirstOrDefault(ss => ss.ScreeningId == screening.Id && ss.SeatId == ticketSeat.SeatId);
+            
+            //seatStatus.Status = "不可使用";
+            //seatStatus.UpdatedAt = DateTime.Now;
 
-            seatStatus.Status = "不可使用";
-            seatStatus.UpdatedAt = DateTime.Now;
-
-            _db.SeatStatus.AddOrUpdate(seatStatus);
+            //_db.SeatStatus.AddOrUpdate(seatStatus);
         }
 
         public List<string> GetSeatStatus(List<int> cartItemIds)
@@ -302,6 +299,10 @@ namespace ClientSide.Models.Repository
             }
 
             return cartItemIds;
+        }
+        public string RemoveSpaces( string input)
+        {
+            return input.Replace(" ", string.Empty);
         }
 
         //public int CalculateDiscountPrice(CheckoutVm model)

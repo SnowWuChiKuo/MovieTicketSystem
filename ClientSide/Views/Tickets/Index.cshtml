@@ -266,6 +266,10 @@
             const selectedTicketPrice = ref(0);
             const selectedQuantity = ref(1);  // 預設數量為 1
 
+            // 新增儲存選中座位資訊的變數
+            const selectedSeatIds = ref([]);
+            const selectedScreeningId = ref(null);
+
             // 在組件掛載時載入電影資料
             onMounted(async () => {
                 try {
@@ -481,6 +485,9 @@
                     return;
                 }
 
+                // 儲存選中的 screeningId
+                selectedScreeningId.value = parseInt(screeningId.value);
+
                 // 準備請求資料
                 const requestData = {
                     screeningId: parseInt(screeningId.value)  // 確保轉換為數字
@@ -633,7 +640,13 @@
                         return;
                     }
                     selectedSeats.add(seatId);
+                    const seatToAdd = seatStatus.value.find(s => s.Row === row && s.Number === col);
+                    if (seatToAdd) {
+                        selectedSeatIds.value.push(seatToAdd.Id);
+                    }
                 }
+                console.log('Selected Seat IDs:', selectedSeatIds.value);
+                console.log('Selected Screening ID:', selectedScreeningId.value);
             };
 
             // 完成訂票時的座位處理
@@ -661,6 +674,9 @@
                     qty: selectedQuantity.value
                 });
 
+                // 將座位ID和場次ID轉換為字串
+                const seatIdsString = selectedSeatIds.value.join(',');
+
                 axios({
                     method: 'get',
                     url: '/Carts/AddItem',
@@ -668,6 +684,8 @@
                         ticketId: ticketId,
                         qty: selectedQuantity.value,
                         seatName: selectedSeatsList,
+                        seatIds: seatIdsString,           // 新增座位ID參數
+                        screeningId: selectedScreeningId.value  // 新增場次ID參數
                     }
                 })
                     .then(response => {
@@ -677,6 +695,12 @@
                             return `${row}排${number}號`;
                         }).join('、');
                         alert(`訂票完成！\n已選擇座位：${selectedSeatsList}\n總價：${totalPrice.value}元`);
+
+                        // 成功後，將這些值存入 sessionStorage
+                        sessionStorage.setItem('seatIds', seatIdsString);
+                        sessionStorage.setItem('screeningId', selectedScreeningId.value);
+
+                        // 修改重導向時加入參數
                         window.location.href = '/Carts/Index';
                     })
                     .catch(error => {
@@ -722,6 +746,8 @@
                 selectedTicketPrice,
                 selectedQuantity,
                 selectedSeats,
+                selectedSeatIds,
+                selectedScreeningId,
                 showSeats,
                 totalPrice,
                 selectMovie,

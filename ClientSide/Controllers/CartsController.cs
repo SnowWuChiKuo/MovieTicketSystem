@@ -32,10 +32,10 @@ namespace ClientSide.Controllers
 
             Add2Cart(account, ticketId, qty , seatName);
 
-            return new EmptyResult();
+            return RedirectToAction("Index");
         }
 
-        private void Add2Cart(string account, int productId, int qty, string seatName)
+        private void Add2Cart(string account, int ticketId, int qty, string seatName)
         {
             //取得目前購物車，若沒購物車則新增一筆
             CartVm cart = _service.GetCartInfo(account);
@@ -44,7 +44,7 @@ namespace ClientSide.Controllers
             int cartId = cart.Id;
 
             //將商品加入購物車
-            _service.AddCartItem(cartId, productId, qty, seatName);
+            _service.AddCartItem(cartId, ticketId, qty, seatName);
         }
 
         private CartVm GetCartInfo(string account)
@@ -53,9 +53,13 @@ namespace ClientSide.Controllers
         }
 
         [Authorize]
-        public ActionResult Checkout(int? cartId)
+        public ActionResult Checkout(int? cartId, string seatIds, int screeningId)
         {
-            if (!cartId.HasValue)
+			// 將值存入 Session
+			Session["SeatIds"] = seatIds;
+			Session["ScreeningId"] = screeningId;
+
+			if (!cartId.HasValue)
             {
                 return Content("購物車 ID 無效，無法結帳!");
             }
@@ -73,7 +77,7 @@ namespace ClientSide.Controllers
             if (isValid)
             {
                 //建立訂單主檔/明細檔
-                _service.CreateOrder(account);
+                _service.CreateOrder(account, seatIds, screeningId);
 
                 //清空購物車
                 _service.EmptyCart(account);
