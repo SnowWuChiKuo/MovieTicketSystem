@@ -36,16 +36,16 @@
     </div>
 
     <!--最新電影輪播 End-->
-    <!--最多人觀看 Start-->
+    <!--最多評論 Start-->
     <div class="container mt-5">
-        <p class="fw-bolder my-5 pTitle mb-3">最多人觀看</p>
+        <p class="fw-bolder my-5 pTitle mb-3">最多人評論</p>
     </div>
     <div class="container mvblock position-relative mb-5">
         <button class="scroll-btn btn-left" v-on:click="scrollLeft('mostViewed')"><</button>
         <div class="movie-card-container" ref="mostViewedCardRow">
             <div class="card-item" v-for="(movie, Id) in mostViewedMovies" :key="Id">
                 <div class="movie-card"
-                     style="cursor: pointer;" 
+                     style="cursor: pointer;"
                      v-on:click="viewMovie(movie)">
                     <div class="image-container">
                         <img v-bind:src="movie.PosterURL" v-bind:alt="movie.Title">
@@ -60,17 +60,17 @@
         </div>
         <button class="scroll-btn btn-right" v-on:click="scrollRight('mostViewed')">></button>
     </div>
-    <!--最多人觀看 End-->
-    <!--最多評論電影 Start-->
+    <!--最多評論 End-->
+    <!--即將上映電影 Start-->
     <div class="container mt-5">
-        <p class="fw-bolder my-5 pTitle mb-3">最多評論電影</p>
+        <p class="fw-bolder my-5 pTitle mb-3">即將上映</p>
     </div>
     <div class="container mvblock position-relative mb-5">
         <button class="scroll-btn btn-left" v-on:click="scrollLeft('mostCommented')"><</button>
         <div class="movie-card-container" ref="mostCommentedCardRow">
             <div class="card-item" v-for="(movie, Id) in mostCommentedMovies" :key="Id">
                 <div class="movie-card"
-                     style="cursor: pointer;" 
+                     style="cursor: pointer;"
                      v-on:click="viewMovie(movie)">
                     <div class="image-container">
                         <img v-bind:src="movie.PosterURL" v-bind:alt="movie.Title">
@@ -85,7 +85,7 @@
         </div>
         <button class="scroll-btn btn-right" v-on:click="scrollRight('mostCommented')">></button>
     </div>
-    <!--最多評論電影 End-->
+    <!--即將上映電影 End-->
 
 </div>
 

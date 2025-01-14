@@ -1,23 +1,107 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Index";
 }
 
-<div class="container" style="margin-bottom:200px">
+<style>
+    /* 主標題樣式 */
+    .member-title {
+        font-size: 2.5rem;
+        font-weight: 600;
+        color: var(--accent-color);
+        margin-bottom: 2rem;
+        font-family: 'Lexend Deca', 'Noto Sans TC', sans-serif !important;
+        text-align: center;
+    }
 
+    /* 按鈕群組容器 */
+    .btn-group {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+
+    /* 按鈕基本樣式 */
+    .btn {
+        font-family: 'Lexend Deca', 'Noto Sans TC', sans-serif !important;
+        transition: all 0.3s ease;
+        font-weight: 500;
+        padding: 0.75rem 1.5rem;
+        border-radius: 6px;
+        font-size: 1rem;
+    }
+
+    /* 訂票夾按鈕 */
+    .btn-info {
+        background-color: var(--secondary-bg);
+        border: 1px solid var(--accent-color);
+        color: var(--accent-color);
+    }
+
+    .btn-info:hover {
+        background-color: var(--accent-color);
+        border-color: var(--accent-color);
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    /* 訂票紀錄按鈕 */
+    .btn-success {
+        background-color: var(--secondary-bg);
+        border: 1px solid var(--accent-color);
+        color: var(--accent-color);
+    }
+
+    .btn-success:hover {
+        background-color: var(--accent-color);
+        border-color: var(--accent-color);
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    /* 修改資料按鈕 */
+    .btn-primary {
+        background-color: var(--secondary-bg);
+        border: 1px solid var(--accent-color);
+        color: var(--accent-color);
+    }
+
+    .btn-primary:hover {
+        background-color: var(--accent-color);
+        border-color: var(--accent-color);
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    /* 修改密碼按鈕 */
+    .btn-danger {
+        background-color: var(--secondary-bg);
+        border: 1px solid var(--accent-color);
+        color: var(--accent-color);
+    }
+
+    .btn-danger:hover {
+        background-color: var(--accent-color);
+        border-color: var(--accent-color);
+        color: white;
+        transform: translateY(-2px);
+    }
+
+</style>
+
+<div class="container" style="margin-bottom:200px; margin-top:80px;">
     <div class="row">
-        <h2 class="fw-bolder mt-5 text-center">會員中心</h2>
+        <h2 class="member-title mt-5">會員中心</h2>
         <div class="btn-group mt-5" role="group" aria-label="Basic mixed style example">
-            @*<a href="/Members/Index/" class="btn btn-sm btn-info me-2">會員中心首頁</a>*@
-            @*購物車*@
             <a href="/Carts/Index" class="btn btn-sm btn-info me-2">訂票夾</a>
-            @*訂票紀錄*@
             <a href="#" class="btn btn-sm btn-success me-2">檢視訂票紀錄</a>
             <a href="/Members/EditProfile/" class="btn btn-sm btn-primary me-2">修改個人基本資料</a>
-            <a href="/Members/ChangePassword/" class="btn btn-sm btn-danger ">修改密碼</a>
+            <a href="/Members/ChangePassword/" class="btn btn-sm btn-danger">修改密碼</a>
         </div>
     </div>
 </div>
+
 <script>
     @if (TempData["Message"] != null)
     {

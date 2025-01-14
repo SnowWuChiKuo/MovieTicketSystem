@@ -1,68 +1,136 @@
 ﻿@model ClientSide.Models.ViewModels.RegisterVm
 
 @{
-    ViewBag.Title = "註冊會員";
+    ViewBag.Title = "註冊";
 }
 
+<style>
+    /* 主標題樣式 */
+    .register-title {
+        font-size: 2.5rem;
+        font-weight: 600;
+        color: var(--accent-color);
+        margin-bottom: 2rem;
+        font-family: 'Lexend Deca', 'Noto Sans TC', sans-serif !important;
+        text-align: center;
+    }
 
+    /* 表單卡片樣式 */
+    .register-card {
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        background: var(--secondary-bg);
+        padding: 2rem;
+        margin: 20px 0;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+        max-width: 500px;
+        margin: 0 auto;
+    }
 
-@using (Html.BeginForm()) 
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal  vh-100 container " style="margin-top:30px">
-        <h2 class="fw-bolder">註冊會員</h2>
-        <!--h4>RegisterVm</h4-->
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="mb-3">
-            @Html.LabelFor(model => model.Account, htmlAttributes: new { @class = "control-label col-md-2" })
-            <!--div class="col-md-10"-->
-                @Html.EditorFor(model => model.Account, new { htmlAttributes = new { @class = "form-control form-control-sm" } })
-                @Html.ValidationMessageFor(model => model.Account, "", new { @class = "text-danger" })
-            <!--/div-->
-        </div>
+    /* 標籤樣式 */
+    .form-label {
+        font-weight: 500;
+        color: var(--accent-color);
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+        font-family: 'Lexend Deca', 'Noto Sans TC', sans-serif !important;
+    }
 
-        <div class="mb-3">
-            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
-            <!--div class="col-md-10"-->
-                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control form-control-sm" } })
-                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-            <!--/div-->
-        </div>
+    /* 輸入框樣式 */
+    .form-control {
+        font-family: 'Lexend Deca', 'Noto Sans TC', sans-serif !important;
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+        color: var(--text-primary);
+        background-color: var(--secondary-bg);
+    }
 
-        <div class="mb-3">
-            @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
-            <!--div class="col-md-10"-->
-                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control form-control-sm" } })
-                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
-            <!--/div-->
-        </div>
+    .form-control:focus {
+        border-color: var(--accent-color);
+        box-shadow: 0 0 0 0.2rem rgba(224, 169, 109, 0.25);
+    }
 
-        <div class="mb-3">
-            @Html.LabelFor(model => model.ConfirmPassword, htmlAttributes: new { @class = "control-label col-md-2" })
-            <!--div class="col-md-10"-->
-                @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control form-control-sm" } })
-                @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
-            <!--/div-->
-        </div>
+    /* 按鈕樣式 */
+    .btn {
+        font-family: 'Lexend Deca', 'Noto Sans TC', sans-serif !important;
+        transition: all 0.3s ease;
+        font-weight: 500;
+        padding: 0.5rem 1.5rem;
+        border-radius: 6px;
+        font-size: 1rem;
+    }
 
-        <div class="mb-3">
-            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <!--div class="col-md-10"-->
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control form-control-sm" } })
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-            <!--/div-->
-        </div>
+    /* 註冊按鈕 */
+    .btn-primary {
+        background-color: var(--accent-color);
+        border-color: var(--accent-color);
+        color: white;
+    }
 
-        <div class="mb-3">
-            <!--div class="col-md-offset-2 col-md-10"-->
-                <input type="submit" value="送出申請" class="btn btn-primary btn-sm" />
-                @*@Html.ActionLink("回清單頁", "Index", null ,new{@class="btn btn-sm btn-secondary"})*@
-            <!--/div-->
-        </div>
+    .btn-primary:hover {
+        background-color: #c89b69;
+        border-color: #c89b69;
+        transform: translateY(-2px);
+    }
+
+    /* 驗證訊息 */
+    .text-danger {
+        color: #dc3545;
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+    }
+</style>
+
+<div class="container" style="margin-bottom:200px; margin-top:90px;">
+    <div class="register-card">
+        <h2 class="register-title">註冊</h2>
+
+        @using (Html.BeginForm("Register", "Members", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="mb-3">
+                    @Html.LabelFor(model => model.Account, htmlAttributes: new { @class = "form-label" })
+                    @Html.EditorFor(model => model.Account, new { htmlAttributes = new { @class = "form-control form-control-sm" } })
+                    @Html.ValidationMessageFor(model => model.Account, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="mb-3">
+                    @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "form-label" })
+                    @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control form-control-sm" } })
+                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="mb-3">
+                    @Html.LabelFor(model => model.ConfirmPassword, htmlAttributes: new { @class = "form-label" })
+                    @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control form-control-sm" } })
+                    @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="mb-3">
+                    @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "form-label" })
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control form-control-sm" } })
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="mb-3">
+                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "form-label" })
+                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control form-control-sm" } })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="mb-3">
+                    <input type="submit" value="送出申請" class="btn btn-primary btn-sm" />
+                </div>
+            </div>
+        }
     </div>
-}
+</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
