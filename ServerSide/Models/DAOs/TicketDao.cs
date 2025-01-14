@@ -23,6 +23,7 @@ namespace ServerSide.Models.DAOs
                                     ScreeningId = d.ScreeningId,
                                     SalesType = d.SalesType,
                                     TicketType = d.TicketType,
+									ReservedSeats = d.ReservedSeats,
                                     Price = d.Price
                                 }).ToList();
 			return data;
@@ -42,7 +43,8 @@ namespace ServerSide.Models.DAOs
 				ScreeningId = dto.ScreeningId,
 				SalesType = dto.SalesType,
 				TicketType = dto.TicketType,
-				Price = dto.Price
+				ReservedSeats = dto.ReservedSeats,
+                Price = dto.Price
 			};
 		}
 
@@ -70,6 +72,7 @@ namespace ServerSide.Models.DAOs
 				ScreeningId = ticket.ScreeningId,
 				SalesType = ticket.SalesType,
 				TicketType = ticket.TicketType,
+				ReservedSeats = ticket.ReservedSeats,
 				Price = ticket.Price
 			};
 

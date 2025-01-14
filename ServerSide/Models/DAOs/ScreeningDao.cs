@@ -62,10 +62,11 @@ namespace ServerSide.Models.DAOs
                 {
                     var ticket = new Ticket
                     {
-                        ScreeningId = dto.Id,
+                        ScreeningId = entity.Id,
                         SalesType = item.SalesType,
                         TicketType = item.TicketType,
                         Price = item.Price1,
+                        ReservedSeats = item.ReservedSeats,
                     };
                     tickets.Add(ticket);
                 }
@@ -74,10 +75,11 @@ namespace ServerSide.Models.DAOs
                 {
                     var ticket = new Ticket
                     {
-                        ScreeningId = dto.Id,
+                        ScreeningId = entity.Id,
                         SalesType = item.SalesType,
                         TicketType = item.TicketType,
                         Price = item.Price1,
+                        ReservedSeats = item.ReservedSeats,
                     };
                     tickets.Add(ticket);
                 }
@@ -86,10 +88,11 @@ namespace ServerSide.Models.DAOs
                 {
                     var ticket = new Ticket
                     {
-                        ScreeningId = dto.Id,
+                        ScreeningId = entity.Id,
                         SalesType = item.SalesType,
                         TicketType = item.TicketType,
                         Price = item.Price1,
+                        ReservedSeats = item.ReservedSeats,
                     };
                     tickets.Add(ticket);
                 }
