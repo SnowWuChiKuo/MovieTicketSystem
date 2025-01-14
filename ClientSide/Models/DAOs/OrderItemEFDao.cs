@@ -39,10 +39,10 @@ namespace ClientSide.Models.DAOs
         /// <returns></returns>
         public string GetTheaterName(int orderItemId)
         {
-            var orderItem = _db.CartItems.FirstOrDefault(ci => ci.Id == orderItemId);
+            var orderItem = _db.OrderItems.FirstOrDefault(ci => ci.Id == orderItemId);
             var ticket = _db.Tickets.FirstOrDefault(t => t.Id == orderItem.TicketId);
             var screening = _db.Screenings.FirstOrDefault(s => s.Id == ticket.ScreeningId);
-            var theater = _db.Theaters.FirstOrDefault(th => th.Id == screening.Id);
+            var theater = _db.Theaters.FirstOrDefault(th => th.Id == screening.TheaterId);
 
             return theater.Name;
         }
@@ -54,7 +54,7 @@ namespace ClientSide.Models.DAOs
         /// <returns></returns>
         public string GetMovieTitle(int orderItemId)
         {
-            var orderItem = _db.CartItems.FirstOrDefault(ci => ci.Id == orderItemId);
+            var orderItem = _db.OrderItems.FirstOrDefault(ci => ci.Id == orderItemId);
             var ticket = _db.Tickets.FirstOrDefault(t => t.Id == orderItem.TicketId);
             var screening = _db.Screenings.FirstOrDefault(s => s.Id == ticket.ScreeningId);
             var movie = _db.Movies.FirstOrDefault(m => m.Id == screening.MovieId);
@@ -69,7 +69,7 @@ namespace ClientSide.Models.DAOs
         /// <returns></returns>
         public string GetScreeningTime(int orderItemId)
         {
-            var orderItem = _db.CartItems.FirstOrDefault(ci => ci.Id == orderItemId);
+            var orderItem = _db.OrderItems.FirstOrDefault(ci => ci.Id == orderItemId);
             var ticket = _db.Tickets.FirstOrDefault(t => t.Id == orderItem.TicketId);
             var screening = _db.Screenings.FirstOrDefault(s => s.Id == ticket.ScreeningId);
 
@@ -83,7 +83,7 @@ namespace ClientSide.Models.DAOs
         /// <returns></returns>
         public string GetSeatName(int orderItemId) //row number
         {
-            var orderItem = _db.CartItems.FirstOrDefault(ci => ci.Id == orderItemId);
+            var orderItem = _db.OrderItems.FirstOrDefault(ci => ci.Id == orderItemId);
             var ticket = _db.Tickets.FirstOrDefault(t => t.Id == orderItem.TicketId);
             var screening = _db.Screenings.FirstOrDefault(s => s.Id == ticket.ScreeningId);
             var seatStatus = _db.SeatStatus.FirstOrDefault(ss => ss.ScreeningId == screening.Id);
@@ -99,7 +99,7 @@ namespace ClientSide.Models.DAOs
         /// <returns></returns>
         public int GetPrice(int orderItemId)
         {
-            var orderItem = _db.CartItems.FirstOrDefault(ci => ci.Id == orderItemId);
+            var orderItem = _db.OrderItems.FirstOrDefault(ci => ci.Id == orderItemId);
             var ticket = _db.Tickets.FirstOrDefault(t => t.Id == orderItem.TicketId);
             return ticket.Price;
         }

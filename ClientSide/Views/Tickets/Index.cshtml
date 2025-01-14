@@ -154,9 +154,10 @@
 
     <!-- 座位選擇區 -->
     <!-- 座位選擇區域的 HTML 部分 -->
-    <div v-if="showSeats">
-        <div class="top-buttons">
-            <button class="btn btn-danger" v-on:click="goBack">回上一步</button>
+    <div v-if="showSeats" class="seat-view-container">
+        <!-- 新增控制按鈕容器 -->
+        <div class="seat-controls-wrapper">
+            <button class="btn btn-danger ms-auto" v-on:click="goBack">回上一步</button>
         </div>
 
         <h3 class="text-center">影廳座位選擇</h3>
@@ -205,8 +206,8 @@
         </div>
         @if (User.Identity.IsAuthenticated)
         {
-            <div class="bottom-buttons">
-                <button class="btn btn-success"
+            <div class="booking-controls-wrapper">
+                <button class="btn btn-success ms-auto"
                         v-if="selectedSeats.size === selectedQuantity"
                         v-on:click="completeBooking">
                     訂票完成
@@ -215,8 +216,8 @@
         }
         else
         {
-            <div class="bottom-buttons">
-                <a class="btn btn-success" href="/Members/Login">
+            <div class="booking-controls-wrapper">
+                <a class="btn btn-success ms-auto" href="/Members/Login">
                     訂票完成
                 </a>
             </div>

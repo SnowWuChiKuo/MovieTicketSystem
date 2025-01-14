@@ -1,71 +1,108 @@
 ﻿@model ClientSide.Models.ViewModels.OrderItemDetailVm
-
 @{
     ViewBag.Title = "Detail";
 }
+<style>
+    .ticket-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+        margin: 2rem auto;
+        max-width: 800px;
+    }
 
-<h2 class="fw-bolder">電影票留存頁</h2>
+    .ticket-header {
+        border-bottom: 2px solid #f0f0f0;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+    }
 
-<div>
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.TheaterName)
-        </dt>
+    .ticket-info {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+    }
 
-        <dd>
-            @Html.DisplayFor(model => model.TheaterName)
-        </dd>
+    .info-item {
+        margin-bottom: 1.5rem;
+    }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.MovieTitle)
-        </dt>
+    .info-label {
+        color: #666;
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+    }
 
-        <dd>
-            @Html.DisplayFor(model => model.MovieTitle)
-        </dd>
+    .info-value {
+        color: #333;
+        font-size: 1.1rem;
+        font-weight: 500;
+    }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.MovieTime)
-        </dt>
+    .ticket-footer {
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: 2px solid #f0f0f0;
+    }
 
-        <dd>
-            @Html.DisplayFor(model => model.MovieTime)
-        </dd>
+    .custom-btn {
+        display: inline-block;
+        padding: 0.8rem 1.5rem;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+    }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.SeatName)
-        </dt>
+        .custom-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+</style>
 
-        <dd>
-            @Html.DisplayFor(model => model.SeatName)
-        </dd>
+<div class="ticket-card">
+    <div class="ticket-header">
+        <h2 class="fw-bolder text-center">電影票留存詳情</h2>
+    </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Qty)
-        </dt>
+    <div class="ticket-info">
+        <div class="info-item">
+            <div class="info-label">@Html.DisplayNameFor(model => model.TheaterName)</div>
+            <div class="info-value">@Html.DisplayFor(model => model.TheaterName)</div>
+        </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.Qty)
-        </dd>
+        <div class="info-item">
+            <div class="info-label">@Html.DisplayNameFor(model => model.MovieTitle)</div>
+            <div class="info-value">@Html.DisplayFor(model => model.MovieTitle)</div>
+        </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
+        <div class="info-item">
+            <div class="info-label">@Html.DisplayNameFor(model => model.MovieTime)</div>
+            <div class="info-value">@Html.DisplayFor(model => model.MovieTime)</div>
+        </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.Price)
-        </dd>
+        <div class="info-item">
+            <div class="info-label">@Html.DisplayNameFor(model => model.SeatName)</div>
+            <div class="info-value">@Html.DisplayFor(model => model.SeatName)</div>
+        </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.SubTotal)
-        </dt>
+        <div class="info-item">
+            <div class="info-label">@Html.DisplayNameFor(model => model.Qty)</div>
+            <div class="info-value">@Html.DisplayFor(model => model.Qty)</div>
+        </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.SubTotal)
-        </dd>
+        <div class="info-item">
+            <div class="info-label">@Html.DisplayNameFor(model => model.Price)</div>
+            <div class="info-value">@Html.DisplayFor(model => model.Price)</div>
+        </div>
 
-    </dl>
+        <div class="info-item">
+            <div class="info-label">@Html.DisplayNameFor(model => model.SubTotal)</div>
+            <div class="info-value">@Html.DisplayFor(model => model.SubTotal)</div>
+        </div>
+    </div>
+
+    <div class="ticket-footer text-center">
+        <a href="~/Orders/Index" class="custom-btn btn btn-outline-primary">返回電影票列表</a>
+    </div>
 </div>
-<p>
-    <a href="~/Orders/Index" class="btn btn-outline-primary">電影票留存頁</a>
-</p>
