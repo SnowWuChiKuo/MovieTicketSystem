@@ -24,6 +24,8 @@ namespace ClientSide.Models.ViewModels
 
         public string ImgPath { get; set; }
 
+        public string SeatName { get; set; }
+
         public string MovieTitle { get; set; }
 
         public string MovieTime { get; set; }

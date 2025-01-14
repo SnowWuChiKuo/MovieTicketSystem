@@ -21,6 +21,8 @@ public partial class OrderItem
 
     public int SubTotal { get; set; }
 
+    public string SeatNames { get; set; }
+
     public virtual Order Order { get; set; }
 
     public virtual Ticket Ticket { get; set; }

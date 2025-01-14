@@ -19,8 +19,9 @@ namespace ClientSide.Models.ViewModels
         public int SubTotal { get; set; }
 
         public string ImgPath { get; set; }
-
         public string MovieTitle { get; set; }
+
+        public string SeatName { get; set; }
 
         public string MovieTime { get; set; }
 

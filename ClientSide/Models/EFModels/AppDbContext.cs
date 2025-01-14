@@ -8,7 +8,7 @@ namespace ClientSide.Models.EFModels
     public partial class AppDbContext : DbContext
     {
         public AppDbContext()
-            : base("name=AppDbContext15")
+            : base("name=AppDbContext16")
         {
         }
 
@@ -90,6 +90,10 @@ namespace ClientSide.Models.EFModels
                 .WithRequired(e => e.Movie)
                 .HasForeignKey(e => e.MovieId)
                 .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<OrderItem>()
+                .Property(e => e.SeatNames)
+                .IsUnicode(false);
 
             modelBuilder.Entity<Order>()
                 .HasMany(e => e.OrderItems)

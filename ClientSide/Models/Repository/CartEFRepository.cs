@@ -66,6 +66,7 @@ namespace ClientSide.Models.Repository
                     TicketId = ci.TicketId,
                     Qty = ci.Qty,
                     SubTotal = ci.SubTotal,
+                    SeatName = ci.SeatsName,
                     ImgPath = GetImageName(ci.TicketId),
                     MovieTitle = GetMovieTitle(ci.TicketId),
                     MovieTime = GetScreeningTime(ci.TicketId)
@@ -146,12 +147,12 @@ namespace ClientSide.Models.Repository
         }
 
         /// <summary>
-        /// 加入購物車，若明細不存在，就新增一筆，若存在就更新數量
+        /// 加入購物車，若明細不存在，就新增一筆，若存在就更新數量，選票頁面要傳入seatName
         /// </summary>
         /// <param name="cartId"></param>
         /// <param name="ticketId"></param>
         /// <param name="qty"></param>
-        public void AddCartItem(int cartId, int ticketId, int qty)
+        public void AddCartItem(int cartId, int ticketId, int qty , string seatName)
         {
             var cartItemInDb = _db.CartItems.FirstOrDefault(ci => ci.CartId == cartId && ci.TicketId == ticketId);
             //已存在相同項目
@@ -168,7 +169,8 @@ namespace ClientSide.Models.Repository
                     TicketId = ticketId,
                     Qty = qty,
                     SubTotal = GetSubTotal(ticketId, qty),
-                    CreatedAt = DateTime.Now
+                    CreatedAt = DateTime.Now,
+                    SeatsName =  seatName
                 };
                 _db.CartItems.Add(cartItem);
                 _db.SaveChanges();
@@ -237,15 +239,16 @@ namespace ClientSide.Models.Repository
                 //新增訂單明細檔
                 foreach (var item in cart.CartItems)
                 {
-                    var orderItem = new OrderItem
-                    {
-                        Order = order, //用此法，可以與訂單主檔建立關聯，不必知道orderId
-                        TicketId = item.TicketId,
-                        TicketName = item.MovieTitle,
-                        Qty = item.Qty,
-                        Price = GetPrice(item.TicketId),
-                        SubTotal = item.SubTotal,
-                    };
+                var orderItem = new OrderItem
+                {
+                    Order = order, //用此法，可以與訂單主檔建立關聯，不必知道orderId
+                    TicketId = item.TicketId,
+                    TicketName = item.MovieTitle,
+                    Qty = item.Qty,
+                    Price = GetPrice(item.TicketId),
+                    SubTotal = item.SubTotal,
+                    SeatNames = item.SeatName
+                };
 
                     UpdateSeatStatus(item.TicketId);
                     

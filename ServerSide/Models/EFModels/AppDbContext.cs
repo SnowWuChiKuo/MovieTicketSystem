@@ -191,6 +191,10 @@ public partial class AppDbContext : DbContext
 
         modelBuilder.Entity<OrderItem>(entity =>
         {
+            entity.Property(e => e.SeatNames)
+                .IsRequired()
+                .HasMaxLength(20)
+                .IsUnicode(false);
             entity.Property(e => e.TicketName)
                 .IsRequired()
                 .HasMaxLength(50);
