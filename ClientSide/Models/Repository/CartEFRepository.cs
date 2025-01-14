@@ -152,6 +152,7 @@ namespace ClientSide.Models.Repository
         /// <param name="cartId"></param>
         /// <param name="ticketId"></param>
         /// <param name="qty"></param>
+        /// <param name="seatName"></param>
         public void AddCartItem(int cartId, int ticketId, int qty , string seatName)
         {
             var cartItemInDb = _db.CartItems.FirstOrDefault(ci => ci.CartId == cartId && ci.TicketId == ticketId);
