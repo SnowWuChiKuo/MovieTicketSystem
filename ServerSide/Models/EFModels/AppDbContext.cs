@@ -70,6 +70,9 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
+            entity.Property(e => e.SeatsName)
+                .IsRequired()
+                .HasMaxLength(50);
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
 
             entity.HasOne(d => d.Cart).WithMany(p => p.CartItems)
@@ -187,6 +190,9 @@ public partial class AppDbContext : DbContext
 
         modelBuilder.Entity<OrderItem>(entity =>
         {
+            entity.Property(e => e.SeatNames)
+                .IsRequired()
+                .HasMaxLength(50);
             entity.Property(e => e.TicketName)
                 .IsRequired()
                 .HasMaxLength(50);
@@ -341,7 +347,6 @@ public partial class AppDbContext : DbContext
 
             entity.HasOne(d => d.Ticket).WithMany(p => p.TicketSeats)
                 .HasForeignKey(d => d.TicketId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_TicketSeats_Tickets");
         });
 

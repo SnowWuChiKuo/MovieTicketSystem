@@ -264,7 +264,7 @@
             const ticketSales = ref([]);
             const ticketTypes = ref([]);
             const ticketPrices = ref({});
-
+ 
 
             const selectedMovie = ref(null);
             const selectedTheater = ref(null);
@@ -655,7 +655,7 @@
 
                 const selectedSeatsList = Array.from(selectedSeats).map(seatId => {
                     const [row, number] = seatId.split('-');  // 這裡把字串切開
-                    return `${row}排${number}號`;
+                    return `${row}${number}`;
                 }).join('、');
 
                 // 取得票券 ID
@@ -675,7 +675,8 @@
                     url: '/Carts/AddItem',
                     params: {
                         ticketId: ticketId,
-                        qty: selectedQuantity.value
+                        qty: selectedQuantity.value,
+                        seatName: selectedSeatsList,
                     }
                 })
                     .then(response => {
@@ -684,7 +685,6 @@
                             const [row, number] = seatId.split('-');
                             return `${row}排${number}號`;
                         }).join('、');
-
                         alert(`訂票完成！\n已選擇座位：${selectedSeatsList}\n總價：${totalPrice.value}元`);
                         window.location.href = '/Carts/Index';
                     })

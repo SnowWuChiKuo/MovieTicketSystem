@@ -10,6 +10,9 @@
 
 		public string TicketType { get; set; }
 
-		public int Price { get; set; }
+		public int ReservedSeats { get; set; }
+
+
+        public int Price { get; set; }
 	}
 }

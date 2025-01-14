@@ -22,6 +22,10 @@ namespace ClientSide.Models.EFModels
 
         public DateTime? UpdatedAt { get; set; }
 
+        [Required]
+        [StringLength(50)]
+        public string SeatsName { get; set; }
+
         public virtual Cart Cart { get; set; }
 
         public virtual Ticket Ticket { get; set; }

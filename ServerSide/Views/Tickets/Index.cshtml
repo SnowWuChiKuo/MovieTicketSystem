@@ -30,6 +30,9 @@
                                 @Html.DisplayNameFor(model => model.TicketType)
                             </th>
                             <th>
+                                @Html.DisplayNameFor(model => model.ReservedSeats)
+                            </th>
+                            <th>
                                 @Html.DisplayNameFor(model => model.Price)
                             </th>
                             <th></th>
@@ -50,6 +53,9 @@
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.TicketType)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ReservedSeats)
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Price)

@@ -4,6 +4,7 @@ using ServerSide.Models.DTOs;
 using ServerSide.Models.EFModels;
 using ServerSide.Models.Interfaces;
 using ServerSide.Models.ViewModels;
+using System.Collections.Generic;
 
 namespace ServerSide.Models.DAOs
 {
@@ -44,6 +45,60 @@ namespace ServerSide.Models.DAOs
             }).ToList();
 
             _db.SeatStatuses.AddRange(seatStatuses);
+            _db.SaveChanges();
+
+
+
+            // 每個場次票種也不一樣
+            var price = _db.Prices.Where(p => p.MovieId == dto.MovieId).ToList();
+            var tickets = new List<Ticket>();
+
+            TimeOnly earlyTime = new TimeOnly(12, 0, 0);
+            TimeOnly lastTime = new TimeOnly(22, 0, 0);
+
+            foreach (var item in price)
+            {
+                if ( entity.StartTime < earlyTime && item.SalesType == "早鳥優惠")
+                {
+                    var ticket = new Ticket
+                    {
+                        ScreeningId = entity.Id,
+                        SalesType = item.SalesType,
+                        TicketType = item.TicketType,
+                        Price = item.Price1,
+                        ReservedSeats = item.ReservedSeats,
+                    };
+                    tickets.Add(ticket);
+                }
+
+                if (entity.StartTime < lastTime && item.SalesType == "大夜票")
+                {
+                    var ticket = new Ticket
+                    {
+                        ScreeningId = entity.Id,
+                        SalesType = item.SalesType,
+                        TicketType = item.TicketType,
+                        Price = item.Price1,
+                        ReservedSeats = item.ReservedSeats,
+                    };
+                    tickets.Add(ticket);
+                }
+
+                if (item.SalesType == "平日票")
+                {
+                    var ticket = new Ticket
+                    {
+                        ScreeningId = entity.Id,
+                        SalesType = item.SalesType,
+                        TicketType = item.TicketType,
+                        Price = item.Price1,
+                        ReservedSeats = item.ReservedSeats,
+                    };
+                    tickets.Add(ticket);
+                }
+            }
+
+            _db.Tickets.AddRange(tickets);
             _db.SaveChanges();
         }
 

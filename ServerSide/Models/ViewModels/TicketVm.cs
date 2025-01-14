@@ -21,7 +21,11 @@ namespace ServerSide.Models.ViewModels
 		[StringLength(50, ErrorMessage = "票種類型長度不可超過 50 字")]
 		public required string TicketType { get; set; }
 
-		[Required]
+        [Required]
+        [Display(Name = "人數")]
+        public int ReservedSeats { get; set; }
+
+        [Required]
 		[Display(Name = "價格")]
 		public int Price { get; set; }
 	}
