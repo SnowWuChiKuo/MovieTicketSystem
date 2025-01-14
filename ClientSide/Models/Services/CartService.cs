@@ -21,9 +21,9 @@ namespace ClientSide.Models.Services
             return cart;
         }
 
-        public void CreateOrder(string account)
+        public void CreateOrder(string account, string seatIds, int screeningId)
         {
-            _repo.CreateOrder(account);
+            _repo.CreateOrder(account, seatIds, screeningId);
         }
 
         public void EmptyCart(string account)

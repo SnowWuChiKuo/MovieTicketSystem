@@ -53,9 +53,13 @@ namespace ClientSide.Controllers
         }
 
         [Authorize]
-        public ActionResult Checkout(int? cartId)
+        public ActionResult Checkout(int? cartId, string seatIds, int screeningId)
         {
-            if (!cartId.HasValue)
+			// 將值存入 Session
+			Session["SeatIds"] = seatIds;
+			Session["ScreeningId"] = screeningId;
+
+			if (!cartId.HasValue)
             {
                 return Content("購物車 ID 無效，無法結帳!");
             }
@@ -73,7 +77,7 @@ namespace ClientSide.Controllers
             if (isValid)
             {
                 //建立訂單主檔/明細檔
-                _service.CreateOrder(account);
+                _service.CreateOrder(account, seatIds, screeningId);
 
                 //清空購物車
                 _service.EmptyCart(account);
