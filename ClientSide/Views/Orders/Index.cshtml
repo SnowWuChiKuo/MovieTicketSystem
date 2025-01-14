@@ -1,40 +1,41 @@
-﻿@model ClientSide.Models.ViewModels.OrderVm
+﻿@model List<ClientSide.Models.ViewModels.OrderVm>
+
 
 @{
     ViewBag.Title = "訂單完成電影票";
 }
 
 <div style="display: flex; flex: 1;">
-
     <div style="flex: 1; padding: 20px;">
-        @* 電影票留存頁 *@
         <h2 style="text-align: center; margin-bottom: 20px;" class="fw-bolder">訂單完成電影票</h2>
         @{
-            if (Model != null && Model.OrderItems != null && Model.OrderItems.Any())
+            if (Model != null && Model.Any())
             {
-                foreach (var item in Model.OrderItems)
+                foreach (var order in Model)
                 {
-                    <div style="border: 1px solid #ddd; padding: 10px; margin-bottom: 10px; display: flex; align-items: center;">
-                        <div style="margin-right: 10px;">
-                            <img src="~/MoviePosters/@item.ImgPath" alt="Movie Image" style="max-width: 100px; max-height: 100px;" />
+                    foreach (var item in order.OrderItems)
+                    {
+                        <div style="border: 1px solid #ddd; padding: 10px; margin-bottom: 10px; display: flex; align-items: center;">
+                            <div style="margin-right: 10px;">
+                                <img src="~/MoviePosters/@item.ImgPath" alt="Movie Image" style="max-width: 100px; max-height: 100px;" />
+                            </div>
+                            <div style="flex: 1;">
+                                <p><b>電影:</b> @item.MovieTitle</p>
+                                <p><b>時間:</b> @item.MovieTime</p>
+                            </div>
+                            <div style="margin-left: 10px;">
+                                <a href="~/OrderItems/Detail/@item.Id" class="btn btn-sm btn-outline-primary">>進入票卷</a>
+                            </div>
                         </div>
-                        <div style="flex: 1;">
-                            <p><b>電影:</b> @item.MovieTitle</p>
-                            <p><b>時間:</b> @item.MovieTime</p>
-                        </div>
-                        <div style="margin-left: 10px;">
-                            <a href="~/OrderItems/Detail/@item.Id" class="btn btn-sm btn-outline-primary">>進入票卷</a>
-                        </div>
-                    </div>
-                    <div class="text-center " style="margin-top: 80px">
-                        <a href="~/Movies/Index" class="btn btn-danger ">回電影首頁</a>
-                    </div>
+                    }
                 }
+                <div class="text-center " style="margin-top: 80px">
+                    <a href="~/Movies/Index" class="btn btn-danger ">回電影首頁</a>
+                </div>
             }
             else
             {
-                <h1 style="text-align: center; margin-top: 100px;" class="" asp-action="Edit">還未購買任何一張電影票!</h1>
-
+                <h1 style="text-align: center; margin-top: 100px;">還未購買任何一張電影票!</h1>
             }
         }
     </div>

@@ -18,7 +18,7 @@ namespace ClientSide.Controllers
             string account = User.Identity.Name;
             try
             {
-                OrderVm data = _service.GetOrderInfo(account);
+				List<OrderVm> data = _service.GetOrderInfo(account);
                 return View(data);
 
             }

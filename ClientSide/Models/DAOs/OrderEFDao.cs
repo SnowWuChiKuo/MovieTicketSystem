@@ -12,38 +12,59 @@ namespace ClientSide.Models.DAOs
     {
         private readonly AppDbContext _db = new AppDbContext();
 
-        public OrderVm GetOrderInfo(string account)
-        {
-            Order order = _db.Orders.Include(d => d.Member).FirstOrDefault(d => d.Member.Account == account);
+		public List<OrderVm> GetOrderInfo(string account)
+		{
+			// 一次性查询所需的所有相关数据，避免在循环中查询
+			var orders = (from o in _db.Orders
+						  join m in _db.Members on o.MemberId equals m.Id
+						  where m.Account == account
+						  select o).ToList();
 
-            List<OrderItemVm> orderItems = _db.OrderItems
-                .Where(oi => oi.OrderId == order.Id)
-                .OrderBy(oi => oi.Order.CreatedAt)
-                .ToList()
-                .Select(oi => new OrderItemVm
-                {
-                    Id = oi.Id,
-                    OrderId = oi.OrderId,
-                    TicketId = oi.TicketId,
-                    TicketName = oi.TicketName,
-                    Price = oi.Price,
-                    Qty = oi.Qty,
-                    SubTotal = oi.SubTotal,
-                    ImgPath = GetImageName(oi.TicketId),
-                    MovieTitle = GetMovieTitle(oi.TicketId),
-                    MovieTime = GetScreeningTime(oi.TicketId),
-                }).ToList();
+			if (!orders.Any()) throw new Exception("找不到任何訂單!");
 
-            var orderVm = new OrderVm
-            {
-                Id = order.Id,
-                OrderItems = orderItems,
-            };
+			var orderIds = orders.Select(o => o.Id).ToList();
 
-            return orderVm;
-        }
+			// 先获取原始数据
+			var orderItemsData = (from oi in _db.OrderItems
+								  join t in _db.Tickets on oi.TicketId equals t.Id
+								  join s in _db.Screenings on t.ScreeningId equals s.Id
+								  join mov in _db.Movies on s.MovieId equals mov.Id
+								  where orderIds.Contains(oi.OrderId)
+								  select new
+								  {
+									  OrderItem = oi,
+									  Screening = s,
+									  Movie = mov
+								  }).ToList();  // 先将数据取出来
 
-        private string GetScreeningTime(int ticketId)
+			// 在内存中进行数据转换
+			var orderItems = orderItemsData.Select(x => new OrderItemVm
+			{
+				Id = x.OrderItem.Id,
+				OrderId = x.OrderItem.OrderId,
+				TicketId = x.OrderItem.TicketId,
+				TicketName = x.OrderItem.TicketName,
+				Price = x.OrderItem.Price,
+				Qty = x.OrderItem.Qty,
+				SubTotal = x.OrderItem.SubTotal,
+				SeatNames = x.OrderItem.SeatNames,
+				MovieTime = $"{x.Screening.Televising:yyyy-MM-dd} {x.Screening.StartTime} - {x.Screening.EndTime}",
+				MovieTitle = x.Movie.Title,
+				ImgPath = x.Movie.PosterURL
+			}).ToList();
+
+			// 组装最终结果
+			var orderList = orders.Select(order => new OrderVm
+			{
+				Id = order.Id,
+				OrderItems = orderItems.Where(oi => oi.OrderId == order.Id).ToList()
+			}).ToList();
+
+			return orderList;
+		}
+
+
+		private string GetScreeningTime(int ticketId)
         {
             var ticket = _db.Tickets.FirstOrDefault(t => t.Id == ticketId);
             var screening = _db.Screenings.FirstOrDefault(s => s.Id == ticket.ScreeningId);

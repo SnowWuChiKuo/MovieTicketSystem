@@ -21,7 +21,7 @@ namespace ClientSide.Models.DAOs
                 TheaterName = GetTheaterName(id),
                 MovieTitle = GetMovieTitle(id),
                 MovieTime = GetScreeningTime(id),
-                SeatName = GetSeatName(id),
+                SeatNames = GetSeatNames(orderitem.SeatNames),
                 Qty = orderitem.Qty,
                 Price = GetPrice(id),
                 SubTotal = orderitem.SubTotal,
@@ -76,28 +76,22 @@ namespace ClientSide.Models.DAOs
             return $"{screening.Televising.ToString("yyyy-MM-dd")} {screening.StartTime} - {screening.EndTime}";
         }
 
-        /// <summary>
-        /// 取得座位名稱
-        /// </summary>
-        /// <param name="ticketId"></param>
-        /// <returns></returns>
-        public string GetSeatName(int orderItemId) //row number
-        {
-            var orderItem = _db.OrderItems.FirstOrDefault(ci => ci.Id == orderItemId);
-            var ticket = _db.Tickets.FirstOrDefault(t => t.Id == orderItem.TicketId);
-            var screening = _db.Screenings.FirstOrDefault(s => s.Id == ticket.ScreeningId);
-            var seatStatus = _db.SeatStatus.FirstOrDefault(ss => ss.ScreeningId == screening.Id);
-            var seat = _db.Seats.FirstOrDefault(s => s.Id == seatStatus.SeatId);
+		/// <summary>
+		/// 取得座位名稱，若有多個座位就全部傳回，這個值在Ticket/Index就要傳
+		/// </summary>
+		/// <param name="cartItemId"></param>
+		/// <returns></returns>
+		public string GetSeatNames(string seatName) //row number
+		{
+			return $"{seatName.Trim()}";
+		}
 
-            return $"{seat.Row}{seat.Number}";
-        }
-
-        /// <summary>
-        /// 拿到單票價格
-        /// </summary>
-        /// <param name="ticketId"></param>
-        /// <returns></returns>
-        public int GetPrice(int orderItemId)
+		/// <summary>
+		/// 拿到單票價格
+		/// </summary>
+		/// <param name="ticketId"></param>
+		/// <returns></returns>
+		public int GetPrice(int orderItemId)
         {
             var orderItem = _db.OrderItems.FirstOrDefault(ci => ci.Id == orderItemId);
             var ticket = _db.Tickets.FirstOrDefault(t => t.Id == orderItem.TicketId);

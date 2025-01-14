@@ -267,11 +267,24 @@ namespace ClientSide.Models.Repository
 
         private void UpdateSeatStatus(string seatIds, int screeningId)
         {
-            
-            //seatStatus.Status = "不可使用";
-            //seatStatus.UpdatedAt = DateTime.Now;
+            string[] seats = seatIds.Split(',');
 
-            //_db.SeatStatus.AddOrUpdate(seatStatus);
+            var seatstatusList = new List<SeatStatu>();
+
+            foreach(var item in seats)
+            {
+                var seat = Convert.ToInt32(item);
+                var seatstatus = _db.SeatStatus.FirstOrDefault(ss => ss.SeatId == seat && ss.ScreeningId == screeningId);
+
+                if (seatstatus == null) throw new Exception("找不到此座位狀態!");
+
+				seatstatus.Status = "不可使用";
+				seatstatus.UpdatedAt = DateTime.Now;
+
+                seatstatusList.Add(seatstatus);
+            }
+
+            _db.SeatStatus.AddRange(seatstatusList);
         }
 
         public List<string> GetSeatStatus(List<int> cartItemIds)

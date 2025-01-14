@@ -11,7 +11,7 @@ namespace ClientSide.Models.Services
     {
         private readonly OrderEFDao _dao = new OrderEFDao();
 
-        public OrderVm GetOrderInfo(string account)
+        public List<OrderVm> GetOrderInfo(string account)
         {
             return _dao.GetOrderInfo(account);
         }

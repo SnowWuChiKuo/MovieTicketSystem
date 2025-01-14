@@ -643,12 +643,18 @@
 
                 if (selectedSeats.has(seatId)) {
                     selectedSeats.delete(seatId);
+                    // 從 selectedSeatIds 中移除對應的 SeatId
+                    const seatToRemove = seatStatus.value.find(s => s.Row === row && s.Number === col);
+                    if (seatToRemove) {
+                        selectedSeatIds.value = selectedSeatIds.value.filter(id => id !== seatToRemove.Id);
+                    }
                 } else {
                     if (selectedSeats.size >= selectedQuantity.value) {
                         alert(`最多只能選擇 ${selectedQuantity.value} 個座位！`);
                         return;
                     }
                     selectedSeats.add(seatId);
+                    // 將選中座位的 SeatId 加入 selectedSeatIds
                     const seatToAdd = seatStatus.value.find(s => s.Row === row && s.Number === col);
                     if (seatToAdd) {
                         selectedSeatIds.value.push(seatToAdd.Id);

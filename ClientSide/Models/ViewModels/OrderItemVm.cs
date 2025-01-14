@@ -24,12 +24,12 @@ namespace ClientSide.Models.ViewModels
 
         public string ImgPath { get; set; }
 
-        public string SeatName { get; set; }
-
         public string MovieTitle { get; set; }
 
         public string MovieTime { get; set; }
-    }
+        public string SeatNames { get; set; }
+
+	}
 
     public class OrderItemDetailVm
     {
@@ -44,17 +44,15 @@ namespace ClientSide.Models.ViewModels
         [Display(Name = "場次時間")]
         public string MovieTime { get; set; }
 
-        [Display(Name = "座位")]
-        public string SeatName { get; set; }
-
         [Display(Name = "購票數")]
         public int Qty { get; set; }
 
         [Display(Name = "單票價格")]
         public int Price { get; set; }
 
-        [Display(Name = "該項總價")]
+        [Display(Name = "總價")]
         public int SubTotal { get; set; }
-
-    }
+		[Display(Name = "座位")]
+		public string SeatNames { get; set; }
+	}
 }
