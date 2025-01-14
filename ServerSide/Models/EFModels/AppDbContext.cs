@@ -72,8 +72,7 @@ public partial class AppDbContext : DbContext
                 .HasColumnType("datetime");
             entity.Property(e => e.SeatsName)
                 .IsRequired()
-                .HasMaxLength(20)
-                .IsUnicode(false);
+                .HasMaxLength(50);
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
 
             entity.HasOne(d => d.Cart).WithMany(p => p.CartItems)
@@ -193,8 +192,7 @@ public partial class AppDbContext : DbContext
         {
             entity.Property(e => e.SeatNames)
                 .IsRequired()
-                .HasMaxLength(20)
-                .IsUnicode(false);
+                .HasMaxLength(50);
             entity.Property(e => e.TicketName)
                 .IsRequired()
                 .HasMaxLength(50);

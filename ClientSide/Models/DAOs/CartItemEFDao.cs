@@ -22,7 +22,7 @@ namespace ClientSide.Models.DAOs
                 TheaterName = GetTheaterName(id),
                 MovieTitle = GetMovieTitle(id),
                 MovieTime = GetScreeningTime(id),
-                SeatName = GetSeatNames(id),
+                SeatName = GetSeatNames(cartitem.SeatsName),
                 Qty = cartitem.Qty,
                 Price = GetPrice(id),
                 SubTotal = cartitem.SubTotal
@@ -80,15 +80,9 @@ namespace ClientSide.Models.DAOs
         /// </summary>
         /// <param name="cartItemId"></param>
         /// <returns></returns>
-        public string GetSeatNames(int cartItemId) //row number
+        public string GetSeatNames(string seatName) //row number
         {
-            var cartItem = _db.CartItems.FirstOrDefault(ci => ci.Id == cartItemId);
-            var ticket = _db.Tickets.FirstOrDefault(t => t.Id == cartItem.TicketId);
-            var screening = _db.Screenings.FirstOrDefault(s => s.Id == ticket.ScreeningId);
-            var seatStatus = _db.SeatStatus.FirstOrDefault(ss => ss.ScreeningId == screening.Id);
-            var seat = _db.Seats.FirstOrDefault(s=>s.Id == seatStatus.SeatId);
-
-            return $"{seat.Row.Trim()}{seat.Number.Trim()}";
+            return $"{seatName.Trim()}";
         }
 
         /// <summary>

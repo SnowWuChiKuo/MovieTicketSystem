@@ -25,7 +25,7 @@ namespace ClientSide.Models.EFModels
         public int SubTotal { get; set; }
 
         [Required]
-        [StringLength(20)]
+        [StringLength(50)]
         public string SeatNames { get; set; }
 
         public virtual Order Order { get; set; }

@@ -25,17 +25,17 @@ namespace ClientSide.Controllers
 
         [Authorize]
         //傳入商品id與數量
-        public ActionResult AddItem(int ticketId ,int qty)
+        public ActionResult AddItem(int ticketId ,int qty ,string seatName)
         {
             string account = User.Identity.Name; //豋入者的 account
             //int qty = 1; 
 
-            Add2Cart(account, ticketId, qty);
+            Add2Cart(account, ticketId, qty , seatName);
 
             return new EmptyResult();
         }
 
-        private void Add2Cart(string account, int productId, int qty)
+        private void Add2Cart(string account, int productId, int qty, string seatName)
         {
             //取得目前購物車，若沒購物車則新增一筆
             CartVm cart = _service.GetCartInfo(account);
@@ -44,7 +44,7 @@ namespace ClientSide.Controllers
             int cartId = cart.Id;
 
             //將商品加入購物車
-            _service.AddCartItem(cartId, productId, qty);
+            _service.AddCartItem(cartId, productId, qty, seatName);
         }
 
         private CartVm GetCartInfo(string account)

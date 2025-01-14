@@ -31,9 +31,9 @@ namespace ClientSide.Models.Services
             _repo.EmptyCart(account);
         }
 
-        public void AddCartItem(int cartId, int productId, int qty)
+        public void AddCartItem(int cartId, int productId, int qty, string seatName)
         {
-            _repo.AddCartItem(cartId, productId, qty);
+            _repo.AddCartItem(cartId, productId, qty, seatName);
         }
 
         public bool CheckIfCartItemsValid(List<int> cartItemIds)
