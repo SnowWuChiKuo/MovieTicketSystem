@@ -23,41 +23,52 @@ namespace ClientSide.Models.DAOs
 			return data;
         }
 
-        public List<ScreeningChangeDateVm> GetShowTimes(string theaterName)
-		{
-			var db = new AppDbContext();
-			var data = db.Screenings.Where(d => d.Theater.Name == theaterName)
-									.Select(d => new ScreeningVm 
-									{
-										Televising = GetTelevising(theaterName),
-										StartTime = GetStartTime(theaterName),
-										TheaterId = d.TheaterId,
-										Id = d.Id,
-									}).ToList();
+        public List<ScreeningChangeDateVm> GetShowTimes(string theaterName, int movieId)
+        {
+            var db = new AppDbContext();
+            var currentDateTime = DateTime.Now;
 
-			// 格式化日期時間以供 JSON 使用
-			var formattedShowTimes = data.Select(st => new ScreeningChangeDateVm
-			{
-				Televising = st.Televising.ToString("yyyy-MM-dd"), // 或其他你需要的格式
-				StartTime = st.StartTime.ToString(@"hh\:mm"), // TimeSpan 格式化
-				TheaterId = st.TheaterId,
-				Id = st.Id,
-			}).ToList();
+            // 設定今天的起始時間和結束時間
+            var todayStart = currentDateTime.Date;
+            var todayEnd = todayStart.AddDays(1);
 
-			return formattedShowTimes;
-		}
+            var data = db.Screenings
+                .Where(d => d.Theater.Name == theaterName)
+				.Where(d => d.MovieId == movieId)
+                .Where(d =>
+                    // 如果是今天的場次
+                    (d.Televising >= todayStart && d.Televising < todayEnd && d.StartTime > currentDateTime.TimeOfDay) ||
+                    // 如果是未來的場次
+                    d.Televising >= todayEnd
+                )
+                // 加入排序：先按日期排，再按時間排
+                .OrderBy(d => d.Televising)
+                .ThenBy(d => d.StartTime)
+                .Select(d => new ScreeningVm
+                {
+                    Televising = d.Televising,
+                    StartTime = d.StartTime,
+                    TheaterId = d.TheaterId,
+                    Id = d.Id,
+                })
+                .ToList();
 
-		private TimeSpan GetStartTime(string theaterName)
-		{
-			throw new NotImplementedException();
-		}
+            // 格式化日期時間
+            var formattedShowTimes = data
+                .Select(st => new ScreeningChangeDateVm
+                {
+                    Televising = st.Televising.ToString("yyyy-MM-dd"),
+                    StartTime = st.StartTime.ToString(@"hh\:mm"),
+                    TheaterId = st.TheaterId,
+                    Id = st.Id,
+                })
+                .ToList();
 
-		private DateTime GetTelevising(string theaterName)
-		{
-			throw new NotImplementedException();
-		}
+            return formattedShowTimes;
+        }
 
-		public List<TicketVm> GetTicket(int screeningId)
+
+        public List<TicketVm> GetTicket(int screeningId)
 		{
 			var db = new AppDbContext();
 			

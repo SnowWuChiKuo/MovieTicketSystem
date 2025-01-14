@@ -192,8 +192,6 @@ namespace ClientSide.Controllers
 
             TempData["ShowSuccessAlert"] = true; // 設定一個 ViewBag 變數，表示要顯示 SweetAlert
 
-            //TempData["Message"] = "個人資料已更新";
-
             return RedirectToAction("EditProfile");
 
         }

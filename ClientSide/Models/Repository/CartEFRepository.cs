@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Microsoft.Ajax.Utilities;
+using System.Data;
+using System.Data.Entity.Migrations;
 
 namespace ClientSide.Models.Repository
 {
@@ -93,6 +95,27 @@ namespace ClientSide.Models.Repository
 
             return $"{screening.Televising.ToString("yyyy-MM-dd")} {screening.StartTime} - {screening.EndTime}";
         }
+        /// <summary>
+        /// 取得所有購物車物品放映開始時間 StartTime 
+        /// </summary>
+        /// <param name="cartId"></param>
+        /// <returns></returns>
+        public List<DateTime> GetScreeningStartTime(List<int> cartItemIds)
+        {
+            List<DateTime> result = new List<DateTime>();
+            foreach (var id in cartItemIds)
+            {
+                var cartItem = _db.CartItems.FirstOrDefault(ci => ci.Id == id);
+                var ticket = _db.Tickets.FirstOrDefault(t => t.Id == cartItem.TicketId);
+                var screening = _db.Screenings.FirstOrDefault(s => s.Id == ticket.ScreeningId);
+
+                var startTime  =  screening.Televising.Date + screening.StartTime;
+                result.Add(startTime);
+            }
+
+            return result;
+        }
+
 
         /// <summary>
         /// 取得電影海報名稱
@@ -196,7 +219,7 @@ namespace ClientSide.Models.Repository
         /// </summary>
         /// <param name="account"></param>
         /// <param name="model"></param>
-        public void CreateOrder(string account, CheckoutVm model)
+        public void CreateOrder(string account)
         {
             
                 CartVm cart = GetCartInfo(account);
@@ -223,12 +246,58 @@ namespace ClientSide.Models.Repository
                         Price = GetPrice(item.TicketId),
                         SubTotal = item.SubTotal,
                     };
+
+                    UpdateSeatStatus(item.TicketId);
+                    
                    _db.OrderItems.Add(orderItem);
                 }
 
                 _db.Orders.Add(order);
                 _db.SaveChanges(); //會一次將訂單主檔/明細檔一起存檔，且包在一個transaction內
 
+
+                
+        }
+
+        private void UpdateSeatStatus(int ticketId)
+        {
+            var ticket = _db.Tickets.FirstOrDefault(t => t.Id == ticketId);
+            var screening = _db.Screenings.FirstOrDefault(s => s.Id == ticket.ScreeningId);
+            var ticketSeat = _db.TicketSeats.FirstOrDefault(t => t.TicketId == ticket.Id);
+            var seatStatus = _db.SeatStatus.FirstOrDefault(ss => ss.ScreeningId == screening.Id && ss.SeatId == ticketSeat.SeatId);
+
+            seatStatus.Status = "不可使用";
+            seatStatus.UpdatedAt = DateTime.Now;
+
+            _db.SeatStatus.AddOrUpdate(seatStatus);
+        }
+
+        public List<string> GetSeatStatus(List<int> cartItemIds)
+        {
+            List<string> result = new List<string>();
+            foreach (var id in cartItemIds)
+            {
+                var cartItem = _db.CartItems.FirstOrDefault(ci => ci.Id == id);
+                var ticket = _db.Tickets.FirstOrDefault(t => t.Id == cartItem.TicketId);
+                var screening = _db.Screenings.FirstOrDefault(s => s.Id == ticket.ScreeningId);
+                var seatStatus = _db.SeatStatus.FirstOrDefault(ss => ss.ScreeningId == screening.Id);
+
+                result.Add(seatStatus.Status);
+            }
+
+            return result;
+        }
+
+        public List<int> GetCartItemIds(int cartId)
+        {
+            List<CartItem> cartItems = _db.CartItems.Where(ci => ci.CartId == cartId).ToList();
+            List<int> cartItemIds = new List<int>();
+            foreach (var item in cartItems)
+            {
+                cartItemIds.Add(item.Id);
+            }
+
+            return cartItemIds;
         }
 
         //public int CalculateDiscountPrice(CheckoutVm model)

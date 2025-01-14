@@ -8,7 +8,6 @@ using System.Web.Mvc;
 
 namespace ClientSide.Controllers
 {
-    [CartItemCleanupFilter]
     public class CartItemsController : Controller
     {
         private readonly CartItemService _service = new CartItemService();
@@ -27,6 +26,20 @@ namespace ClientSide.Controllers
             {
                 return HttpNotFound();
             }
+        }
+
+        [Authorize]
+        public ActionResult DeleteCartItem(int? id)
+        {
+
+            _service.Delete(id.Value);
+
+            TempData["ShowSuccessAlert"] = true;
+            TempData["SweetAlertTitle"] = "該購物車物品已刪除";
+            TempData["SweetAlertText"] = "該購物車物品已成功刪除。";
+            TempData["SweetAlertIcon"] = "success";
+
+            return RedirectToAction("Index", "Carts");
         }
     }
 }

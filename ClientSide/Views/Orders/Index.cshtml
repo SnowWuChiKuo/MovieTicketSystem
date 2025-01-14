@@ -1,14 +1,14 @@
 ﻿@model ClientSide.Models.ViewModels.OrderVm
 
 @{
-    ViewBag.Title = "電影票留存頁";
+    ViewBag.Title = "訂單完成電影票";
 }
 
 <div style="display: flex; flex: 1;">
 
     <div style="flex: 1; padding: 20px;">
         @* 電影票留存頁 *@
-        <h2 style="text-align: center; margin-bottom: 20px;" class="fw-bolder">電影票留存頁</h2>
+        <h2 style="text-align: center; margin-bottom: 20px;" class="fw-bolder">訂單完成電影票</h2>
         @{
             if (Model != null && Model.OrderItems != null && Model.OrderItems.Any())
             {

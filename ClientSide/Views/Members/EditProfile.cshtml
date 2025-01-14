@@ -5,8 +5,8 @@
 }
 
 
+<div class="container mt-5 " style="margin-bottom:200px">
 
-<div class="container mt-5">
     <h2 class="fw-bolder">個人資料編輯</h2>
     @using (Html.BeginForm("EditProfile", "Members", FormMethod.Post, new { id = "editForm" }))
     {
@@ -51,6 +51,7 @@
             </div>
 
         </div>
+
     }
     @using (Html.BeginForm("DeleteMember", "Members", FormMethod.Post, new { id = "deleteForm" }))
     {
@@ -69,9 +70,7 @@
             </div>
         </div>
     }
-
 </div>
-
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     @if (TempData.Peek("ShowSuccessAlert") != null && (bool)TempData.Peek("ShowSuccessAlert") == true)
