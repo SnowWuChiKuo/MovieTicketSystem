@@ -6,32 +6,27 @@
 
 
 <div id="app" class="container" style="margin-top: 120px">
-    <!-- 動態內容 -->
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="mvTitle mb-4 text-center">開始訂票</h1>
+            <h1 class="mvTitle mb-4">開始訂票</h1>
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-lg-12">
-            <h3 class="mvTitle mb-4">電影簡介</h3>
-        </div>
-    </div>
-    <div class="row">
+    <!-- 電影資訊區塊 -->
+    <div class="row mb-4">
+        <!-- 海報卡片 -->
         <div class="col-lg-6">
-            <el-card class="box-card poster-card leftCard">
+            <el-card class="box-card poster-card">
                 <img :src="movie.poster" :alt="movie.title">
                 <div class="rating-container">
                     <div class="rating-header">
                         <h3 class="movie-title">{{ movie.title }}</h3>
                         <div class="rating-content">
                             <el-rate v-model="movie.rating_score"
-                                     disabled
-                                     show-score
-                                     text-color="#ff9900"
-                                     score-template="{value} 分"
-                                     size="large">
+                                    disabled
+                                    show-score
+                                    text-color="#ff9900"
+                                    score-template="{value} 分">
                             </el-rate>
                             <span class="rating-count">{{ movie.rating_count }} 人評分</span>
                         </div>
@@ -39,43 +34,39 @@
                 </div>
             </el-card>
         </div>
+        
+        <!-- 資訊卡片 -->
         <div class="col-lg-6 info-container">
             <el-card class="box-card">
                 <el-descriptions :column="1" border:false class="movie-info">
-                    <el-descriptions-item label="種類">
-                        {{ movie.genre }}
-                    </el-descriptions-item>
-                    <el-descriptions-item label="級別">
-                        {{ movie.rating }}
-                    </el-descriptions-item>
-                    <el-descriptions-item label="片長">
-                        {{ movie.duration }}
-                    </el-descriptions-item>
-                    <el-descriptions-item label="上映日">
-                        {{ movie.releaseDate }}
-                    </el-descriptions-item>
-                    <el-descriptions-item label="導演">
-                        {{ movie.director }}
-                    </el-descriptions-item>
+                    <el-descriptions-item label="種類">{{ movie.genre }}</el-descriptions-item>
+                    <el-descriptions-item label="級別">{{ movie.rating }}</el-descriptions-item>
+                    <el-descriptions-item label="片長">{{ movie.duration }}</el-descriptions-item>
+                    <el-descriptions-item label="上映日">{{ movie.releaseDate }}</el-descriptions-item>
+                    <el-descriptions-item label="導演">{{ movie.director }}</el-descriptions-item>
                 </el-descriptions>
             </el-card>
         </div>
     </div>
-    <div v-if="!showSeats">
+
+    <!-- 訂票選擇區塊 -->
+    <div v-if="!showSeats" class="selection-section">
+        <!-- 影廳選擇 -->
         <transition name="slide-up">
-            <div class="mb-4 mt-3">
-                <h3>選擇影廳</h3>
-                <div>
-                    <button class="btn btn-primary btn-custom"
+            <div class="mb-4">
+                <h3 class="selection-title">選擇影廳</h3>
+                <div class="button-group">
+                    <button class="btn btn-custom"
                             v-for="theater in theaters"
                             :key="theater.id"
-                            v-bind:class="{ selected: selectedTheater === theater }"
+                            :class="{ selected: selectedTheater === theater }"
                             v-on:click="selectTheater(theater)">
                         {{ theater.text }}
                     </button>
                 </div>
             </div>
         </transition>
+
         <!-- 日期選擇區塊 -->
         <transition name="slide-up">
             <div class="mb-4" v-if="selectedTheater && dates.length > 0">

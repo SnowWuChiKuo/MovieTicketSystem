@@ -61,7 +61,7 @@
     .movie-card .content {
         padding: 16px;
         background: var(--nav-footer-bg);
-        min-height: 100px;
+        height: 120px;
         display: flex;
         flex-direction: column;
     }
@@ -76,6 +76,9 @@
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
+        text-overflow: ellipsis; /* 超出時顯示省略號 */
+        max-height: 3.36em; /* 1.4 (line-height) * 2 (行數) * 1.2 (font-size) */
+        min-height: 3.36em; /* 確保所有卡片高度一致 */
     }
 
     .movie-card .release-date {

@@ -25,10 +25,11 @@
 
     @RenderSection("Styles", required: false)
 
-    <!-- 確保這些引用存在且順序正確 -->
+    <!-- 確保順序正確 -->
     <link href="https://unpkg.com/element-plus/dist/index.css" rel="stylesheet">
     <script src="https://unpkg.com/vue@3"></script>
     <script src="https://unpkg.com/element-plus"></script>
+
 </head>
 <body>
     <div class="layout-container">
@@ -41,7 +42,7 @@
         @Html.Partial("_FooterPartial")
     </div>
 
-    <!-- 核心框架 - 注意引用順序 -->
+    <!-- 核心框架 確認順序正確 -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/vue@3.3.4/dist/vue.global.js"></script>

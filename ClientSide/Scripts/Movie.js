@@ -25,11 +25,7 @@ createApp({
                 memberName: r.MemberName,
                 content: r.Comment,
                 createdAt: r.CreatedAt.replace(/\/Date\((-?\d+)\)\//, function (match, timestamp) {
-                    return new Date(parseInt(timestamp)).toLocaleDateString('zh-TW', {
-                        year: 'numeric',
-                        month: '2-digit',
-                        day: '2-digit'
-                    });
+                    return new Date(parseInt(timestamp)).toISOString().split('T')[0].replaceAll('-', '/');
                 }),
                 rating: r.Rating
             })) || []

@@ -1,22 +1,166 @@
 ﻿/* 基本樣式 */
-.selected {
-    background-color: #28a745 !important;
+body {
+    font-family: 'Lexend Deca', 'Noto Sans TC', sans-serif !important;
+}
+
+/* 主標題樣式 */
+.mvTitle {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: var(--accent-color);
+    margin-bottom: 2rem;
+    font-family: 'Lexend Deca', 'Noto Sans TC', sans-serif !important;
+    text-align: center;
+}
+
+/* 電影標題樣式 */
+.movie-title {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--accent-color) !important;
+    margin-bottom: 1rem;
+    line-height: 1.3;
+}
+
+/* 區塊標題樣式 */
+.section-title {
+    font-size: 1.75rem;
+    font-weight: 500;
+    color: var(--accent-color);
+    margin-bottom: 1.5rem;
+    font-family: 'Lexend Deca', 'Noto Sans TC', sans-serif !important;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 0.5rem;
+}
+
+/* 按鈕基本樣式 */
+.btn {
+    font-family: 'Lexend Deca', 'Noto Sans TC', sans-serif !important;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.btn:focus {
+    box-shadow: none !important;
+}
+
+/* 所有按鈕統一樣式 */
+.btn-custom,
+.btn-success,
+.btn-primary,
+.btn-secondary,
+.btn-info {
+    background-color: var(--secondary-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 0.5rem 1rem;
+    margin: 0.25rem;
+    border-radius: 6px;
+    font-size: 0.95rem;
+}
+
+/* 懸停效果統一 */
+    .btn-custom:hover,
+    .btn-success:hover,
+    .btn-primary:hover,
+    .btn-secondary:hover,
+    .btn-info:hover {
+        background-color: var(--secondary-bg);
+        border-color: var(--accent-color);
+        color: var(--accent-color);
+        transform: translateY(-2px);
+    }
+
+/* 按住效果統一 */
+    .btn-custom:active,
+    .btn-success:active,
+    .btn-primary:active,
+    .btn-secondary:active,
+    .btn-info:active {
+        background-color: var(--secondary-bg) !important;
+        border-color: var(--accent-color) !important;
+        color: var(--accent-color) !important;
+        transform: translateY(0);
+    }
+
+/* 選中狀態統一 */
+    .btn-custom.selected,
+    .btn-success.selected,
+    .btn-primary.selected,
+    .btn-secondary.selected,
+    .btn-info.selected {
+        background-color: var(--accent-color) !important;
+        border-color: var(--accent-color) !important;
+        color: white !important;
+    }
+
+/* 表單元素樣式 */
+.form-control {
+    font-family: 'Lexend Deca', 'Noto Sans TC', sans-serif !important;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 0.2rem rgba(224, 169, 109, 0.25);
+}
+
+/* 選擇區塊標題 */
+.selection-section h3 {
+    font-size: 1.5rem;
+    color: var(--text-primary);
+    margin-bottom: 1.25rem;
+    font-family: 'Lexend Deca', 'Noto Sans TC', sans-serif !important;
+    font-weight: 500;
+}
+
+/* 按鈕組樣式 */
+.button-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* 座位選擇按鈕 */
+.seat {
+    width: 35px;
+    height: 35px;
+    border: 1px solid var(--border-color);
+    background-color: var(--secondary-bg);
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin: 1px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    border-radius: 4px;
+}
+
+.seat:hover:not(.unavailable) {
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+}
+
+.seat.selected {
+    background-color: var(--accent-color) !important;
+    border-color: var(--accent-color) !important;
     color: white !important;
 }
 
-.unavailable {
-    background-color: #ffc107 !important;
-    color: black !important;
+.seat.unavailable {
+    background-color: var(--primary-bg) !important;
+    border-color: var(--border-color) !important;
+    color: var(--text-secondary) !important;
+    cursor: not-allowed;
 }
-
-.btn-custom {
-    margin: 5px;
-}
-
-    .btn-custom.selected {
-        background-color: yellow;
-        color: black;
-    }
 
 /* 座位視圖容器 */
 .seat-view-container {
@@ -71,35 +215,6 @@
     margin: 0 5px;
 }
 
-/* 座位樣式 */
-.seat {
-    width: 35px;
-    height: 35px;
-    border: 1px solid #ccc;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    margin: 1px;
-    background-color: white;
-    font-size: 14px;
-}
-
-    .seat.gap {
-        width: 35px;
-        height: 35px;
-        border: none;
-        background-color: transparent;
-    }
-
-.hidden-seat {
-    width: 35px;
-    height: 35px;
-    background-color: transparent;
-    border: none;
-    cursor: default;
-}
-
 /* 螢幕樣式 */
 .screen {
     width: 80%;
@@ -136,11 +251,13 @@
 }
 
     .legend-box.selected {
-        background-color: #28a745;
+        background-color: var(--accent-color);
+        border-color: var(--accent-color);
     }
 
     .legend-box.unavailable {
-        background-color: #ffc107;
+        background-color: var(--primary-bg);
+        border-color: var(--border-color);
     }
 
 /* 動畫效果 */
@@ -173,4 +290,142 @@
     content: "";
     display: table;
     clear: both;
+}
+
+/* 電影資訊卡片樣式 */
+.poster-card {
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--secondary-bg);
+    height: 100%;
+}
+
+.poster-card img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius:4px;
+}
+
+.rating-container {
+    padding-top: 1rem;
+}
+
+.rating-header {
+    margin-bottom: 1rem;
+}
+
+.movie-title {
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.rating-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.rating-count {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+/* 資訊卡片樣式 */
+.info-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.movie-info {
+    height: 100%;
+}
+
+    /* 調整卡片內容置中 */
+    .movie-info .el-descriptions__cell {
+        text-align: start !important;
+        align-content: center;
+    }
+
+    .movie-info .el-descriptions__label,
+    .movie-info .el-descriptions__content {
+        text-align: center !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+.el-card__body {
+    font-family: 'Lexend Deca', 'Noto Sans TC', sans-serif !important;
+    
+}
+.el-descriptions {
+    margin-bottom: 1rem;
+    
+    
+}
+.el-descriptions__label {
+    font-size: 1.1rem !important;
+}
+.el-descriptions__content {
+    font-size: 1.1rem !important;
+}
+    /* 選擇區塊樣式 */
+    .selection-section {
+        background: var(--secondary-bg);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-top: 2rem;
+        border: 1px solid var(--border-color);
+    }
+
+.selection-title {
+    font-size: 1.5rem;
+    color: var(--accent-color);
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+    font-weight: 500;
+}
+
+/* 確保按鈕樣式 */
+.booking-controls-wrapper .btn {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+    color: white;
+    padding: 0.5rem 1.5rem;
+}
+
+.booking-controls-wrapper .btn:hover {
+    background-color: #c89b69;
+    border-color: #c89b69;
+    color: white;
+}
+
+.booking-controls-wrapper .btn:active {
+    background-color: #b88c5a !important;
+    border-color: #b88c5a !important;
+    color: white !important;
+}
+
+/* 響應式調整 */
+@media (max-width: 768px) {
+    .mvTitle {
+        font-size: 2rem;
+        color: var(--accent-color);
+    }
+
+    .movie-title {
+        font-size: 1.75rem;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+    }
+
+    .selection-section h3,
+    .selection-title {
+        font-size: 1.25rem;
+    }
 }
