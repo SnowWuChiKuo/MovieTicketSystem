@@ -132,6 +132,8 @@ namespace ServerSide.Models.DAOs
                 .Select(m => m.RunTime)
                 .FirstOrDefault();
         }
+
+
         public DateTime GetMovieReleaseDate(int movieId)
         {
             return _db.Movies
@@ -139,11 +141,61 @@ namespace ServerSide.Models.DAOs
                 .Select(m => m.ReleaseDate.Date)
                 .FirstOrDefault();
         }
+
+
         public bool IsValidTelevisingDate(int movieId, DateOnly televising)
         {
-            var releaseDate = GetMovieReleaseDate(movieId);
+            var releaseDate =  GetMovieReleaseDate(movieId);
             return televising.ToDateTime(TimeOnly.MinValue) >= releaseDate;
         }
+
+        /// <summary>
+        /// 檢查新增或編輯場次時是否與當前既有場次時間衝突。
+        /// </summary>
+        /// <param name="theaterId">要新增場次的影廳</param>
+        /// <param name="date"></param>
+        /// <param name="startTime"></param>
+        /// <param name="endTime"></param>
+        /// <param name="excludeId"> 要排除的Id(當前資料Id)，避免編輯時把自己算進去導致一定是false </param>
+        /// <returns></returns>
+        public bool HasTimeConflict(int theaterId, DateOnly televising, TimeOnly startTime, TimeOnly endTime, int excludeId = 0)
+        {
+            //先獲取當天的所有場次
+            var currentScreenings = 
+                _db.Screenings
+                .Include(s => s.Movie)
+                .Where(s => 
+                s.TheaterId == theaterId && 
+                s.Televising == televising &&
+                s.Id != excludeId)
+                .ToList();
+
+            //檢查既有場次是否與新場次時間重疊
+            foreach (var screening in currentScreenings)
+            {
+                //用片長計算結束時間
+                var currentEndTime = screening.StartTime.AddMinutes(screening.Movie.RunTime ?? 0);
+
+                //場次衝突的三種情況，
+                // [1] 新場次開始時間在既有場次之間
+                // [2] 新場次結束時間在既有場次之間
+                // [3] 新場次包含既有場次
+
+                bool startInBetween = startTime >= screening.StartTime && startTime < currentEndTime;
+
+                bool endInBetween = endTime > screening.StartTime && endTime <= currentEndTime;
+
+                bool contain = startTime <= screening.StartTime && endTime >= currentEndTime;
+
+                if (startInBetween || endInBetween || contain)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public void Delete(int id)
         {
             var screeningInDb = _db.Screenings.Find(id);
@@ -305,9 +357,6 @@ namespace ServerSide.Models.DAOs
             };
         }
 
-		public bool HasTimeConflict(int theaterId, DateOnly date, TimeOnly startTime, TimeOnly endTime, int excludeId = 0)
-		{
-			throw new NotImplementedException();
-		}
+
 	}
 }

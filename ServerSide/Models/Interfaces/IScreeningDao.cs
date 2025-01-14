@@ -14,7 +14,7 @@ namespace ServerSide.Models.Interfaces
         public int? GetMovieRunTime(int movieId);
         DateTime GetMovieReleaseDate(int movieId);
 
-        public bool HasTimeConflict(int theaterId, DateOnly date, TimeOnly startTime, TimeOnly endTime, int excludeId = 0);
+        public bool HasTimeConflict(int theaterId, DateOnly televising, TimeOnly startTime, TimeOnly endTime, int excludeId = 0);
 
 
 		bool IsValidTelevisingDate(int movieId, DateOnly televising);

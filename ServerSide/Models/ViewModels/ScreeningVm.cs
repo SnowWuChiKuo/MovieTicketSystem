@@ -58,6 +58,7 @@ namespace ServerSide.Models.ViewModels
         public DateOnly Televising { get; set; }
 
         [Display(Name = "場次開始時間")]
+        [ValidScreeningTime]
         public TimeOnly StartTime { get; set; }
 
         [Display(Name = "片長")]

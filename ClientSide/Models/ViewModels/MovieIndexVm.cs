@@ -1,4 +1,6 @@
 ﻿using ClientSide.Models.DTOs;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -12,7 +14,9 @@ namespace ClientSide.Models.ViewModels
 		public int Id { get; set; }
 		public string Title { get; set; }
 
-		public DateTime ReleaseDate { get; set; }
+        [JsonConverter(typeof(IsoDateTimeConverter))]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
+        public DateTime ReleaseDate { get; set; }
 
 		[StringLength(70)]
 		public string PosterURL { get; set; }

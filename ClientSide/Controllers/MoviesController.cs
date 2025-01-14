@@ -85,7 +85,7 @@ namespace ClientSide.Controllers
             var movie = _service.GetMovieById(movieId);
             if (movie == null) return HttpNotFound();
 
-			//看使用者是否登入，並儲存狀態
+			//看使用者是否登入，並儲存到IsLoggedIn狀態
 			movie.IsLoggedIn = User.Identity.IsAuthenticated;
             if (movie.IsLoggedIn)
             {
@@ -94,7 +94,7 @@ namespace ClientSide.Controllers
 				movie.CanReview = _service.CheckUserHasValidOrder(account, movieId);
 			}
 
-            movie.ReleaseDate = movie.ReleaseDate.Date.ToUniversalTime();
+            movie.ReleaseDate = movie.ReleaseDate.Date;
 
             movie.PosterURL = $"/MoviePosters/{movie.Title}.jpg";
 
@@ -122,8 +122,8 @@ namespace ClientSide.Controllers
 				CurrentUserName = movie.CurrentUserName,
 				Reviews = movie.Reviews
 			};
-
-			return View(movie);
+            Console.WriteLine($"ReleaseDate format: {movie.ReleaseDate}");
+            return View(detailvm);
 		}
 
 
