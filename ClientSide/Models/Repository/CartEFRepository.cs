@@ -155,6 +155,8 @@ namespace ClientSide.Models.Repository
         /// <param name="seatName"></param>
         public void AddCartItem(int cartId, int ticketId, int qty , string seatName)
         {
+            seatName = RemoveSpaces(seatName);
+            //尋找是否存在相同項目
             var cartItemInDb = _db.CartItems.FirstOrDefault(ci => ci.CartId == cartId && ci.TicketId == ticketId);
             //已存在相同項目
             if (cartItemInDb != null)
@@ -302,6 +304,10 @@ namespace ClientSide.Models.Repository
             }
 
             return cartItemIds;
+        }
+        public string RemoveSpaces( string input)
+        {
+            return input.Replace(" ", string.Empty);
         }
 
         //public int CalculateDiscountPrice(CheckoutVm model)
