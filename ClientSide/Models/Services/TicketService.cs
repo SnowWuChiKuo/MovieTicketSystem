@@ -16,10 +16,10 @@ namespace ClientSide.Models.Services
             return dao.GetTheaters(movieId);
         }
 
-        public List<ScreeningChangeDateVm> GetShowTimes(string theaterName)
+        public List<ScreeningChangeDateVm> GetShowTimes(string theaterName, int movieId)
 		{
 			var dao = new TicketEFDao();
-			return dao.GetShowTimes(theaterName);
+			return dao.GetShowTimes(theaterName, movieId);
 		}
 
 		public List<TicketVm> GetTicket(int screeningId)

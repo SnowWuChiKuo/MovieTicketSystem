@@ -384,8 +384,9 @@
             const selectTheater = (theater) => {
                 selectedTheater.value = theater;
                 console.log("選擇的影廳 ID:", theater.text);
+                console.log("選擇的電影:", movie.value.id);
 
-                axios.post('/Tickets/GetShowTimes', { theaterName: theater.text })
+                axios.post('/Tickets/GetShowTimes', { theaterName: theater.text, movieId: movie.value.id  })
                     .then(response => {
                         console.log("伺服器回應:", response);
 

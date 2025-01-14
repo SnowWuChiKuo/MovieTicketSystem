@@ -41,12 +41,12 @@ namespace ClientSide.Controllers
         }
 
         [HttpPost]
-		public JsonResult GetShowTimes(string theaterName)
+		public JsonResult GetShowTimes(string theaterName, int movieId)
 		{
 			try
 			{
 				var service = new TicketService();
-				var showtime = service.GetShowTimes(theaterName);
+				var showtime = service.GetShowTimes(theaterName, movieId);
 
 				return Json(new { success = true, data = showtime }, JsonRequestBehavior.AllowGet); // 加上 JsonRequestBehavior
 			}
