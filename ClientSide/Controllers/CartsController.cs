@@ -35,7 +35,7 @@ namespace ClientSide.Controllers
             return new EmptyResult();
         }
 
-        private void Add2Cart(string account, int productId, int qty, string seatName)
+        private void Add2Cart(string account, int ticketId, int qty, string seatName)
         {
             //取得目前購物車，若沒購物車則新增一筆
             CartVm cart = _service.GetCartInfo(account);
@@ -44,7 +44,7 @@ namespace ClientSide.Controllers
             int cartId = cart.Id;
 
             //將商品加入購物車
-            _service.AddCartItem(cartId, productId, qty, seatName);
+            _service.AddCartItem(cartId, ticketId, qty, seatName);
         }
 
         private CartVm GetCartInfo(string account)

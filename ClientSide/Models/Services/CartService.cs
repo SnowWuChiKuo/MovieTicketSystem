@@ -31,9 +31,9 @@ namespace ClientSide.Models.Services
             _repo.EmptyCart(account);
         }
 
-        public void AddCartItem(int cartId, int productId, int qty, string seatName)
+        public void AddCartItem(int cartId, int ticketId, int qty, string seatName)
         {
-            _repo.AddCartItem(cartId, productId, qty, seatName);
+            _repo.AddCartItem(cartId, ticketId, qty, seatName);
         }
 
         public bool CheckIfCartItemsValid(List<int> cartItemIds)
@@ -67,7 +67,7 @@ namespace ClientSide.Models.Services
         {
             foreach (var item in startTimes)
             {
-                if(item > DateTime.Now)
+                if(item <= DateTime.Now)
                 {
                     return false;
                 }
