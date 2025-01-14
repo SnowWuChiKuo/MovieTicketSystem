@@ -29,8 +29,8 @@ namespace ClientSide.Models.DAOs
 			var data = db.Screenings.Where(d => d.Theater.Name == theaterName)
 									.Select(d => new ScreeningVm 
 									{
-										Televising = GetTelevising(theaterName),
-										StartTime = GetStartTime(theaterName),
+										Televising = d.Televising,
+										StartTime = d.StartTime,
 										TheaterId = d.TheaterId,
 										Id = d.Id,
 									}).ToList();
@@ -47,15 +47,6 @@ namespace ClientSide.Models.DAOs
 			return formattedShowTimes;
 		}
 
-		private TimeSpan GetStartTime(string theaterName)
-		{
-			throw new NotImplementedException();
-		}
-
-		private DateTime GetTelevising(string theaterName)
-		{
-			throw new NotImplementedException();
-		}
 
 		public List<TicketVm> GetTicket(int screeningId)
 		{

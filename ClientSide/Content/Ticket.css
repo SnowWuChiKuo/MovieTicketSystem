@@ -1,154 +1,176 @@
-﻿.selected {
-	background-color: #28a745 !important;
-	color: white !important;
+﻿/* 基本樣式 */
+.selected {
+    background-color: #28a745 !important;
+    color: white !important;
 }
 
 .unavailable {
-	background-color: #ffc107 !important;
-	color: black !important;
+    background-color: #ffc107 !important;
+    color: black !important;
 }
 
 .btn-custom {
-	margin: 5px;
+    margin: 5px;
 }
 
-	.btn-custom.selected {
-		background-color: yellow;
-		color: black;
-	}
+    .btn-custom.selected {
+        background-color: yellow;
+        color: black;
+    }
 
+/* 座位視圖容器 */
+.seat-view-container {
+    position: relative;
+    width: 100%;
+    padding: 20px;
+}
+
+/* 按鈕控制區域 */
+.seat-controls-wrapper {
+    width: 100%;
+    padding: 15px;
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+}
+
+.booking-controls-wrapper {
+    width: 100%;
+    padding: 15px;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+
+/* 座位容器 */
 .seat-container {
-	display: flex;
-	justify-content: center;
-	flex-direction: column;
-	align-items: center;
-	margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 40px;
 }
 
 .seat-row {
-	display: flex;
-	align-items: center;
-	margin: 2px 0;
-	gap: 30px; /* 走道寬度 */
+    display: flex;
+    align-items: center;
+    margin: 2px 0;
+    gap: 30px;
 }
 
 .seat-section {
-	display: flex;
-	gap: 1px;
+    display: flex;
+    gap: 1px;
 }
 
 .row-number {
-	width: 30px;
-	text-align: center;
-	margin: 0 5px;
+    width: 30px;
+    text-align: center;
+    margin: 0 5px;
 }
-/* 控制座位區的樣式 */
+
+/* 座位樣式 */
 .seat {
-	width: 35px;
-	height: 35px;
-	border: 1px solid #ccc;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	cursor: pointer;
-	margin: 1px;
-	background-color: white;
-	font-size: 14px;
+    width: 35px;
+    height: 35px;
+    border: 1px solid #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin: 1px;
+    background-color: white;
+    font-size: 14px;
 }
 
-	/* 走道空隙樣式 */
-	.seat.gap {
-		width: 35px;
-		height: 35px;
-		border: none;
-		background-color: transparent;
-	}
+    .seat.gap {
+        width: 35px;
+        height: 35px;
+        border: none;
+        background-color: transparent;
+    }
 
+.hidden-seat {
+    width: 35px;
+    height: 35px;
+    background-color: transparent;
+    border: none;
+    cursor: default;
+}
+
+/* 螢幕樣式 */
 .screen {
-	width: 80%;
-	height: 40px;
-	background: linear-gradient(to bottom, #666, #333);
-	margin: 20px auto;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	color: white;
-	border-radius: 5px;
-	transform: perspective(200px) rotateX(-10deg);
-	box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    width: 80%;
+    height: 40px;
+    background: linear-gradient(to bottom, #666, #333);
+    margin: 20px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    border-radius: 5px;
+    transform: perspective(200px) rotateX(-10deg);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
 }
 
+/* 圖例樣式 */
 .legend {
-	display: flex;
-	justify-content: center;
-	margin: 20px 0;
-	gap: 20px;
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+    gap: 20px;
 }
 
 .legend-item {
-	display: flex;
-	align-items: center;
-	gap: 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 
 .legend-box {
-	width: 20px;
-	height: 20px;
-	border: 1px solid #ccc;
+    width: 20px;
+    height: 20px;
+    border: 1px solid #ccc;
 }
 
-	.legend-box.selected {
-		background-color: #28a745;
-	}
+    .legend-box.selected {
+        background-color: #28a745;
+    }
 
-	.legend-box.unavailable {
-		background-color: #ffc107;
-	}
+    .legend-box.unavailable {
+        background-color: #ffc107;
+    }
 
-.top-buttons {
-	position: absolute;
-	top: 10px;
-	right: 10px;
-	display: flex;
-	gap: 10px;
-}
-
-.bottom-buttons {
-	position: absolute;
-	bottom: -60px;
-	right: 10px;
-	display: flex;
-	gap: 10px;
-}
-
+/* 動畫效果 */
 .slide-up-enter-active,
 .slide-up-leave-active {
-	transition: all 0.5s ease;
+    transition: all 0.5s ease;
 }
 
 .slide-up-enter,
 .slide-up-leave-to {
-	transform: translateY(100%);
-	opacity: 0;
+    transform: translateY(100%);
+    opacity: 0;
 }
 
-.top-right {
-	position: absolute;
-	top: 10px;
-	right: 10px;
+/* 確保按鈕靠右對齊 */
+.ms-auto {
+    margin-left: auto !important;
 }
 
-.bottom-right {
-	position: fixed;
-	bottom: 20px;
-	right: 20px;
+/* 確保按鈕容器內的按鈕正確對齊 */
+.seat-controls-wrapper button,
+.booking-controls-wrapper button,
+.booking-controls-wrapper a {
+    margin-left: auto;
 }
 
-/* 隱藏座位的樣式 */
-.hidden-seat {
-	width: 35px;
-	height: 35px;
-	background-color: transparent;
-	border: none;
-	cursor: default;
+/* 移除可能影響對齊的浮動 */
+.seat-controls-wrapper::after,
+.booking-controls-wrapper::after {
+    content: "";
+    display: table;
+    clear: both;
 }

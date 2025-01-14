@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Microsoft.Ajax.Utilities;
+using System.Data;
+using System.Data.Entity.Migrations;
 
 namespace ClientSide.Models.Repository
 {
@@ -223,12 +225,30 @@ namespace ClientSide.Models.Repository
                         Price = GetPrice(item.TicketId),
                         SubTotal = item.SubTotal,
                     };
+
+                    UpdateSeatStatus(item.TicketId);
+                    
                    _db.OrderItems.Add(orderItem);
                 }
 
                 _db.Orders.Add(order);
                 _db.SaveChanges(); //會一次將訂單主檔/明細檔一起存檔，且包在一個transaction內
 
+
+                
+        }
+
+        private void UpdateSeatStatus(int ticketId)
+        {
+            var ticket = _db.Tickets.FirstOrDefault(t => t.Id == ticketId);
+            var screening = _db.Screenings.FirstOrDefault(s => s.Id == ticket.ScreeningId);
+            var ticketSeat = _db.TicketSeats.FirstOrDefault(t => t.TicketId == ticket.Id);
+            var seatStatus = _db.SeatStatus.FirstOrDefault(ss => ss.ScreeningId == screening.Id && ss.SeatId == ticketSeat.SeatId);
+
+            seatStatus.Status = "不可使用";
+            seatStatus.UpdatedAt = DateTime.Now;
+
+            _db.SeatStatus.AddOrUpdate(seatStatus);
         }
 
         //public int CalculateDiscountPrice(CheckoutVm model)

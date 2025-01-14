@@ -91,7 +91,7 @@ namespace ClientSide.Controllers
             //清空購物車
             _service.EmptyCart(account);
 
-            return View("訂票紀錄");  // 結帳成功畫面
+            return Redirect("~/Orders/Index");  // 結帳成功畫面
         }
 
     }
