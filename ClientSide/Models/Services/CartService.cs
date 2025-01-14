@@ -67,7 +67,7 @@ namespace ClientSide.Models.Services
         {
             foreach (var item in startTimes)
             {
-                if(item > DateTime.Now)
+                if(item <= DateTime.Now)
                 {
                     return false;
                 }
