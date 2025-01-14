@@ -8,7 +8,7 @@ namespace ClientSide.Models.EFModels
     public partial class AppDbContext : DbContext
     {
         public AppDbContext()
-            : base("name=AppDbContext14")
+            : base("name=AppDbContext16")
         {
         }
 
@@ -33,6 +33,10 @@ namespace ClientSide.Models.EFModels
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<CartItem>()
+                .Property(e => e.SeatsName)
+                .IsUnicode(false);
+
             modelBuilder.Entity<Genre>()
                 .HasMany(e => e.Movies)
                 .WithRequired(e => e.Genre)
@@ -87,6 +91,10 @@ namespace ClientSide.Models.EFModels
                 .HasForeignKey(e => e.MovieId)
                 .WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<OrderItem>()
+                .Property(e => e.SeatNames)
+                .IsUnicode(false);
+
             modelBuilder.Entity<Order>()
                 .HasMany(e => e.OrderItems)
                 .WithRequired(e => e.Order)
@@ -109,6 +117,11 @@ namespace ClientSide.Models.EFModels
             modelBuilder.Entity<Screening>()
                 .Property(e => e.EndTime)
                 .HasPrecision(0);
+
+            modelBuilder.Entity<Screening>()
+                .HasMany(e => e.Tickets)
+                .WithRequired(e => e.Screening)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Seat>()
                 .Property(e => e.Row)
