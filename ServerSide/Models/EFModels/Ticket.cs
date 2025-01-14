@@ -15,6 +15,8 @@ public partial class Ticket
 
     public string TicketType { get; set; }
 
+    public int ReservedSeats { get; set; }
+
     public int Price { get; set; }
 
     public virtual ICollection<CartItem> CartItems { get; set; } = new List<CartItem>();

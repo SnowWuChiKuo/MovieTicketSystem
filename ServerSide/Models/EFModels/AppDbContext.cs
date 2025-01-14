@@ -328,7 +328,6 @@ public partial class AppDbContext : DbContext
 
             entity.HasOne(d => d.Screening).WithMany(p => p.Tickets)
                 .HasForeignKey(d => d.ScreeningId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Tickets_Screenings");
         });
 
@@ -341,7 +340,6 @@ public partial class AppDbContext : DbContext
 
             entity.HasOne(d => d.Ticket).WithMany(p => p.TicketSeats)
                 .HasForeignKey(d => d.TicketId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_TicketSeats_Tickets");
         });
 
