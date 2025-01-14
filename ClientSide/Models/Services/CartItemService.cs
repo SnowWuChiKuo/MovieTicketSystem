@@ -17,5 +17,10 @@ namespace ClientSide.Models.Services
 
             return _dao.Get(id);
         }
+
+        public void Delete(int id)
+        {
+             _dao.Delete(id);
+        }
     }
 }

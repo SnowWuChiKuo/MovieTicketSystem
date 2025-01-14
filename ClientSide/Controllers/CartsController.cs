@@ -9,7 +9,6 @@ using System.Web.Services.Description;
 
 namespace ClientSide.Controllers
 {
-    [CartItemCleanupFilter]
     public class CartsController : Controller
     {
         private readonly CartService _service = new CartService();
@@ -52,21 +51,6 @@ namespace ClientSide.Controllers
         {
             return _service.GetCartInfo(account);
         }
-
-        //[Authorize]
-        //public ActionResult Checkout()
-        //{
-        //    string account = User.Identity.Name;
-        //    CartVm cart = GetCartInfo(account);
-
-        //    if(cart.AllowCheckout == false)
-        //    {
-        //        return Content("購物車內沒有商品，無法結帳!");
-        //    }
-
-        //    return View();
-        //}
-
 
         /// <summary>
         /// 結帳

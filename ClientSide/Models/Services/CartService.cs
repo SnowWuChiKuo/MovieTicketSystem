@@ -36,9 +36,6 @@ namespace ClientSide.Models.Services
             _repo.AddCartItem(cartId, productId, qty);
         }
 
-        //public int CalculateDiscountPrice(CheckoutVm model)
-        //{
-        //    return _repo.CalculateDiscountPrice(model);
-        //}
+      
     }
 }

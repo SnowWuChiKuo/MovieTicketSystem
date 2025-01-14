@@ -3,45 +3,89 @@
 @{
     ViewBag.Title = "訂票夾";
 }
+<style>
+    .card1 {
+        margin-top: 40px;
+        border: 1px solid #ddd;
+        padding: 10px;
+        display: flex;
+        box-shadow: rgb(0, 0, 0) 5px 5px 20px;
+    }
 
+    .card2 {
+        border: 1px solid #ddd;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        margin: 10px;
+        justify-content: space-between;
+    }
+
+        .card2 img {
+            max-width: 100px;
+            display: flex;
+
+            max-height: 100px;
+        }
+
+    .movie-info {
+        margin: 0 10px;
+        display: flex;
+        /*  display: flex;  移除此行*/
+        /*  align-items: center; 移除此行*/
+        text-align: center; /* 新增此行*/
+    }
+
+        .movie-info p {
+            margin: 0 10px;
+            white-space: nowrap;
+        }
+
+    .right-items {
+        display: flex;
+        text-align: right;
+        /*移除 flexbox 設定*/
+    }
+</style>
 <div class="container mt-5" style="margin-bottom:200px">
-
     <div style="display: flex; flex: 1;">
-
         <div style="flex: 1; padding: 20px;">
             @* 訂票夾標題 *@
             <h2 style="text-align: center; margin-bottom: 20px;" class="fw-bolder">訂票夾</h2>
             @{
                 if (Model != null && Model.CartItems != null && Model.CartItems.Any())
                 {
-                    foreach (var item in Model.CartItems)
-                    {
-                        <div style="border: 1px solid #ddd; padding: 10px; margin-bottom: 10px; display: flex; align-items: center;">
-                            <div style="margin-right: 10px;">
-                                <img src="~/MoviePosters/@item.ImgPath" alt="Movie Image" style="max-width: 100px; max-height: 100px;" />
-                            </div>
-                            <div style="flex: 1;">
-                                <p><b>電影:</b> @item.MovieTitle</p>
-                                <p><b>時間:</b> @item.MovieTime</p>
-                            </div>
-                            <div style="margin-left: 10px;">
-                                <a href="~/CartItems/Detail/@item.Id" class="btn btn-sm btn-outline-primary">>進入票卷</a>
-                            </div>
-                        </div>
-                        <div class="text-center " style="margin-top: 80px">
-                            @*<a href="~/Carts/Checkout" class="btn btn-danger ">前往結帳</a>*@
-                            <form asp-action="Checkout" id="deleteUserForm">
-                                <div class="mb-3">
-                                    <input type="submit" value="前往結帳" class="btn btn-danger" />
+                        <div class="card1 card container">
+                        @foreach (var item in Model.CartItems)
+                        {
+                            <div class="card2  ">
+                                <div style="margin-right: 10px;" class="">
+                                    <img src="~/MoviePosters/@item.ImgPath" alt="Movie Image" style="max-width: 100px; max-height: 100px;" />
                                 </div>
-                            </form>
+                                <div class="movie-info">
+                                    <p style="margin-right:50px"><b>電影:</b> @item.MovieTitle </p>
+                                    <p><b>時間:</b> @item.MovieTime</p>
+                                </div>
+                                <div class="right-items">
+                                    <a href="~/CartItems/Detail/@item.Id" class="btn btn-sm btn-outline-primary ">>進入票卷</a>
+                                    <a class="btn btn-danger ms-3" href="~/CartItems/DeleteCartItem?id=@item.Id">刪除</a>
+                                </div>
+                            </div>
+                        }
                         </div>
-                    }
+                            <div class="text-center " style="margin-top: 80px">
+                                <form asp-action="Checkout" id="deleteUserForm">
+                                    <div class="mb-3">
+                                        <input type="submit" value="前往結帳" class="btn btn-success" />
+                                    </div>
+                                </form>
+                            </div>
                 }
                 else
                 {
-                    <h1 style="text-align: center; margin-top: 100px;" class="" asp-action="Checkout">訂票夾是空的</h1>
-
+                    <div class="card1 card" style="align-items: center; height:500px;">
+                        <h1 style="text-align: center; margin-top: 100px;" class="" asp-action="Checkout">訂票夾是空的</h1>
+                    </div>
                 }
             }
         </div>

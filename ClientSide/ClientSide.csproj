@@ -181,7 +181,6 @@
     <Compile Include="Models\Infra\EmailService.cs" />
     <Compile Include="Models\Infra\HashUtility.cs" />
     <Compile Include="Models\Repository\CartEFRepository.cs" />
-    <Compile Include="Models\Services\CartItemCleanupFilter.cs" />
     <Compile Include="Models\Services\CartItemService.cs" />
     <Compile Include="Models\Repository\MovieRepository.cs" />
     <Compile Include="Models\Services\CartService.cs" />
