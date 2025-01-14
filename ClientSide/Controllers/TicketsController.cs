@@ -78,7 +78,7 @@ namespace ClientSide.Controllers
 		}
 
 		[HttpPost]
-		public JsonResult GetSeatStatus(int? screeningId)
+		public JsonResult GetSeatStatus(int? screeningId, string theaterName)
 		{
 			try
 			{
@@ -88,7 +88,7 @@ namespace ClientSide.Controllers
 				}
 
 				var service = new TicketService();
-				var seat = service.GetSeatStatus(screeningId.Value);
+				var seat = service.GetSeatStatus(screeningId.Value, theaterName);
 
 				return Json(new { success = true, data = seat });
 			}

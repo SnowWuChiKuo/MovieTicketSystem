@@ -80,17 +80,19 @@ namespace ClientSide.Models.DAOs
 									 SalesType = d.SalesType,
 									 TicketType = d.TicketType,
 									 Price = d.Price,
+									 ReservedSeats = d.ReservedSeats,
 								 }).ToList();
 
 			if (data == null) throw new Exception("找不到票種");
 			return data;
 		}
 
-		public List<SeatStatusVm> GetSeatStatus(int screeningId)
+		public List<SeatStatusVm> GetSeatStatus(int screeningId, string theaterName)
 		{
 			var db = new AppDbContext();
 
 			var data = db.SeatStatus.Where(d => d.ScreeningId == screeningId)
+									.Where(d => d.Screening.Theater.Name == theaterName)
 									.Include(d => d.Seat)
 									.Select(d => new SeatStatusVm
 									{

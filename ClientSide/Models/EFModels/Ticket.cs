@@ -30,6 +30,8 @@ namespace ClientSide.Models.EFModels
 
         public int Price { get; set; }
 
+        public int ReservedSeats { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CartItem> CartItems { get; set; }
 

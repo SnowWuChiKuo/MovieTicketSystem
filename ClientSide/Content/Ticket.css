@@ -144,23 +144,20 @@ body {
     border-radius: 4px;
 }
 
-.seat:hover:not(.unavailable) {
-    border-color: var(--accent-color);
-    color: var(--accent-color);
-}
+    .seat:hover:not(.unavailable) {
+        background-color: #B3E5FC;
+    }
 
-.seat.selected {
-    background-color: var(--accent-color) !important;
-    border-color: var(--accent-color) !important;
-    color: white !important;
-}
+    .seat.selected {
+        background-color: #2196F3;
+        color: white;
+    }
 
-.seat.unavailable {
-    background-color: var(--primary-bg) !important;
-    border-color: var(--border-color) !important;
-    color: var(--text-secondary) !important;
-    cursor: not-allowed;
-}
+    .seat.unavailable {
+        background-color: #9E9E9E;
+        cursor: not-allowed;
+        color: #666;
+    }
 
 /* 座位視圖容器 */
 .seat-view-container {

@@ -28,10 +28,10 @@ namespace ClientSide.Models.Services
 			return dao.GetTicket(screeningId);
 		}
 
-		public List<SeatStatusVm> GetSeatStatus(int screeningId)
+		public List<SeatStatusVm> GetSeatStatus(int screeningId, string theaterName)
 		{
 			var dao = new TicketEFDao();
-			return dao.GetSeatStatus(screeningId);
+			return dao.GetSeatStatus(screeningId, theaterName);
 		}
 
 

@@ -17,6 +17,7 @@ namespace ClientSide.Models.ViewModels
 		public string SalesType { get; set; }
 
 		public string TicketType { get; set; }
+		public int ReservedSeats { get; set; }
 
 		public int Price { get; set; }
 	}
