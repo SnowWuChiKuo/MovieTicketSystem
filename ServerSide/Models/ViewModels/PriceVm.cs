@@ -13,12 +13,12 @@ namespace ServerSide.Models.ViewModels
         public int MovieId { get; set; }
 
         [Required]
-        [Display(Name = "票券時段/套票(早午大夜、雙人套票...)")]
+        [Display(Name = "票券時段/套票(早鳥優惠、平日票、大夜票)")]
         [StringLength(30, ErrorMessage = "字數過長!")]
         public string SalesType { get; set; }
 
         [Required]
-        [Display(Name = "票券對象、身分(全、學生、軍警...)")]
+        [Display(Name = "票券對象、身分(全票、學生票、軍警票、雙人套票)")]
         [StringLength(30, ErrorMessage = "字數過長!")]
         public string TicketType { get; set; }
 
