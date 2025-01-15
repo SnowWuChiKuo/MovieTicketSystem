@@ -61,7 +61,7 @@
                             :key="theater.id"
                             v-bind:class="{ selected: selectedTheater === theater }"
                             v-on:click="selectTheater(theater)">
-                        {{ theater.text }}
+                       第 {{ theater.text }} 廳
                     </button>
                 </div>
             </div>
@@ -70,7 +70,7 @@
         <!-- 日期選擇區塊 -->
         <transition name="slide-up">
             <div class="mb-4" v-if="selectedTheater && dates.length > 0">
-                <h3>選擇日期</h3>
+                <h3>第 {{ selectedTheater.text }} 廳 - 選擇日期</h3>
                 <div>
                     <button class="btn btn-secondary btn-custom"
                             v-for="(date, index) in dates"
@@ -86,7 +86,7 @@
         <!-- 時間選擇區塊 -->
         <transition name="slide-up">
             <div class="mb-4" v-if="selectedTheater && selectedDate">
-                <h3>{{ selectedTheater.text }} - 時間</h3>
+                <h3>第 {{ selectedTheater.text }} 廳 - 選擇時間</h3>
                 <div>
                     <button class="btn btn-info btn-custom"
                             v-for="(time, index) in times"
@@ -109,7 +109,7 @@
                         {{ sale }}
                     </option>
                 </select>
-                <h3 class="mt-4" v-if="selectedTicketSale">票種</h3>
+                <h3 class="mt-4" v-if="selectedTicketSale">選擇票種</h3>
                 <div v-if="selectedTicketSale">
                     <select class="form-control" v-model="selectedTicketType">
                         <option v-for="(type, index) in ticketTypes"
@@ -127,7 +127,7 @@
                         單價: {{ ticketPrices[selectedTicketType] }}  元
                     </h4>
                     <div class="mt-4">
-                        <h3>數量</h3>
+                        <h3>選擇票的數量: </h3>
                         <select class="form-control mt-1" v-model="selectedQuantity">
                             <option v-for="n in 6" :key="n" :value="n">{{ n }}</option>
                         </select>
@@ -226,6 +226,7 @@
 <script src="https://unpkg.com/vue@3.3.4/dist/vue.global.js"></script>
 <script src="https://unpkg.com/element-plus@2.2.30/dist/index.full.js"></script>
 <link href="https://unpkg.com/element-plus@2.2.30/dist/index.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <!-- ✅ 引入 Axios -->
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -383,7 +384,12 @@
 
             const watchQuantity = watch(selectedQuantity, (newValue) => {
                 if (calculatedReservedSeats.value > 6) {
-                    alert('每次訂票人數不能超過 6 人！');
+                    Swal.fire({
+                        icon: 'warning',
+                        title: '超過購票限制',
+                        text: '每次訂票人數不能超過 6 人！',
+                        confirmButtonColor: '#3085d6'
+                    });
                     selectedQuantity.value = Math.floor(6 / (selectedTicketType.value ? 1 : 1)); // 重置為允許的最大數量
                 }
             });
@@ -625,14 +631,26 @@
 
                 // 首先檢查人數限制
                 if (calculatedReservedSeats.value > 6) {
-                    alert('每次訂票人數不能超過 6 人！請重新選擇票數。');
+                    Swal.fire({
+                        icon: 'warning',
+                        title: '超過購票限制',
+                        text: '每次訂票人數不能超過 6 人！請重新選擇票數。',
+                        confirmButtonColor: '#3085d6'
+                    });
+                    //alert('每次訂票人數不能超過 6 人！請重新選擇票數。');
                     return;
                 }
 
                 // 檢查 screeningId 是否有值
                 if (!screeningId.value || screeningId.value.length === 0) {
                     console.error('沒有場次編號');
-                    alert('請先選擇場次');
+                    Swal.fire({
+                        icon: 'warning',
+                        title: '沒有場次編號',
+                        text: '請先選擇場次',
+                        confirmButtonColor: '#3085d6'
+                    });
+                    //alert('請先選擇場次');
                     return;
                 }
 
@@ -640,7 +658,13 @@
                 const ticketId = findTicketId.value;
                 if (!ticketId) {
                     console.error('找不到對應的票券');
-                    alert('請確認票種選擇');
+                    Swal.fire({
+                        icon: 'warning',
+                        title: '找不到對應的票券',
+                        text: '請確認票種選擇',
+                        confirmButtonColor: '#3085d6'
+                    });
+                    //alert('請確認票種選擇');
                     return;
                 }
 
@@ -746,7 +770,12 @@
                 if (!seatInfo ||
                     seatInfo.status === SEAT_STATUS.DISABLED ||
                     seatInfo.status === SEAT_STATUS.OCCUPIED) {
-                    console.log('此座位不可選擇');
+                    Swal.fire({
+                        icon: 'warning',
+                        title: '無法選擇',
+                        text: '此座位不可選擇',
+                        confirmButtonColor: '#3085d6'
+                    });
                     return;
                 }
 
@@ -763,7 +792,12 @@
                 } else {
                     // 檢查是否超過允許選擇的座位數
                     if (selectedSeats.size >= calculatedReservedSeats.value) {
-                        alert(`最多只能選擇 ${calculatedReservedSeats.value} 個座位！`);
+                        Swal.fire({
+                            icon: 'warning',
+                            title: '座位數量已達上限',
+                            text: `最多只能選擇 ${calculatedReservedSeats.value} 個座位！`,
+                            confirmButtonColor: '#3085d6'
+                        });
                         return;
                     }
                     // 選擇座位
@@ -784,7 +818,12 @@
             const completeBooking = () => {
 
                 if (selectedSeats.size < calculatedReservedSeats.value) {
-                    alert(`請選擇 ${calculatedReservedSeats.value} 個座位！`);
+                    Swal.fire({
+                        icon: 'error',
+                        title: '座位選擇不足',
+                        text: `請選擇 ${calculatedReservedSeats.value} 個座位！`,
+                        confirmButtonColor: '#3085d6'
+                    });
                     return;
                 }
 
@@ -796,7 +835,12 @@
                 // 取得票券 ID
                 const ticketId = findTicketId.value;
                 if (!ticketId) {
-                    alert('找不到對應的票券，請重新選擇票種');
+                    Swal.fire({
+                        icon: 'error',
+                        title: '票券選擇錯誤',
+                        text: '找不到對應的票券，請重新選擇票種',
+                        confirmButtonColor: '#3085d6'
+                    });
                     return;
                 }
 
@@ -828,7 +872,8 @@
                             const [row, number] = seatId.split('-');
                             return `${row}排${number}號`;
                         }).join('、');
-                        alert(`訂票完成！\n已選擇座位：${selectedSeatsList}\n總價：${totalPrice.value}元`);
+
+                        
 
                         // 確保 screeningId 有值
                         if (!selectedScreeningId.value) {
@@ -856,25 +901,54 @@
                             localStorage.setItem('bookingData', JSON.stringify(bookingData));
 
                             console.log('Stored bookingData:', bookingData); // 偵錯用
+
+                            Swal.fire({
+                                icon: 'success',
+                                title: '訂票完成！',
+                                html: `已選擇座位：${selectedSeatsList}<br>總價：${totalPrice.value}元`,
+                                confirmButtonColor: '#3085d6'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    // 當按下確認按鈕後執行跳轉
+                                    window.location.href = '/Carts/Index';
+                                }
+                            });
+
                         }
 
 
 
-                        // 修改重導向時加入參數
-                        window.location.href = '/Carts/Index';
+                        // 修改重導向時加入參數，轉給 sweet alert 做處理
+                        //window.location.href = '/Carts/Index';
                     })
                     .catch(error => {
                         console.error('詳細錯誤資訊：', error.response);
-                        console.error('錯誤狀態：', error.response?.status);
-                        console.error('錯誤訊息：', error.response?.data);
 
                         if (error.response && error.response.status === 401) {
-                            alert('請先登入會員');
-                            window.location.href = '/Account/Login';
+                            Swal.fire({
+                                icon: 'error',
+                                title: '需要登入',
+                                text: '請先登入會員',
+                                confirmButtonColor: '#3085d6'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = '/Account/Login';
+                                }
+                            });
                         } else if (error.response && error.response.status === 500) {
-                            alert('伺服器處理請求時發生錯誤，請確認資料是否正確');
+                            Swal.fire({
+                                icon: 'error',
+                                title: '處理錯誤',
+                                text: '伺服器處理請求時發生錯誤，請確認資料是否正確',
+                                confirmButtonColor: '#3085d6'
+                            });
                         } else {
-                            alert('加入購物車失敗，請稍後再試');
+                            Swal.fire({
+                                icon: 'error',
+                                title: '加入購物車失敗',
+                                text: '請稍後再試',
+                                confirmButtonColor: '#3085d6'
+                            });
                         }
                     });
 
