@@ -760,6 +760,8 @@
                     qty: selectedQuantity.value
                 });
 
+
+
                 // 將座位ID和場次ID轉換為字串
                 const seatIdsString = selectedSeatIds.value.join(',');
 
@@ -791,7 +793,7 @@
                         
                         
                         // 取得現有的 screeningIds（如果有的話）
-                        let screeningIds = JSON.parse(localStorage.getItem('screeningIds') || '[]');
+                        let screeningIds = [];
 
                         // 加入新的 screeningId
                         if (!screeningIds.includes(selectedScreeningId.value)) {
