@@ -293,7 +293,7 @@ namespace ClientSide.Models.Repository
 
             }
 
-            _db.AddRange(List);
+            _db.SeatStatus.AddRange(SeatStatusList);
         }
 
         /// <summary>
