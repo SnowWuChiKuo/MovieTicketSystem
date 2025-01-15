@@ -308,7 +308,13 @@
                                 genre: movieData.GenreName,
                                 rating: movieData.RatingName,
                                 duration: `${movieData.RunTime}分鐘`,
-                                releaseDate: new Date(movieData.ReleaseDate).toLocaleDateString(),
+                                releaseDate: movieData.ReleaseDate.replace(/\/Date\((-?\d+)\)\//, function (match, timestamp) {
+                                    return new Date(parseInt(timestamp)).toLocaleDateString('zh-TW', {
+                                        year: 'numeric',
+                                        month: '2-digit',
+                                        day: '2-digit'
+                                    });
+                                }),
                                 director: movieData.Director,
                                 cast: movieData.Cast,
                                 rating_score: movieData.AverageRating || 0,

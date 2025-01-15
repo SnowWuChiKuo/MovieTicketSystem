@@ -6,11 +6,15 @@
     width: 100%;
     margin-top: 2rem;
 }
-
-    .mvFooter h6 {
-        color: var(--accent-color) !important;
-        font-weight: 500;
+    .mvFooter h6 i.fa-envelope,
+    .mvFooter h6 i.fas,
+    .mvFooter h6 i.fa-solid {
+        color: #E2E8F0 !important; /* 使用網站的強調色 */
     }
+.mvFooter h6 {
+    color: var(--accent-color) !important;
+    font-weight: 500;
+}
 
     .mvFooter p {
         color: #E2E8F0 !important;

@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ServerSide.Models.ViewModels
 {
@@ -12,15 +14,38 @@ namespace ServerSide.Models.ViewModels
         [Display(Name = "要新增票券的電影")]
         public int MovieId { get; set; }
 
-        [Required]
-        [Display(Name = "票券時段/套票(早鳥優惠、平日票、大夜票)")]
-        [StringLength(30, ErrorMessage = "字數過長!")]
-        public string SalesType { get; set; }
+        // 定義固定選項
+        public static readonly List<string> SalesTypeOptions = new List<string>
+        {
+            "早鳥優惠",
+            "大夜票",
+            "平日票"
+        };
+
+        public static readonly List<string> TicketTypeOptions = new List<string>
+        {
+            "全票",
+            "學生票",
+            "軍警票",
+            "雙人套票"
+        };
 
         [Required]
-        [Display(Name = "票券對象、身分(全票、學生票、軍警票、雙人套票)")]
-        [StringLength(30, ErrorMessage = "字數過長!")]
+        [Display(Name = "票券時段/套票")]
+        public string SalesType { get; set; }
+
+		[NotMapped]
+		public List<SelectListItem> SalesTypeItem { get; set; } = new List<SelectListItem>();
+
+		[NotMapped]
+		public List<SelectListItem> TicketTypeOption { get; set; } = new List<SelectListItem>();
+
+		[Required]
+        [Display(Name = "票券對象、身分")]
         public string TicketType { get; set; }
+
+
+
 
         [Required]
         [Display(Name = "票券適用人數")]

@@ -22,12 +22,16 @@
 
                     <div class="mb-3">
                         <label asp-for="SalesType" class="form-label"></label>
-                        <input asp-for="SalesType" class="form-control" />
+                        <select asp-for="SalesType" asp-items="Model.SalesTypeItem" class="custom-select">
+                            <option value="">請選擇票券時段/套票</option>
+                        </select>
                         <span asp-validation-for="SalesType" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
                         <label asp-for="TicketType" class="form-label"></label>
-                        <input asp-for="TicketType" class="form-control" />
+                        <select asp-for="TicketType" asp-items="Model.TicketTypeOption" class="custom-select">
+                            <option value="">請選擇票券對象</option>
+                        </select>
                         <span asp-validation-for="TicketType" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
