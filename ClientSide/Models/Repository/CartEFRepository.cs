@@ -8,6 +8,7 @@ using System.Web;
 using Microsoft.Ajax.Utilities;
 using System.Data;
 using System.Data.Entity.Migrations;
+using System.Globalization;
 
 namespace ClientSide.Models.Repository
 {
@@ -223,7 +224,7 @@ namespace ClientSide.Models.Repository
         /// </summary>
         /// <param name="account"></param>
         /// <param name="model"></param>
-        public void CreateOrder(string account, string seatIds, int screeningId)
+        public void CreateOrder(string account, string seatName, int screeningId)
         {
             
                 CartVm cart = GetCartInfo(account);
@@ -252,7 +253,7 @@ namespace ClientSide.Models.Repository
                         SeatNames = item.SeatName
                     };
 
-                    UpdateSeatStatus(seatIds ,screeningId);
+                    UpdateSeatStatus(seatName, screeningId);
                     
                    _db.OrderItems.Add(orderItem);
                 }
@@ -264,43 +265,58 @@ namespace ClientSide.Models.Repository
                 
         }
 
-        private void UpdateSeatStatus(string seatIds, int screeningId)
+        private void UpdateSeatStatus(string seatName, int screeningId)
         {
-            string[] seats = seatIds.Split(',');
+            string[] seats = seatName.Split('、');
 
-            var seatstatusList = new List<SeatStatu>();
+            var seatstatusList = new List<SeatStatus>();
 
-            foreach(var item in seats)
+            foreach (var item in seats)
             {
-                var seat = Convert.ToInt32(item);
-                var seatstatus = _db.SeatStatus.FirstOrDefault(ss => ss.SeatId == seat && ss.ScreeningId == screeningId);
+                // 使用 "排" 分割取得行號和座位號
+                string[] parts = item.Split('排');
+                string[] parts2 = parts[1].Split('號');
+                
+                string row = parts[0];                    // 排之前的字母
+                string number = parts2[0];
 
-                if (seatstatus == null) throw new Exception("找不到此座位狀態!");
+                var seat = _db.Seats.FirstOrDefault(s => s.Row == row && s.Number == number );
 
-				seatstatus.Status = "不可使用";
-				seatstatus.UpdatedAt = DateTime.Now;
+                var seatstatus = _db.SeatStatus.FirstOrDefault(ss => ss.SeatId == seat.Id && ss.ScreeningId == screeningId);
+
+                seatstatus.Status = "不可使用";
+                seatstatus.UpdatedAt = DateTime.Now;
 
                 seatstatusList.Add(seatstatus);
+
             }
 
             _db.SeatStatus.AddRange(seatstatusList);
         }
 
-        public List<string> GetSeatStatus(List<int> cartItemIds)
-        {
-            List<string> result = new List<string>();
-            foreach (var id in cartItemIds)
-            {
-                var cartItem = _db.CartItems.FirstOrDefault(ci => ci.Id == id);
-                var ticket = _db.Tickets.FirstOrDefault(t => t.Id == cartItem.TicketId);
-                var screening = _db.Screenings.FirstOrDefault(s => s.Id == ticket.ScreeningId);
-                var seatStatus = _db.SeatStatus.FirstOrDefault(ss => ss.ScreeningId == screening.Id);
+        /// <summary>
+        /// 拿到 SeatStatus 陣列
+        /// </summary>
+        /// <param name="cartItemIds"></param>
+        /// <param name="seatName"></param>
+        /// <param name="screeningId"></param>
+        /// <returns></returns>
+        //public List<string> GetSeatStatus(List<int> cartItemIds , string seatName ,int screeningId)
+        //{
 
-                result.Add(seatStatus.Status);
-            }
+        //    List<string> result = new List<string>();
+        //    foreach (var id in cartItemIds)
+        //    {
+        //        var cartItem = _db.CartItems.FirstOrDefault(ci => ci.Id == id);
+        //        var ticket = _db.Tickets.FirstOrDefault(t => t.Id == cartItem.TicketId);
+        //        var screening = _db.Screenings.FirstOrDefault(s => s.Id == ticket.ScreeningId);
+        //        var seatStatus = _db.SeatStatus.FirstOrDefault(ss => ss.ScreeningId == screening.Id);
 
-            return result;
-        }
+        //        result.Add(seatStatus.Status);
+        //    }
+
+        //    return result;
+        //}
 
         public List<int> GetCartItemIds(int cartId)
         {

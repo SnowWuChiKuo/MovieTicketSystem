@@ -25,7 +25,7 @@ namespace ClientSide.Models.EFModels
 		public virtual DbSet<Review> Reviews { get; set; }
 		public virtual DbSet<Screening> Screenings { get; set; }
 		public virtual DbSet<Seat> Seats { get; set; }
-		public virtual DbSet<SeatStatu> SeatStatus { get; set; }
+		public virtual DbSet<SeatStatus> SeatStatus { get; set; }
 		public virtual DbSet<Theater> Theaters { get; set; }
 		public virtual DbSet<Ticket> Tickets { get; set; }
 		public virtual DbSet<TicketSeat> TicketSeats { get; set; }
