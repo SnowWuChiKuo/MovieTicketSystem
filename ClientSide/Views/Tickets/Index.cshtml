@@ -385,19 +385,38 @@
             // 計算所有唯一的排數
             const uniqueRows = computed(() => {
                 if (!SeatStatus.value) return [];
+                // 從實際數據中獲取唯一的排數
                 return [...new Set(SeatStatus.value.map(seat => seat.Row))].sort();
             });
 
             // 獲取特定排的所有座位
             const getSeatsForRow = (row) => {
-                return SeatStatus.value
-                    .filter(seat => seat.Row === row)
-                    .sort((a, b) => a.Number - b.Number);
+                // 過濾出該排的所有座位
+                let seatsInRow = SeatStatus.value.filter(seat => seat.Row === row);
+
+                // 找出這一排中最大的座位號碼
+                const maxSeatNumber = Math.max(...seatsInRow.map(seat => parseInt(seat.Number)));
+
+                let completeSeats = [];
+
+                // 使用資料庫中的實際座位數量
+                for (let i = 1; i <= maxSeatNumber; i++) {
+                    const existingSeat = seatsInRow.find(seat => parseInt(seat.Number) === i);
+                    if (existingSeat) {
+                        // 使用原始座位數據
+                        completeSeats.push(existingSeat);
+                    }
+                }
+
+                // 添加日誌檢查每排座位數量
+                console.log(`Row ${row} has ${completeSeats.length} seats`);
+
+                return completeSeats.sort((a, b) => parseInt(a.Number) - parseInt(b.Number));
             };
 
             // 判斷是否需要插入走道空隙
             const shouldAddGap = (seatNumber) => {
-                return seatNumber === 4 || seatNumber === 14; // 可以根據實際需求調整
+                //return parseInt(seatNumber) === 4 || parseInt(seatNumber) === 14;
             };
 
 
@@ -639,7 +658,7 @@
                             updateSeatStatus(response.data.data);
                             showSeats.value = true;
 
-                            console.log('收到的座位狀態數據:', response.data.data);  // 添加日誌
+                            console.log('總座位數量:', response.data.data.length); // 添加此行以檢查
                         } else {
                             alert(response.data.message || '取得座位狀態失敗');
                         }
@@ -657,29 +676,45 @@
 
             // 更新座位狀態的函數
             const updateSeatStatus = (seatData) => {
+                // 清空現有的狀態映射
+                SeatStatusMap.clear();
+
+                // 處理每個座位的狀態
                 seatData.forEach(seat => {
-                    const seatKey = `${seat.Row.trim()}-${seat.Number.trim()}`;
+                    const seatKey = `${seat.Row}-${seat.Number}`;
                     let status = SEAT_STATUS.AVAILABLE;
 
-                    if (seat.IsDisabled) {
+                    // 檢查座位狀態
+                    if (seat.IsDisabled || seat.Status === "不可使用") {
                         status = SEAT_STATUS.DISABLED;
-                    } else if (seat.Status === "不可使用" || seat.Status === "已訂位") {
+                    } else if (seat.Status === "已訂位") {
                         status = SEAT_STATUS.OCCUPIED;
                     }
 
+                    // 儲存座位狀態和相關資訊
                     SeatStatusMap.set(seatKey, {
                         id: seat.Id,
                         status: status,
                         seatId: seat.SeatId,
-                        screeningId: seat.ScreeningId
+                        screeningId: seat.ScreeningId,
+                        isDisabled: seat.IsDisabled,
+                        originalStatus: seat.Status
                     });
                 });
             };
 
             // 檢查座位狀態的函數
             const getSeatStatus = (row, col) => {
-                const seatKey = `${row.trim()}-${col.trim()}`;
-                return SeatStatusMap.get(seatKey)?.status || SEAT_STATUS.AVAILABLE;
+                const seatKey = `${row}-${col}`;
+                const seatInfo = SeatStatusMap.get(seatKey);
+
+                if (seatInfo) {
+                    if (selectedSeats.has(seatKey)) {
+                        return SEAT_STATUS.SELECTED;
+                    }
+                    return seatInfo.status;
+                }
+                return SEAT_STATUS.AVAILABLE;
             };
 
 
@@ -698,18 +733,14 @@
             // 這裡在檢查和切割座位 ID
             // 修改 toggleSeat 函數
             const toggleSeat = (row, col) => {
-                const seatKey = `${row.trim()}-${col.trim()}`;
-                const currentStatus = getSeatStatus(row, col);
+                const seatKey = `${row}-${col}`;
+                const seatInfo = SeatStatusMap.get(seatKey);
 
-                // 如果座位不可用，直接返回
-                if (currentStatus === SEAT_STATUS.DISABLED || currentStatus === SEAT_STATUS.OCCUPIED) {
+                // 檢查座位狀態
+                if (!seatInfo ||
+                    seatInfo.status === SEAT_STATUS.DISABLED ||
+                    seatInfo.status === SEAT_STATUS.OCCUPIED) {
                     console.log('此座位不可選擇');
-                    return;
-                }
-
-                const seat = SeatStatusMap.get(seatKey);
-                if (!seat) {
-                    console.error('找不到對應的座位資料');
                     return;
                 }
 
@@ -717,8 +748,12 @@
                 if (selectedSeats.has(seatKey)) {
                     // 取消選擇座位
                     selectedSeats.delete(seatKey);
-                    selectedSeatIds.value = selectedSeatIds.value.filter(id => id !== seat.id);
-                    seat.status = SEAT_STATUS.AVAILABLE;
+                    selectedSeatIds.value = selectedSeatIds.value.filter(id => id !== seatInfo.id);
+                    // 更新狀態回可用
+                    SeatStatusMap.set(seatKey, {
+                        ...seatInfo,
+                        status: SEAT_STATUS.AVAILABLE
+                    });
                 } else {
                     // 檢查是否超過允許選擇的座位數
                     if (selectedSeats.size >= calculatedReservedSeats.value) {
@@ -727,8 +762,12 @@
                     }
                     // 選擇座位
                     selectedSeats.add(seatKey);
-                    selectedSeatIds.value.push(seat.id);
-                    seat.status = SEAT_STATUS.SELECTED;
+                    selectedSeatIds.value.push(seatInfo.id);
+                    // 更新狀態為已選
+                    SeatStatusMap.set(seatKey, {
+                        ...seatInfo,
+                        status: SEAT_STATUS.SELECTED
+                    });
                 }
 
                 console.log('已選擇的座位：', Array.from(selectedSeats));

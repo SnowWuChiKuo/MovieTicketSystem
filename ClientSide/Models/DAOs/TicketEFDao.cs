@@ -105,6 +105,9 @@ namespace ClientSide.Models.DAOs
 										IsDisabled = d.Seat.IsDisabled,
 									}).ToList();
 			if (data == null) throw new Exception("找不到此場次做位");
+
+			Console.WriteLine($"Total seats in database: {data.Count}");
+
 			return data;
 		}
 
