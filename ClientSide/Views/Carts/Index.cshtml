@@ -150,10 +150,10 @@
                         @*Get method*@
                         @{
                             // 從 Session 獲取參數而不是 URL
-                            var seatIds = Session["SeatIds"] ?? "";
+                            var seatName = Session["seatName"] ?? "";
                             var screeningId = Session["ScreeningId"] ?? "";
                         }
-                        <a class="btn btn-success" href="~/Carts/Checkout?cartId=@Model.Id&seatIds=@seatIds&screeningId=@screeningId">前往結帳</a>
+                        <a class="btn btn-success" href="~/Carts/Checkout?cartId=@Model.Id&seatName=@seatName&screeningId=@screeningId">前往結帳</a>
                     </div>
                 }
                 else
@@ -182,16 +182,16 @@
     });
 
     // 從 sessionStorage 獲取值
-    const seatIds = sessionStorage.getItem('seatIds');
+    const seatName = sessionStorage.getItem('seatName');
     const screeningId = sessionStorage.getItem('screeningId');
+
 
     // 獲取結帳按鈕
     const checkoutBtn = document.querySelector('.btn-success');
 
-    if (checkoutBtn && seatIds && screeningId) {
-        // 更新結帳按鈕的 href
+    if (checkoutBtn && screeningId) {
         const baseHref = checkoutBtn.getAttribute('href').split('?')[0];
-        const newHref = `${baseHref}?cartId=@Model.Id&seatIds=${seatIds}&screeningId=${screeningId}`;
+        const newHref = `${baseHref}?cartId=@Model.Id&seatName=${seatName}&screeningId=${screeningId}`;
         checkoutBtn.setAttribute('href', newHref);
     }
 

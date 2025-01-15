@@ -53,10 +53,10 @@ namespace ClientSide.Controllers
         }
 
         [Authorize]
-        public ActionResult Checkout(int? cartId, string seatIds, int screeningId)
+        public ActionResult Checkout(int? cartId, string seatName, int? screeningId)
         {
 			// 將值存入 Session
-			Session["SeatIds"] = seatIds;
+			Session["seatName"] = seatName;
 			Session["ScreeningId"] = screeningId;
 
 			if (!cartId.HasValue)
@@ -77,7 +77,7 @@ namespace ClientSide.Controllers
             if (isValid)
             {
                 //建立訂單主檔/明細檔
-                _service.CreateOrder(account, seatIds, screeningId);
+                _service.CreateOrder(account, seatName, screeningId ?? 0);
 
                 //清空購物車
                 _service.EmptyCart(account);
