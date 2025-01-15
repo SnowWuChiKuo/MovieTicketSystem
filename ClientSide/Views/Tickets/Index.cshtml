@@ -790,9 +790,9 @@
                         }
 
 
-                        // 成功後，將這些值存入 sessionStorage
-                        sessionStorage.setItem('seatName', selectedSeatsList);
-                        sessionStorage.setItem('screeningId', selectedScreeningId.value);
+                        // 使用 localStorage 替代 sessionStorage
+                        localStorage.setItem('screeningId', selectedScreeningId.value);
+                        localStorage.setItem('seatName', selectedSeatsList);
 
                         // 修改重導向時加入參數
                         window.location.href = '/Carts/Index';

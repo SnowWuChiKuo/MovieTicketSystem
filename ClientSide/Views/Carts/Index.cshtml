@@ -181,10 +181,9 @@
         }
     });
 
-    // 從 sessionStorage 獲取值
-    const seatName = sessionStorage.getItem('seatName');
-    const screeningId = sessionStorage.getItem('screeningId');
-
+    // 從 localStorage 獲取值（替代原本的 sessionStorage）
+    const seatName = localStorage.getItem('seatName');
+    const screeningId = localStorage.getItem('screeningId');
 
     // 獲取結帳按鈕
     const checkoutBtn = document.querySelector('.btn-success');
@@ -194,6 +193,8 @@
         const newHref = `${baseHref}?cartId=@Model.Id&seatName=${seatName}&screeningId=${screeningId}`;
         checkoutBtn.setAttribute('href', newHref);
     }
+
+    localStorage.clear();
 
 
 </script>
