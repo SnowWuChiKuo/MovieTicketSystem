@@ -788,18 +788,32 @@
                             alert('無效的場次ID');
                             return;
                         }
+                        
+                        // 本地存放值
+                        let localStroageData = [];
+
                         // 取得現有的 screeningIds（如果有的話）
-                        let screeningIds = JSON.parse(sessionStorage.getItem('screeningIds') || '[]');
-    
+                        let screeningIds = JSON.parse(localStorage.getItem('screeningIds') || '[]');
+
                         // 加入新的 screeningId
                         if (!screeningIds.includes(selectedScreeningId.value)) {
-                            screeningIds.push(selectedScreeningId.value);
-                            sessionStorage.setItem('screeningIds', JSON.stringify(screeningIds));
+                          screeningIds.push(selectedScreeningId.value);
+                          localStorage.setItem('screeningIds', JSON.stringify(screeningIds));
+
+                          // 建立一個物件，包含場次 ID 和座位資訊
+                          const bookingData = {
+                            screeningId: selectedScreeningId.value,
+                            seatName: selectedSeatsList
+                          };
+
+                          // 將物件推入 localStroageData 陣列
+                          localStroageData.push(bookingData);
+
+                          // 將 localStroageData 轉換為 JSON 字串並存入 localStorage
+                          localStorage.setItem('localStroageData', JSON.stringify(localStroageData));
                         }
 
-                        // 使用 localStorage 替代 sessionStorage
-                        localStorage.setItem('screeningId', selectedScreeningId.value);
-                        localStorage.setItem('seatName', selectedSeatsList);
+
 
                         // 修改重導向時加入參數
                         window.location.href = '/Carts/Index';

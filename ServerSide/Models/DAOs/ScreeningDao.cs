@@ -66,6 +66,7 @@ namespace ServerSide.Models.DAOs
                         SalesType = item.SalesType,
                         TicketType = item.TicketType,
                         Price = item.Price1,
+                        ReservedSeats = item.ReservedSeats,
                     };
                     tickets.Add(ticket);
                 }
@@ -78,6 +79,7 @@ namespace ServerSide.Models.DAOs
                         SalesType = item.SalesType,
                         TicketType = item.TicketType,
                         Price = item.Price1,
+                        ReservedSeats = item.ReservedSeats,
                     };
                     tickets.Add(ticket);
                 }
@@ -90,6 +92,7 @@ namespace ServerSide.Models.DAOs
                         SalesType = item.SalesType,
                         TicketType = item.TicketType,
                         Price = item.Price1,
+                        ReservedSeats = item.ReservedSeats,
                     };
                     tickets.Add(ticket);
                 }

@@ -10,7 +10,7 @@ namespace ClientSide.Models.EFModels
     public partial class AppDbContext : DbContext
     {
         public AppDbContext()
-            : base("name=AppDbContext21")
+            : base("name=AppDbContext20")
         {
         }
 
@@ -28,7 +28,6 @@ namespace ClientSide.Models.EFModels
         public virtual DbSet<Screening> Screenings { get; set; }
         public virtual DbSet<Seat> Seats { get; set; }
         public virtual DbSet<SeatStatus> SeatStatus { get; set; }
-        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<Theater> Theaters { get; set; }
         public virtual DbSet<Ticket> Tickets { get; set; }
         public virtual DbSet<TicketSeat> TicketSeats { get; set; }
@@ -113,6 +112,11 @@ namespace ClientSide.Models.EFModels
                 .Property(e => e.EndTime)
                 .HasPrecision(0);
 
+            modelBuilder.Entity<Screening>()
+                .HasMany(e => e.Tickets)
+                .WithRequired(e => e.Screening)
+                .WillCascadeOnDelete(false);
+
             modelBuilder.Entity<Seat>()
                 .Property(e => e.Row)
                 .IsFixedLength()
@@ -145,6 +149,11 @@ namespace ClientSide.Models.EFModels
 
             modelBuilder.Entity<Ticket>()
                 .HasMany(e => e.CartItems)
+                .WithRequired(e => e.Ticket)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Ticket>()
+                .HasMany(e => e.OrderItems)
                 .WithRequired(e => e.Ticket)
                 .WillCascadeOnDelete(false);
 
