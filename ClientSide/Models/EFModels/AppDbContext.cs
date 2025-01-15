@@ -2,6 +2,8 @@ using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Linq;
+using System.Windows.Documents;
+using System.Collections.Generic;
 
 namespace ClientSide.Models.EFModels
 {
