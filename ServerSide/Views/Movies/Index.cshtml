@@ -126,9 +126,9 @@
                                 <td class="description-column" rows="6">
                                     @{
                                         var description = item.Description;
-                                        if (description != null && description.Length > 40)
+                                        if (description != null && description.Length > 35)
                                         {
-                                            description = description.Substring(0, 40) + " ...";
+                                            description = description.Substring(0, 35) + " ...";
                                         }
                                     }
                                     @description
@@ -137,9 +137,9 @@
                                 <td class="cast-column">
                                     @{
                                         var cast = item.Cast;
-                                        if(cast != null && cast.Length > 30)
+                                        if (!string.IsNullOrEmpty(cast))
                                         {
-                                            cast = cast.Substring(0, 30) + " ...";
+                                            @(cast.Length > 40 ? cast.Substring(0, 40) + " ..." : cast)
                                         }
                                     }
                                 </td>

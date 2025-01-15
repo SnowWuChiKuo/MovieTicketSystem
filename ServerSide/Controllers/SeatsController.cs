@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ServerSide.Models.DTOs;
@@ -8,6 +9,7 @@ using ServerSide.Models.ViewModels;
 
 namespace ServerSide.Controllers
 {
+    [Authorize]
     public class SeatsController : Controller
     {
         private readonly SeatService _service;

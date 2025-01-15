@@ -40,7 +40,7 @@ createApp({
 
         onMounted(() => {
             // 更新頁面標題
-            document.title = `${movieData.Title} - 電影訂票網`;
+            document.title = `${movieData.Title} - 映悅 CineMoment`;
         });
 
         return {

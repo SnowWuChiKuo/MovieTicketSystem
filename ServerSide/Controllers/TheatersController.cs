@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ServerSide.Models.DTOs;
 using ServerSide.Models.Interfaces;
 using ServerSide.Models.ViewModels;
 
 namespace ServerSide.Controllers
 {
+    [Authorize]
     public class TheatersController : Controller
     {
         private readonly ITheaterService _service;

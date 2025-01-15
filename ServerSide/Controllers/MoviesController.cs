@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ServerSide.Models.DTOs;
 using ServerSide.Models.EFModels;
@@ -8,6 +9,7 @@ using System.Net;
 
 namespace ServerSide.Controllers
 {
+    [Authorize]
     public class MoviesController : Controller
     {
         private readonly IMovieService _service;
@@ -85,7 +87,7 @@ namespace ServerSide.Controllers
         }
 
         [HttpGet]
-		public IActionResult Edit(int? id)
+        public IActionResult Edit(int? id)
         {
             ViewBag.GenresName = _service.GetGenresName();
             ViewBag.RatingsName = _service.GetRatingsName();
@@ -134,7 +136,7 @@ namespace ServerSide.Controllers
         }
 
 		[HttpPost]
-		[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
 		public IActionResult Delete(int id)
 		{
             try
@@ -150,13 +152,13 @@ namespace ServerSide.Controllers
 			}
 		}
 
-        public IActionResult List()
-        {
-			ViewBag.GenresName = _service.GetGenresName();
-			ViewBag.RatingsName = _service.GetRatingsName();
-			var indexData = _service.GetAll();
-			return View(indexData);
-		}
+  //      public IActionResult List()
+  //      {
+		//	ViewBag.GenresName = _service.GetGenresName();
+		//	ViewBag.RatingsName = _service.GetRatingsName();
+		//	var indexData = _service.GetAll();
+		//	return View(indexData);
+		//}
 
 		/// <summary>
 		/// 把傳回的DTO轉成ViewModel給ViewPage用

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ServerSide.Models.DTOs;
 using ServerSide.Models.EFModels;
@@ -8,7 +9,8 @@ using System.Net;
 
 namespace ServerSide.Controllers
 {
-	public class TicketsController : Controller
+    [Authorize]
+    public class TicketsController : Controller
 	{
 		private readonly TicketService _service;
 

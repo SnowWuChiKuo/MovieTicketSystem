@@ -3,8 +3,10 @@ using ServerSide.Models.DTOs;
 using ServerSide.Models.Interfaces;
 using ServerSide.Models.ViewModels;
 using MovieTicketSystem.Models.Attributes;
+using Microsoft.AspNetCore.Authorization;
 namespace ServerSide.Controllers
 {
+    [Authorize]
     public class ScreeningsController : Controller
     {
         private readonly IScreeningService _service;

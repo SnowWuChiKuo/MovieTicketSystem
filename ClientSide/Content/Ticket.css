@@ -145,12 +145,15 @@ body {
 }
 
     .seat:hover:not(.unavailable) {
-        background-color: #B3E5FC;
+        background-color: var(--accent-color);
     }
 
     .seat.selected {
-        background-color: #2196F3;
+        background-color: var(--accent-color);
         color: white;
+    }
+    .seat:hover {
+        background-color: var(--accent-color);
     }
 
     .seat.unavailable {

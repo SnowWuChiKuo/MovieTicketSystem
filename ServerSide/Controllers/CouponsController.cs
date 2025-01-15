@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ServerSide.Models.DTOs;
 using ServerSide.Models.Services;
 using ServerSide.Models.ViewModels;
 
 namespace ServerSide.Controllers
 {
+    [Authorize]
     public class CouponsController : Controller
     {
         private readonly CouponService _service;

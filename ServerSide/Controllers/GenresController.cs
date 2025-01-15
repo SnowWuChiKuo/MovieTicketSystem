@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ServerSide.Models.DTOs;
 using ServerSide.Models.EFModels;
 using ServerSide.Models.Interfaces;
@@ -7,7 +8,9 @@ using ServerSide.Models.ViewModels;
 
 namespace ServerSide.Controllers
 {
-	public class GenresController : Controller
+
+    [Authorize]
+    public class GenresController : Controller
 	{
 		private readonly IGenreService _service;
 
@@ -31,13 +34,13 @@ namespace ServerSide.Controllers
 			return View(indexData);
 		}
 
-		public IActionResult Create()
+        public IActionResult Create()
 		{
 			return View();
 		}
 
 		[HttpPost]
-		[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
 		public IActionResult Create(GenreVm model)
 		{
 			if (!ModelState.IsValid)
@@ -50,7 +53,7 @@ namespace ServerSide.Controllers
 		}
 
 		[HttpGet]
-		public IActionResult Edit(int? id)
+        public IActionResult Edit(int? id)
 		{
 			if (id == null)
 			{
@@ -66,7 +69,7 @@ namespace ServerSide.Controllers
 		}
 
 		[HttpPost]
-		[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
 		public IActionResult Edit(GenreVm model)
 		{
 			if (!ModelState.IsValid)
@@ -98,7 +101,7 @@ namespace ServerSide.Controllers
 		}
 
 		[HttpPost]
-		[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
 		public IActionResult Delete(int id)
 		{
 			try
