@@ -39,6 +39,9 @@
                             <th>
                                 @Html.DisplayNameFor(model => model.SubTotal)
                             </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.SeatNames)
+                            </th>
                             <th></th>
                         </tr>
                     </thead>
@@ -66,6 +69,9 @@
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.SubTotal)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.SeatNames)
                                 </td>
                                 <td>
                                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary"><i class="fa-solid fa-pen-to-square"></i>編輯</a>

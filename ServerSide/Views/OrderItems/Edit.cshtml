@@ -43,6 +43,11 @@
                     <span asp-validation-for="SubTotal" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
+                    <label asp-for="SeatNames" class="form-label"></label>
+                    <input asp-for="SeatNames" class="form-control form-control-sm no-border" id="SeatNames" readonly />
+                    <span asp-validation-for="SeatNames" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
                     <input type="submit" value="更新" class="btn btn-primary btn-sm" />
                     <input type="button" value="刪除" class="btn btn-danger btn-sm" onclick="confirmDelete()" />
                     <a asp-action="Index" class="btn btn-sm btn-secondary">回清單頁</a>

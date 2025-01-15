@@ -27,6 +27,7 @@ namespace ServerSide.Models.DAOs
                                           Price = d.Price,
                                           Qty = d.Qty,
                                           SubTotal = d.SubTotal,
+                                          SeatNames = d.SeatNames,
                                       }).ToList();
             return data;
         }
@@ -73,6 +74,7 @@ namespace ServerSide.Models.DAOs
                 Price= dto.Price,
                 Qty= dto.Qty,
                 SubTotal= dto.SubTotal,
+                SeatNames= dto.SeatNames,
             };
         }
 
@@ -94,6 +96,7 @@ namespace ServerSide.Models.DAOs
                 Price= orderItem.Price,
                 Qty= orderItem.Qty,
                 SubTotal= orderItem.SubTotal,
+                SeatNames = orderItem.SeatNames,
             };
         }
 

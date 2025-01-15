@@ -269,6 +269,9 @@ namespace ClientSide.Models.Repository
 
         private void UpdateSeatStatus(string seatName, int screeningId)
         {
+           
+            var screening = _db.Screenings.FirstOrDefault(s => s.Id == screeningId);
+
             string[] seats = seatName.Split('、');
 
             var SeatStatusList = new List<SeatStatus>();
@@ -282,7 +285,7 @@ namespace ClientSide.Models.Repository
                 string row = parts[0];                    // 排之前的字母
                 string number = parts2[0];
 
-                var seat = _db.Seats.FirstOrDefault(s => s.Row == row && s.Number == number );
+                var seat = _db.Seats.FirstOrDefault(s => s.Row == row && s.Number == number && s.TheaterId == screening.TheaterId);
 
                 var SeatStatus = _db.SeatStatus.FirstOrDefault(ss => ss.SeatId == seat.Id && ss.ScreeningId == screeningId);
 

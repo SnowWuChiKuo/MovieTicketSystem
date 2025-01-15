@@ -84,6 +84,7 @@ namespace ServerSide.Controllers
                 Price = model.Price,
                 Qty = model.Qty,
                 SubTotal = model.SubTotal,
+                SeatNames = model.SeatNames,
             };
         }
 

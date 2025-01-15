@@ -30,5 +30,8 @@ namespace ServerSide.Models.ViewModels
         [Display(Name = "總價")]
         [Required]
         public int SubTotal { get; set; }
-    }
+		[Display(Name = "選取座位")]
+		[Required]
+		public string SeatNames { get; set; }
+	}
 }

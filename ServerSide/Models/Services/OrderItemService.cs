@@ -82,6 +82,7 @@ namespace ServerSide.Models.Services
             orderItemInDb.Price = dto.Price;
             orderItemInDb.Qty = dto.Qty;
             orderItemInDb.SubTotal = dto.SubTotal;
+            orderItemInDb.SeatNames = dto.SeatNames;
 
             _dao.Edit(orderItemInDb);
         }
