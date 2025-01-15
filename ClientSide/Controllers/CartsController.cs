@@ -59,7 +59,11 @@ namespace ClientSide.Controllers
 			Session["seatName"] = seatName;
 			Session["ScreeningId"] = screeningId;
 
-			if (!cartId.HasValue)
+            // 加入偵錯日誌
+            System.Diagnostics.Debug.WriteLine($"Received parameters - cartId: {cartId}, seatName: {seatName}, screeningId: {screeningId}");
+
+
+            if (!cartId.HasValue)
             {
                 return Content("購物車 ID 無效，無法結帳!");
             }

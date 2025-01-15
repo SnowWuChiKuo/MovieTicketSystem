@@ -57,6 +57,7 @@
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -173,6 +174,7 @@
     <Compile Include="Models\EFModels\Screening.cs" />
     <Compile Include="Models\EFModels\Seat.cs" />
     <Compile Include="Models\EFModels\SeatStatus.cs" />
+    <Compile Include="Models\EFModels\sysdiagram.cs" />
     <Compile Include="Models\EFModels\Theater.cs" />
     <Compile Include="Models\EFModels\Ticket.cs" />
     <Compile Include="Models\EFModels\TicketSeat.cs" />

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Humanizer;
+using Microsoft.EntityFrameworkCore;
 using ServerSide.Models.DTOs;
 using ServerSide.Models.EFModels;
 using ServerSide.Models.ViewModels;
@@ -23,7 +24,8 @@ namespace ServerSide.Models.DAOs
                                     ScreeningId = d.ScreeningId,
                                     SalesType = d.SalesType,
                                     TicketType = d.TicketType,
-                                    Price = d.Price
+                                    Price = d.Price,
+									ReservedSeats = d.ReservedSeats,
                                 }).ToList();
 			return data;
         }
@@ -42,8 +44,9 @@ namespace ServerSide.Models.DAOs
 				ScreeningId = dto.ScreeningId,
 				SalesType = dto.SalesType,
 				TicketType = dto.TicketType,
-                Price = dto.Price
-			};
+                Price = dto.Price,
+                ReservedSeats = dto.ReservedSeats,
+            };
 		}
 
 		public Ticket GetTicketById(int id)
@@ -70,8 +73,9 @@ namespace ServerSide.Models.DAOs
 				ScreeningId = ticket.ScreeningId,
 				SalesType = ticket.SalesType,
 				TicketType = ticket.TicketType,
-				Price = ticket.Price
-			};
+				Price = ticket.Price,
+                ReservedSeats = ticket.ReservedSeats,
+            };
 
 			return model;
 		}

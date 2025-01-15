@@ -170,29 +170,53 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-       @if (TempData["ErrorMessage"] != null)
-        {
-            @:Swal.fire({
-            @:  icon: 'error',
-            @:  title: '錯誤!',
-            @:  text: '@TempData["ErrorMessage"]',
-            @:});
-            @:Console.log('@TempData["ErrorMessage"]');
-        }
-    });
-
-    // 從 localStorage 獲取值（替代原本的 sessionStorage）
-    const seatName = localStorage.getItem('seatName');
-    const screeningId = localStorage.getItem('screeningId');
-
-    // 獲取結帳按鈕
-    const checkoutBtn = document.querySelector('.btn-success');
-
-    if (checkoutBtn && screeningId) {
-        const baseHref = checkoutBtn.getAttribute('href').split('?')[0];
-        const newHref = `${baseHref}?cartId=@Model.Id&seatName=${seatName}&screeningId=${screeningId}`;
-        checkoutBtn.setAttribute('href', newHref);
+    @if (TempData["ErrorMessage"] != null)
+    {
+        @:Swal.fire({
+        @:  icon: 'error',
+        @:  title: '錯誤!',
+        @:  text: '@TempData["ErrorMessage"]',
+        @:});
     }
+
+    try {
+        // 從 localStorage 獲取訂票資料
+        const bookingDataStr = localStorage.getItem('bookingData');
+        console.log('Retrieved bookingData string:', bookingDataStr); // 偵錯用
+
+        if (bookingDataStr) {
+            const bookingData = JSON.parse(bookingDataStr);
+            console.log('Parsed bookingData:', bookingData); // 偵錯用
+
+            // 檢查資料是否符合預期格式
+            if (bookingData && bookingData.seatName && bookingData.screeningId) {
+                // 獲取結帳按鈕
+                const checkoutBtn = document.querySelector('.btn-success');
+
+                if (checkoutBtn) {
+                    const baseHref = checkoutBtn.getAttribute('href').split('?')[0];
+                    const newHref = `${baseHref}?cartId=@Model.Id&seatName=${encodeURIComponent(bookingData.seatName)}&screeningId=${bookingData.screeningId}`;
+                    console.log('New href:', newHref); // 偵錯用
+                    checkoutBtn.setAttribute('href', newHref);
+
+                    // 當點擊結帳按鈕時清除 localStorage
+                    checkoutBtn.addEventListener('click', function() {
+                        localStorage.removeItem('bookingData');
+                        localStorage.removeItem('screeningIds');
+                        console.log('localStorage cleared'); // 偵錯用
+                    });
+                }
+            } else {
+                console.warn('Booking data format is invalid:', bookingData);
+            }
+        } else {
+            console.log('No booking data found in localStorage');
+        }
+    } catch (error) {
+        console.error('Error processing booking data:', error);
+    }
+});
+
 
 </script>
 

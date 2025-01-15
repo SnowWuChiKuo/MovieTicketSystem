@@ -365,7 +365,7 @@
 
             // 座位相關
             const showSeats = ref(false);
-            const seatStatus = ref([]);
+            const SeatStatus = ref([]);
             const selectedSeats = reactive(new Set());
             const unavailableSeats = reactive(
                 new Set([
@@ -384,13 +384,13 @@
 
             // 計算所有唯一的排數
             const uniqueRows = computed(() => {
-                if (!seatStatus.value) return [];
-                return [...new Set(seatStatus.value.map(seat => seat.Row))].sort();
+                if (!SeatStatus.value) return [];
+                return [...new Set(SeatStatus.value.map(seat => seat.Row))].sort();
             });
 
             // 獲取特定排的所有座位
             const getSeatsForRow = (row) => {
-                return seatStatus.value
+                return SeatStatus.value
                     .filter(seat => seat.Row === row)
                     .sort((a, b) => a.Number - b.Number);
             };
@@ -635,7 +635,7 @@
                 axios.post('/Tickets/GetSeatStatus', requestData)
                     .then(response => {
                         if (response.data && response.data.success) {
-                            seatStatus.value = response.data.data;
+                            SeatStatus.value = response.data.data;
                             updateSeatStatus(response.data.data);
                             showSeats.value = true;
 
@@ -653,7 +653,7 @@
             const goBack = () => (showSeats.value = false);
 
             // 使用 reactive 來管理座位狀態
-            const seatStatusMap = reactive(new Map());
+            const SeatStatusMap = reactive(new Map());
 
             // 更新座位狀態的函數
             const updateSeatStatus = (seatData) => {
@@ -667,7 +667,7 @@
                         status = SEAT_STATUS.OCCUPIED;
                     }
 
-                    seatStatusMap.set(seatKey, {
+                    SeatStatusMap.set(seatKey, {
                         id: seat.Id,
                         status: status,
                         seatId: seat.SeatId,
@@ -679,7 +679,7 @@
             // 檢查座位狀態的函數
             const getSeatStatus = (row, col) => {
                 const seatKey = `${row.trim()}-${col.trim()}`;
-                return seatStatusMap.get(seatKey)?.status || SEAT_STATUS.AVAILABLE;
+                return SeatStatusMap.get(seatKey)?.status || SEAT_STATUS.AVAILABLE;
             };
 
 
@@ -707,7 +707,7 @@
                     return;
                 }
 
-                const seat = seatStatusMap.get(seatKey);
+                const seat = SeatStatusMap.get(seatKey);
                 if (!seat) {
                     console.error('找不到對應的座位資料');
                     return;
@@ -789,9 +789,7 @@
                             return;
                         }
                         
-                        // 本地存放值
-                        let localStroageData = [];
-
+                        
                         // 取得現有的 screeningIds（如果有的話）
                         let screeningIds = JSON.parse(localStorage.getItem('screeningIds') || '[]');
 
@@ -800,17 +798,17 @@
                           screeningIds.push(selectedScreeningId.value);
                           localStorage.setItem('screeningIds', JSON.stringify(screeningIds));
 
-                          // 建立一個物件，包含場次 ID 和座位資訊
-                          const bookingData = {
-                            screeningId: selectedScreeningId.value,
-                            seatName: selectedSeatsList
-                          };
+                          // 修改 completeBooking 函數中的部分
+                            const bookingData = {
+                                screeningId: selectedScreeningId.value,
+                                seatName: selectedSeatsList
+                            };
 
-                          // 將物件推入 localStroageData 陣列
-                          localStroageData.push(bookingData);
+                          
+                          // 直接存儲單一物件，不使用陣列
+                            localStorage.setItem('bookingData', JSON.stringify(bookingData));
 
-                          // 將 localStroageData 轉換為 JSON 字串並存入 localStorage
-                          localStorage.setItem('localStroageData', JSON.stringify(localStroageData));
+                            console.log('Stored bookingData:', bookingData); // 偵錯用
                         }
 
 
@@ -848,7 +846,7 @@
                 ticketSales,
                 ticketTypes,
                 ticketPrices,
-                seatStatus,
+                SeatStatus,
                 watchQuantity,
                 reservedSeats,
                 uniqueRows,
@@ -881,7 +879,7 @@
                 toggleSeat,
                 completeBooking,
                 calculatedReservedSeats,
-                seatStatusMap,
+                SeatStatusMap,
                 getSeatStatus,
                 isUnavailable,
                 toggleSeat,
