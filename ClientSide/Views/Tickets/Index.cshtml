@@ -783,8 +783,15 @@
                         }).join('、');
                         alert(`訂票完成！\n已選擇座位：${selectedSeatsList}\n總價：${totalPrice.value}元`);
 
+                        // 確保 screeningId 有值
+                        if (!selectedScreeningId.value) {
+                            alert('無效的場次ID');
+                            return;
+                        }
+
+
                         // 成功後，將這些值存入 sessionStorage
-                        sessionStorage.setItem('seatIds', seatIdsString);
+                        sessionStorage.setItem('seatName', selectedSeatsList);
                         sessionStorage.setItem('screeningId', selectedScreeningId.value);
 
                         // 修改重導向時加入參數
