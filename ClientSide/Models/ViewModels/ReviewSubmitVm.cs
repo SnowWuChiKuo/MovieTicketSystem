@@ -17,7 +17,7 @@ namespace ClientSide.Models.ViewModels
 		public int Rating { get; set; }
 
 		[Required]
-		[StringLength(2000)]
+		[StringLength(200)]
 		public string Comment { get; set; }
 	}
 }
