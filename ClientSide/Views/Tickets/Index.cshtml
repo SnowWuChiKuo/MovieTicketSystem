@@ -789,9 +789,7 @@
                             return;
                         }
                         
-                        // 本地存放值
-                        let localStroageData = [];
-
+                        
                         // 取得現有的 screeningIds（如果有的話）
                         let screeningIds = JSON.parse(localStorage.getItem('screeningIds') || '[]');
 
@@ -800,17 +798,17 @@
                           screeningIds.push(selectedScreeningId.value);
                           localStorage.setItem('screeningIds', JSON.stringify(screeningIds));
 
-                          // 建立一個物件，包含場次 ID 和座位資訊
-                          const bookingData = {
-                            screeningId: selectedScreeningId.value,
-                            seatName: selectedSeatsList
-                          };
+                          // 修改 completeBooking 函數中的部分
+                            const bookingData = {
+                                screeningId: selectedScreeningId.value,
+                                seatName: selectedSeatsList
+                            };
 
-                          // 將物件推入 localStroageData 陣列
-                          localStroageData.push(bookingData);
+                          
+                          // 直接存儲單一物件，不使用陣列
+                            localStorage.setItem('bookingData', JSON.stringify(bookingData));
 
-                          // 將 localStroageData 轉換為 JSON 字串並存入 localStorage
-                          localStorage.setItem('localStroageData', JSON.stringify(localStroageData));
+                            console.log('Stored bookingData:', bookingData); // 偵錯用
                         }
 
 
