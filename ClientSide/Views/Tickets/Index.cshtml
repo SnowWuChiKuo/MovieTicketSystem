@@ -745,7 +745,7 @@
 
                 const selectedSeatsList = Array.from(selectedSeats).map(seatId => {
                     const [row, number] = seatId.split('-');
-                    return `${row}排${number}號`;
+                    return `${row}${number}`;
                 }).join('、');
 
                 // 取得票券 ID
