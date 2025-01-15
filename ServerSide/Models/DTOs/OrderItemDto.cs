@@ -15,5 +15,6 @@
         public int Qty { get; set; }
 
         public int SubTotal { get; set; }
-    }
+		public string SeatNames { get; set; }
+	}
 }
