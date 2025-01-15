@@ -36,19 +36,21 @@ namespace ClientSide.Models.Services
             _repo.AddCartItem(cartId, ticketId, qty, seatName);
         }
 
-        public bool CheckIfCartItemsValid(List<int> cartItemIds)
+        public bool CheckIfCartItemsValid(List<int> cartItemIds, string seatName )
         {
             //已經開播或該場次seatstatus已經不可用
             List<DateTime> startTimes = _repo.GetScreeningStartTime(cartItemIds);
             //是否已經開播
             bool isStartTimeValid = CheckScreeningStartTime(startTimes);
 
-            //該場次seatstatus已經不可用
-            var seatStatusList = _repo.GetSeatStatus(cartItemIds);
-            bool isSeatStatusValid = CheckSeatStatus(seatStatusList);
+            ////該場次seatstatus已經不可用
+            //var seatStatusList = _repo.GetSeatStatus(cartItemIds, seatName, screeningId);
+            //bool isSeatStatusValid = CheckSeatStatus(seatStatusList);
 
             //驗證皆通過就true
-           return (isStartTimeValid && isSeatStatusValid) ? true : false;
+            //return (isStartTimeValid && isSeatStatusValid) ? true : false;
+            return isStartTimeValid  ? true : false;
+
         }
 
         public bool CheckSeatStatus(List<string> seatStatusList)

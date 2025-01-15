@@ -6,7 +6,7 @@ namespace ClientSide.Models.EFModels
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class SeatStatu
+    public partial class SeatStatus
     {
         public int Id { get; set; }
 

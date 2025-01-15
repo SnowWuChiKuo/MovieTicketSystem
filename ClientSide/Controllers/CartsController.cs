@@ -72,7 +72,7 @@ namespace ClientSide.Controllers
             }
 
             List<int> cartItemIds = _service.GetCartItemIds(cartId.Value);
-            bool isValid = _service.CheckIfCartItemsValid(cartItemIds);
+            bool isValid = _service.CheckIfCartItemsValid(cartItemIds, seatName );
             //驗證通過能結帳
             if (isValid)
             {
@@ -91,6 +91,6 @@ namespace ClientSide.Controllers
                 return RedirectToAction("Index");
             }
         }
-
+            
     }
 }
