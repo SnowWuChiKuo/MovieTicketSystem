@@ -113,6 +113,8 @@ public partial class AppDbContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PK_Users");
 
+            entity.HasIndex(e => e.Account, "IX_Members").IsUnique();
+
             entity.Property(e => e.Account)
                 .IsRequired()
                 .HasMaxLength(30)
@@ -204,7 +206,6 @@ public partial class AppDbContext : DbContext
 
             entity.HasOne(d => d.Ticket).WithMany(p => p.OrderItems)
                 .HasForeignKey(d => d.TicketId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_OrderItems_Tickets");
         });
 
@@ -334,7 +335,6 @@ public partial class AppDbContext : DbContext
 
             entity.HasOne(d => d.Screening).WithMany(p => p.Tickets)
                 .HasForeignKey(d => d.ScreeningId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Tickets_Screenings");
         });
 

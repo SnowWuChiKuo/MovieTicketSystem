@@ -9,6 +9,8 @@ using Microsoft.Ajax.Utilities;
 using System.Data;
 using System.Data.Entity.Migrations;
 using System.Globalization;
+using System.Windows.Documents;
+
 
 namespace ClientSide.Models.Repository
 {
@@ -269,7 +271,7 @@ namespace ClientSide.Models.Repository
         {
             string[] seats = seatName.Split('、');
 
-            var seatstatusList = new List<SeatStatus>();
+            var SeatStatusList = new List<SeatStatus>();
 
             foreach (var item in seats)
             {
@@ -282,20 +284,20 @@ namespace ClientSide.Models.Repository
 
                 var seat = _db.Seats.FirstOrDefault(s => s.Row == row && s.Number == number );
 
-                var seatstatus = _db.SeatStatus.FirstOrDefault(ss => ss.SeatId == seat.Id && ss.ScreeningId == screeningId);
+                var SeatStatus = _db.SeatStatus.FirstOrDefault(ss => ss.SeatId == seat.Id && ss.ScreeningId == screeningId);
 
-                seatstatus.Status = "不可使用";
-                seatstatus.UpdatedAt = DateTime.Now;
+                SeatStatus.Status = "不可使用";
+                SeatStatus.UpdatedAt = DateTime.Now;
 
-                seatstatusList.Add(seatstatus);
+                SeatStatusList.Add(SeatStatus);
 
             }
 
-            _db.SeatStatus.AddRange(seatstatusList);
+            _db.AddRange(List);
         }
 
         /// <summary>
-        /// 拿到 SeatStatus 陣列
+        /// 拿到  陣列
         /// </summary>
         /// <param name="cartItemIds"></param>
         /// <param name="seatName"></param>
@@ -310,9 +312,9 @@ namespace ClientSide.Models.Repository
         //        var cartItem = _db.CartItems.FirstOrDefault(ci => ci.Id == id);
         //        var ticket = _db.Tickets.FirstOrDefault(t => t.Id == cartItem.TicketId);
         //        var screening = _db.Screenings.FirstOrDefault(s => s.Id == ticket.ScreeningId);
-        //        var seatStatus = _db.SeatStatus.FirstOrDefault(ss => ss.ScreeningId == screening.Id);
+        //        var SeatStatus = _db.SeatStatus.FirstOrDefault(ss => ss.ScreeningId == screening.Id);
 
-        //        result.Add(seatStatus.Status);
+        //        result.Add(SeatStatus.Status);
         //    }
 
         //    return result;
