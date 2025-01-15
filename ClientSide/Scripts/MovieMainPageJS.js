@@ -17,7 +17,7 @@ const config = {
                 })
         })) || []);
 
-        const mostCommentedMovies = ref(window.upcomingMoviesData?.map(movie => ({
+        const upcomingMovies = ref(window.upcomingMoviesData?.map(movie => ({
             ...movie,
             ReleaseDate: movie.ReleaseDate
                 .replace(/\/Date\((-?\d+)\)\//, function (match, timestamp) {
@@ -26,7 +26,7 @@ const config = {
         })) || []);
 
         const mostViewedCardRow = ref(null);
-        const mostCommentedCardRow = ref(null);
+        const upcomingMoviesCardRow = ref(null);
         const allMoviesCardRow = ref(null);
 
         const loading = ref(false);
@@ -34,7 +34,7 @@ const config = {
         function scrollLeft(section) {
             let target;
             if (section === 'mostViewed') target = mostViewedCardRow.value;
-            else if (section === 'mostCommented') target = mostCommentedCardRow.value;
+            else if (section === 'upcomingMovies') target = upcomingMoviesCardRow.value;
             else if (section === 'allMovies') target = allMoviesCardRow.value;
 
             if (target) {
@@ -45,7 +45,7 @@ const config = {
         function scrollRight(section) {
             let target;
             if (section === 'mostViewed') target = mostViewedCardRow.value;
-            else if (section === 'mostCommented') target = mostCommentedCardRow.value;
+            else if (section === 'upcomingMovies') target = upcomingMoviesCardRow.value;
             else if (section === 'allMovies') target = allMoviesCardRow.value;
 
             if (target) {
@@ -65,9 +65,9 @@ const config = {
         return {
             movies,
             mostViewedMovies,
-            mostCommentedMovies,
+            upcomingMovies,
             mostViewedCardRow,
-            mostCommentedCardRow,
+            upcomingMoviesCardRow,
             allMoviesCardRow,
             scrollLeft,
             scrollRight,

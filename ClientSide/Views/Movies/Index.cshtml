@@ -68,9 +68,9 @@
         <p class="fw-bolder my-5 pTitle mb-3">即將上映</p>
     </div>
     <div class="container mvblock position-relative mb-5">
-        <button class="scroll-btn btn-left" v-on:click="scrollLeft('mostCommented')"><</button>
-        <div class="movie-card-container" ref="mostCommentedCardRow">
-            <div class="card-item" v-for="(movie, Id) in mostCommentedMovies" :key="Id">
+        <button class="scroll-btn btn-left" v-on:click="scrollLeft('upcomingMovies')"><</button>
+        <div class="movie-card-container" ref="upcomingMoviesCardRow">
+            <div class="card-item" v-for="(movie, Id) in upcomingMovies" :key="Id">
                 <div class="movie-card"
                      style="cursor: pointer;"
                      v-on:click="viewMovie(movie)">
@@ -85,7 +85,7 @@
                 </div>
             </div>
         </div>
-        <button class="scroll-btn btn-right" v-on:click="scrollRight('mostCommented')">></button>
+        <button class="scroll-btn btn-right" v-on:click="scrollRight('upcomingMovies')">></button>
     </div>
     <!--即將上映電影 End-->
 
