@@ -2,13 +2,42 @@
 @{
     ViewBag.Title = "ActiveRegister";
 }
+<style>
+    /* 主標題樣式 */
+    .detail-title {
+        font-size: 2.5rem;
+        font-weight: 600;
+        color: var(--accent-color);
+        margin-bottom: 2rem;
+        font-family: 'Lexend Deca', 'Noto Sans TC', sans-serif !important;
+        text-align: center;
+    }
+    /* 表單卡片樣式 */
+    .forgot-card {
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        background: var(--secondary-bg);
+        padding: 2rem;
+        margin: 20px 0;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+        max-width: 900px;
+        margin: 0 auto;
+    }
+    /* 標籤樣式 */
+    .form-label {
+        font-weight: 500;
+        color: var(--accent-color);
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+        font-family: 'Lexend Deca', 'Noto Sans TC', sans-serif !important;
+    }
+</style>
 <div class="container" style="margin-bottom: 200px; margin-top: 90px;">
-    <h2 class="fw-bolder text-center">會員確認頁</h2>
-
-    <div class="container">
-        <div class="alert alert-success" role="alert">
+    <h2 class="fw-bolder text-center detail-title">會員確認頁</h2>
+    <div class="forgot-card text-center">
+        <p class="form-label" >
             感謝您的註冊，您的會員資格已確認，您可以登入之後開始採購商品
-        </div>
+        </p>
     </div>
 </div>
     @section Scripts {
