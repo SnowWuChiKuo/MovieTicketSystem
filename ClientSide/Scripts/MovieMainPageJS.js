@@ -3,26 +3,35 @@ const config = {
     setup() {
         const movies = ref(window.moviesData?.map(movie => ({
             ...movie,
-            ReleaseDate: movie.ReleaseDate
-                .replace(/\/Date\((-?\d+)\)\//, function (match, timestamp) {
-                    return new Date(parseInt(timestamp)).toISOString().split('T')[0].replaceAll('-', '/');
-                })
+            ReleaseDate: movie.ReleaseDate.replace(/\/Date\((-?\d+)\)\//, function (match, timestamp) {
+                return new Date(parseInt(timestamp)).toLocaleDateString('zh-TW', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit'
+                });
+            })
         })) || []);
 
         const mostViewedMovies = ref(window.mostReviewedMoviesData?.map(movie => ({
             ...movie,
-            ReleaseDate: movie.ReleaseDate
-                .replace(/\/Date\((-?\d+)\)\//, function (match, timestamp) {
-                    return new Date(parseInt(timestamp)).toISOString().split('T')[0].replaceAll('-', '/');
-                })
+            ReleaseDate: movie.ReleaseDate.replace(/\/Date\((-?\d+)\)\//, function (match, timestamp) {
+                return new Date(parseInt(timestamp)).toLocaleDateString('zh-TW', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit'
+                });
+            })
         })) || []);
 
         const upcomingMovies = ref(window.upcomingMoviesData?.map(movie => ({
             ...movie,
-            ReleaseDate: movie.ReleaseDate
-                .replace(/\/Date\((-?\d+)\)\//, function (match, timestamp) {
-                    return new Date(parseInt(timestamp)).toISOString().split('T')[0].replaceAll('-', '/');
-                })
+            ReleaseDate: movie.ReleaseDate.replace(/\/Date\((-?\d+)\)\//, function (match, timestamp) {
+                return new Date(parseInt(timestamp)).toLocaleDateString('zh-TW', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit'
+                });
+            })
         })) || []);
 
         const mostViewedCardRow = ref(null);

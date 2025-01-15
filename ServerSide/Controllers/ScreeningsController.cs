@@ -92,7 +92,8 @@ namespace ServerSide.Controllers
             var editVmForCreate = new ScreeningEditVm
             {
                 MovieOptions = _service.GetMovieOptions(),
-                TheaterOptions = _service.GetTheaterOptions()
+                TheaterOptions = _service.GetTheaterOptions(),
+                Televising = DateOnly.FromDateTime(DateTime.Today)
             };
             return View(editVmForCreate);
         }

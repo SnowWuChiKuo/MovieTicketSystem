@@ -12,7 +12,11 @@ createApp({
             rating: movieData.RatingName,
             duration: `${movieData.RunTime}分鐘`,
             releaseDate: movieData.ReleaseDate.replace(/\/Date\((-?\d+)\)\//, function (match, timestamp) {
-                return new Date(parseInt(timestamp)).toISOString().split('T')[0].replaceAll('-', '/');
+                return new Date(parseInt(timestamp)).toLocaleDateString('zh-TW', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit'
+                });
             }),
             director: movieData.Director,
             cast: movieData.Cast,
@@ -25,7 +29,11 @@ createApp({
                 memberName: r.MemberName,
                 content: r.Comment,
                 createdAt: r.CreatedAt.replace(/\/Date\((-?\d+)\)\//, function (match, timestamp) {
-                    return new Date(parseInt(timestamp)).toISOString().split('T')[0].replaceAll('-', '/');
+                    return new Date(parseInt(timestamp)).toLocaleDateString('zh-TW', {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit'
+                    });
                 }),
                 rating: r.Rating
             })) || []
@@ -70,7 +78,11 @@ createApp({
     },
     methods: {
         formatDate(date) {
-            return new Date(parseInt(timestamp)).toISOString().split('T')[0].replaceAll('-', '/');
+            return new Date(parseInt(timestamp)).toLocaleDateString('zh-TW', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit'
+            });
         },
         bookTicket() {
                 window.location.href = `/Tickets/Index?movieId=${this.movie.id}`;
