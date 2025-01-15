@@ -126,8 +126,8 @@ namespace ClientSide.Models.DAOs
         {
             using (var db = new AppDbContext())
             {
-                var member = db.Members.FirstOrDefault(m => m.Account == model.Account && m.Email == model.Email && m.IsConfirmed == true);
                 //判斷帳號是否存在，email是否正確，以及是否已開通
+                var member = db.Members.FirstOrDefault(m => m.Account == model.Account && m.Email == model.Email && m.IsConfirmed == true);
                 if (member != null)
                 {
                     //update confirmCode = guid 

@@ -1,5 +1,6 @@
 ﻿using ClientSide.Models.DAOs;
 using ClientSide.Models.DTOs;
+using ClientSide.Models.EFModels;
 using ClientSide.Models.Services;
 using ClientSide.Models.ViewModels;
 using System;
@@ -278,11 +279,11 @@ namespace ClientSide.Controllers
             if (!ModelState.IsValid) return View(model);
 
             var dao = new MemberEFDao();
-            var member = new Models.EFModels.Member();
+            Member member;
             try
             {
                //confirmcode 設 Guid
-               member = dao.ProcessForgotPassword(model);
+              member = dao.ProcessForgotPassword(model);
             }
             catch (Exception ex)
             {
