@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using ServerSide.Models.DTOs;
 using ServerSide.Models.Interfaces;
 using ServerSide.Models.ViewModels;
@@ -36,14 +37,16 @@ namespace ServerSide.Controllers
         [HttpGet]
         public IActionResult Create(int movieId,string movieTitle)
         {
-
             var IsMovieExist = _service.IsMovieExist(movieId);
-            if(!IsMovieExist)
+            if (!IsMovieExist)
             {
                 return NotFound("該電影不存在");
             }
             ViewBag.MovieIdAndTitle = $"{movieId} - {movieTitle}";
-            return View();
+            
+            var vm = new PriceVm { MovieId = movieId };
+            PrepareSelectLists(vm);
+            return View(vm);
         }
 
         [HttpPost]
@@ -84,12 +87,13 @@ namespace ServerSide.Controllers
         {
             if (id == null) throw new Exception("Id不能為空!");
             var priceDto = _service.FindPriceById(id.Value);
-            if(priceDto == null) throw new Exception("找不到票券資料!");
+            if (priceDto == null) throw new Exception("找不到票券資料!");
 
             ViewBag.MovieId = movieId;
             ViewBag.MovieTitle = movieTitle;
 
             var priceVm = ConvertToVm(priceDto);
+            PrepareSelectLists(priceVm);
             return View(priceVm);
         }
 
@@ -142,6 +146,23 @@ namespace ServerSide.Controllers
                 ReservedSeats = priceDto.ReservedSeats,
                 PriceOfTicket = priceDto.Price1
             };
+        }
+
+        private void PrepareSelectLists(PriceVm vm)
+        {
+            vm.SalesTypeItem = PriceVm.SalesTypeOptions
+                .Select(x => new SelectListItem
+                {
+                    Value = x,
+                    Text = x
+                }).ToList();
+
+            vm.TicketTypeOption = PriceVm.TicketTypeOptions
+                .Select(x => new SelectListItem
+                {
+                    Value = x,
+                    Text = x
+                }).ToList();
         }
     }
 }
