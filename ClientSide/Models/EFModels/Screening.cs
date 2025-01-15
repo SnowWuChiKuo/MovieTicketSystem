@@ -11,7 +11,7 @@ namespace ClientSide.Models.EFModels
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Screening()
         {
-            SeatStatus = new HashSet<SeatStatu>();
+            SeatStatus = new HashSet<SeatStatus>();
             Tickets = new HashSet<Ticket>();
         }
 
@@ -37,7 +37,7 @@ namespace ClientSide.Models.EFModels
         public virtual Theater Theater { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SeatStatu> SeatStatus { get; set; }
+        public virtual ICollection<SeatStatus> SeatStatus { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Ticket> Tickets { get; set; }

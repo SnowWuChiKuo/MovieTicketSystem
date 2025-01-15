@@ -172,7 +172,7 @@
     <Compile Include="Models\EFModels\Review.cs" />
     <Compile Include="Models\EFModels\Screening.cs" />
     <Compile Include="Models\EFModels\Seat.cs" />
-    <Compile Include="Models\EFModels\SeatStatu.cs" />
+    <Compile Include="Models\EFModels\SeatStatus.cs" />
     <Compile Include="Models\EFModels\Theater.cs" />
     <Compile Include="Models\EFModels\Ticket.cs" />
     <Compile Include="Models\EFModels\TicketSeat.cs" />

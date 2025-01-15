@@ -269,7 +269,7 @@ namespace ClientSide.Models.Repository
         {
             string[] seats = seatName.Split('、');
 
-            var seatstatusList = new List<SeatStatu>();
+            var seatstatusList = new List<SeatStatus>();
 
             foreach (var item in seats)
             {
@@ -294,21 +294,29 @@ namespace ClientSide.Models.Repository
             _db.SeatStatus.AddRange(seatstatusList);
         }
 
-        public List<string> GetSeatStatus(List<int> cartItemIds)
-        {
-            List<string> result = new List<string>();
-            foreach (var id in cartItemIds)
-            {
-                var cartItem = _db.CartItems.FirstOrDefault(ci => ci.Id == id);
-                var ticket = _db.Tickets.FirstOrDefault(t => t.Id == cartItem.TicketId);
-                var screening = _db.Screenings.FirstOrDefault(s => s.Id == ticket.ScreeningId);
-                var seatStatus = _db.SeatStatus.FirstOrDefault(ss => ss.ScreeningId == screening.Id);
+        /// <summary>
+        /// 拿到 SeatStatus 陣列
+        /// </summary>
+        /// <param name="cartItemIds"></param>
+        /// <param name="seatName"></param>
+        /// <param name="screeningId"></param>
+        /// <returns></returns>
+        //public List<string> GetSeatStatus(List<int> cartItemIds , string seatName ,int screeningId)
+        //{
 
-                result.Add(seatStatus.Status);
-            }
+        //    List<string> result = new List<string>();
+        //    foreach (var id in cartItemIds)
+        //    {
+        //        var cartItem = _db.CartItems.FirstOrDefault(ci => ci.Id == id);
+        //        var ticket = _db.Tickets.FirstOrDefault(t => t.Id == cartItem.TicketId);
+        //        var screening = _db.Screenings.FirstOrDefault(s => s.Id == ticket.ScreeningId);
+        //        var seatStatus = _db.SeatStatus.FirstOrDefault(ss => ss.ScreeningId == screening.Id);
 
-            return result;
-        }
+        //        result.Add(seatStatus.Status);
+        //    }
+
+        //    return result;
+        //}
 
         public List<int> GetCartItemIds(int cartId)
         {
