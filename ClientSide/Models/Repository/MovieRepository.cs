@@ -75,6 +75,7 @@ namespace ClientSide.Models.Repository
                     m.Id, m.Title, m.ReleaseDate, m.PosterURL,
                     (SELECT COUNT(*) FROM Reviews WHERE MovieId = m.Id) AS ReviewCount
                 FROM Movies m
+				WHERE m.ReleaseDate < GETDATE()
                 ORDER BY ReviewCount DESC, m.ReleaseDate DESC";
 
 			using (var conn = new SqlConnection(_conn))
