@@ -4,6 +4,7 @@
     ViewData["Title"] = "員工登入";
 }
 
+
 <div class="container">
     <div class="row justify-content-center mt-5">
         <div class="col-md-6">
@@ -16,14 +17,15 @@
                         <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
                         <div class="form-group mb-3">
                             <label asp-for="Account" class="form-label">帳號</label>
-                            <input asp-for="Account" class="form-control" />
+                            <input asp-for="Account" class="form-control" id="account" />
                             <span asp-validation-for="Account" class="text-danger"></span>
                         </div>
                         <div class="form-group mb-3">
                             <label asp-for="Password" class="form-label">密碼</label>
-                            <input asp-for="Password" class="form-control" type="password" />
+                            <input asp-for="Password" class="form-control" type="password" id="password" />
                             <span asp-validation-for="Password" class="text-danger"></span>
                         </div>
+                        <div id="description" class="text-center" style="color:red;"></div>
                         <div class="form-group d-grid text-center mt-5">
                             <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
                             <input type="submit" value="登入" class="btn btn-primary" />
@@ -36,8 +38,24 @@
     </div>
 </div>
 
+<div class="d-flex justify-content-center mt-3">
+    <div>
+        <button class="btn btn-sm btn-primary" id="sa1">測試管理員</button>
+    </div>
+</div>
+
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+
+    <script>
+        $(document).ready(function(){
+            $('#sa1').click(function(){
+                $('#account').val('sa1');
+                $('#password').val('123456');
+                $('#description').html('此是管理員帳號，可以進入員工管理創建員工。<br/>如果你使用員工登入，會無法進入員工管理');
+            });
+        });
+    </script>
 }
