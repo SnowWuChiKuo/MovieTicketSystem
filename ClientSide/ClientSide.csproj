@@ -256,14 +256,7 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Images\mv1.jpg" />
-    <Content Include="Images\mv2.jpg" />
-    <Content Include="Images\mv3.jpg" />
-    <Content Include="Images\mv4.jpg" />
-    <Content Include="Images\mv5.jpg" />
-    <Content Include="Images\mv6.jpg" />
-    <Content Include="Images\mv7.jpg" />
-    <Content Include="Images\mv8.jpg" />
+    <Content Include="Images\hero-bg.jpg" />
     <Content Include="MoviePosters\his.jpg" />
     <Content Include="MoviePosters\OUT 預告.jpg" />
     <Content Include="MoviePosters\上岸的魚.jpg" />

@@ -5,7 +5,6 @@
 /* Navbar 基本樣式 */
 .navbar {
     background-color: var(--nav-footer-bg) !important;
-    border-bottom: 2px solid var(--accent-color);
     min-height: 80px !important; /* 改用 min-height */
     height: auto !important; /* 確保自適應 */
     position: fixed;
