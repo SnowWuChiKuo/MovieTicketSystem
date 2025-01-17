@@ -31,11 +31,7 @@
 
                     <div class="rating-container">
                         <!-- 電影標題輸入 -->
-                        <div class="rating-header">
-                            <label asp-for="Title" class="form-label fw-bolder">電影名稱</label>
-                            <input asp-for="Title" class="form-control" />
-                            <span asp-validation-for="Title" class="text-danger"></span>
-                        </div>
+
                     </div>
                 </div>
             </div>
@@ -44,6 +40,11 @@
             <div class="col-lg-6 info-container">
                 <div class="box-card">
                     <div class="movie-info">
+                        <div class="rating-header">
+                            <label asp-for="Title" class="form-label fw-bolder">電影名稱</label>
+                            <input asp-for="Title" class="form-control" />
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
                         <!-- 分類選擇 -->
                         <div class="mb-3">
                             <label asp-for="GenreId" class="form-label fw-bolder"></label>
