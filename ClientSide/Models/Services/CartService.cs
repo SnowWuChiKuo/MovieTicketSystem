@@ -23,7 +23,14 @@ namespace ClientSide.Models.Services
 
         public void CreateOrder(string account, string seatName, int screeningId)
         {
-            _repo.CreateOrder(account, seatName, screeningId);
+            var seatstatus = _repo.CheckSeatStatus(seatName, screeningId);
+
+            foreach (var item in seatstatus) 
+            {
+                if (item == null) throw new Exception("找不到此座位!");
+            }
+
+            _repo.CreateOrder(account, seatstatus);
         }
 
         public void EmptyCart(string account)

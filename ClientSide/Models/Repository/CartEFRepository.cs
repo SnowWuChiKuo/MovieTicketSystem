@@ -222,11 +222,44 @@ namespace ClientSide.Models.Repository
         }
 
         /// <summary>
-        /// 建立訂單主檔 / 明細檔
+        /// 需要找到場次後，確認位子狀態
         /// </summary>
-        /// <param name="account"></param>
-        /// <param name="model"></param>
-        public void CreateOrder(string account, string seatName, int screeningId)
+        /// <param name="seatName"></param>
+        /// <param name="screeningId"></param>
+        public List<SeatStatus> CheckSeatStatus(string seatName, int screeningId)
+        {
+            var screening = _db.Screenings.FirstOrDefault(s => s.Id == screeningId);
+
+            string[] seats = seatName.Split('、');
+
+			var SeatStatusList = new List<SeatStatus>();
+
+			foreach (var item in seats)
+			{
+				// 使用 "排" 分割取得行號和座位號
+				string[] parts = item.Split('排');
+				string[] parts2 = parts[1].Split('號');
+
+				string row = parts[0];                    // 排之前的字母
+				string number = parts2[0];
+
+				var seat = _db.Seats.FirstOrDefault(s => s.Row == row && s.Number == number && s.TheaterId == screening.TheaterId);
+
+				var SeatStatus = _db.SeatStatus.FirstOrDefault(ss => ss.SeatId == seat.Id && ss.ScreeningId == screeningId);
+
+				SeatStatusList.Add(SeatStatus);
+
+			}
+
+            return SeatStatusList;
+		}
+
+		/// <summary>
+		/// 建立訂單主檔 / 明細檔
+		/// </summary>
+		/// <param name="account"></param>
+		/// <param name="model"></param>
+		public void CreateOrder(string account, List<SeatStatus> seatstatus)
         {
             
                 CartVm cart = GetCartInfo(account);
@@ -255,7 +288,7 @@ namespace ClientSide.Models.Repository
                         SeatNames = item.SeatName
                     };
 
-                    UpdateSeatStatus(seatName, screeningId);
+                    UpdateSeatStatus(seatstatus);
                     
                    _db.OrderItems.Add(orderItem);
                 }
@@ -267,33 +300,18 @@ namespace ClientSide.Models.Repository
                 
         }
 
-        private void UpdateSeatStatus(string seatName, int screeningId)
+        private void UpdateSeatStatus(List<SeatStatus> seatstatus)
         {
-           
-            var screening = _db.Screenings.FirstOrDefault(s => s.Id == screeningId);
+			var SeatStatusList = new List<SeatStatus>();
 
-            string[] seats = seatName.Split('、');
-
-            var SeatStatusList = new List<SeatStatus>();
-
-            foreach (var item in seats)
+			foreach (var item in seatstatus)
             {
-                // 使用 "排" 分割取得行號和座位號
-                string[] parts = item.Split('排');
-                string[] parts2 = parts[1].Split('號');
-                
-                string row = parts[0];                    // 排之前的字母
-                string number = parts2[0];
+                if (item.Status == "不可使用") throw new Exception($"{item.Seat.Row} {item.Seat.Number}此座位已經被訂走了!");
 
-                var seat = _db.Seats.FirstOrDefault(s => s.Row == row && s.Number == number && s.TheaterId == screening.TheaterId);
+				item.Status = "不可使用";
+				item.UpdatedAt = DateTime.Now;
 
-                var SeatStatus = _db.SeatStatus.FirstOrDefault(ss => ss.SeatId == seat.Id && ss.ScreeningId == screeningId);
-
-                SeatStatus.Status = "不可使用";
-                SeatStatus.UpdatedAt = DateTime.Now;
-
-                SeatStatusList.Add(SeatStatus);
-
+                SeatStatusList.Add(item);
             }
 
             _db.SeatStatus.AddRange(SeatStatusList);

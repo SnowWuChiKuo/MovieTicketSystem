@@ -77,23 +77,34 @@ namespace ClientSide.Controllers
 
             List<int> cartItemIds = _service.GetCartItemIds(cartId.Value);
             bool isValid = _service.CheckIfCartItemsValid(cartItemIds, seatName );
-            //驗證通過能結帳
-            if (isValid)
+
+            try
             {
-                //建立訂單主檔/明細檔
-                _service.CreateOrder(account, seatName, screeningId ?? 0);
+                //驗證通過能結帳
+                if (isValid)
+                {
+                    //建立訂單主檔/明細檔
+                    _service.CreateOrder(account, seatName, screeningId ?? 0);
 
-                //清空購物車
-                _service.EmptyCart(account);
+                    //清空購物車
+                    _service.EmptyCart(account);
 
-                return Redirect("~/Orders/Index");  // 結帳成功畫面
+                    return Redirect("~/Orders/Index");  // 結帳成功畫面
+                }
+                else 
+                {
+                    TempData["ErrorMessage"] = "訂票夾中存在無效票，無法結帳，請移除後再試";
+
+                    return RedirectToAction("Index");
+                }
+
             }
-            else 
+            catch (Exception ex)
             {
-                TempData["ErrorMessage"] = "訂票夾中存在無效票，無法結帳，請移除後再試";
-
-                return RedirectToAction("Index");
-            }
+				TempData["ErrorMessage"] = ex.Message;
+				return RedirectToAction("Index");
+			}
+            
         }
             
     }
