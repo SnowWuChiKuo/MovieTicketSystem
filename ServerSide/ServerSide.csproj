@@ -18,6 +18,66 @@
 
   <ItemGroup>
     <None Include="efpt.config.json.user" />
+    <None Include="wwwroot\MoviePosters\his.jpg" />
+    <None Include="wwwroot\MoviePosters\OUT 預告.jpg" />
+    <None Include="wwwroot\MoviePosters\上岸的魚.jpg" />
+    <None Include="wwwroot\MoviePosters\亡魂索命.jpg" />
+    <None Include="wwwroot\MoviePosters\享宴Hold不住.jpg" />
+    <None Include="wwwroot\MoviePosters\他叫簡單，他是我兄弟.jpg" />
+    <None Include="wwwroot\MoviePosters\出門在外 預告.jpg" />
+    <None Include="wwwroot\MoviePosters\午餐殺戮時刻.jpg" />
+    <None Include="wwwroot\MoviePosters\厄夜追緝令.jpg" />
+    <None Include="wwwroot\MoviePosters\古樓鎮陵宮 預告.jpg" />
+    <None Include="wwwroot\MoviePosters\古樓鎮陵宮.jpg" />
+    <None Include="wwwroot\MoviePosters\在回家之後重新開始.jpg" />
+    <None Include="wwwroot\MoviePosters\大監獄行動.jpg" />
+    <None Include="wwwroot\MoviePosters\天上再見.jpg" />
+    <None Include="wwwroot\MoviePosters\天使追殺令.jpg" />
+    <None Include="wwwroot\MoviePosters\尋找快樂的15種方法.jpg" />
+    <None Include="wwwroot\MoviePosters\岸邊露伴在羅浮 預告.jpg" />
+    <None Include="wwwroot\MoviePosters\岸邊露伴在羅浮.jpg" />
+    <None Include="wwwroot\MoviePosters\幸福的拉札洛.jpg" />
+    <None Include="wwwroot\MoviePosters\引渡追緝令.jpg" />
+    <None Include="wwwroot\MoviePosters\心靈遊戲.jpg" />
+    <None Include="wwwroot\MoviePosters\意外製造公司.jpg" />
+    <None Include="wwwroot\MoviePosters\愛情無論如何.jpg" />
+    <None Include="wwwroot\MoviePosters\愛離巢 預告.jpg" />
+    <None Include="wwwroot\MoviePosters\愛，留在海灘那一天.jpg" />
+    <None Include="wwwroot\MoviePosters\憤怒.jpg" />
+    <None Include="wwwroot\MoviePosters\我本少年.jpg" />
+    <None Include="wwwroot\MoviePosters\我的巴黎舅舅.jpg" />
+    <None Include="wwwroot\MoviePosters\戰馬一號 預告.jpg" />
+    <None Include="wwwroot\MoviePosters\搖滾樂殺人事件.jpg" />
+    <None Include="wwwroot\MoviePosters\時尚教父的福音.jpg" />
+    <None Include="wwwroot\MoviePosters\暗處.jpg" />
+    <None Include="wwwroot\MoviePosters\最後的犧牲.jpg" />
+    <None Include="wwwroot\MoviePosters\最後那五年.jpg" />
+    <None Include="wwwroot\MoviePosters\最酷的旅伴.jpg" />
+    <None Include="wwwroot\MoviePosters\末日列車.jpg" />
+    <None Include="wwwroot\MoviePosters\歡迎光臨奇幻城堡.jpg" />
+    <None Include="wwwroot\MoviePosters\澤水困.jpg" />
+    <None Include="wwwroot\MoviePosters\無言之聲.jpg" />
+    <None Include="wwwroot\MoviePosters\狂暴巨蜥 預告.jpg" />
+    <None Include="wwwroot\MoviePosters\狂暴巨蜥.jpg" />
+    <None Include="wwwroot\MoviePosters\登入火星.jpg" />
+    <None Include="wwwroot\MoviePosters\維和防暴隊 預告.jpg" />
+    <None Include="wwwroot\MoviePosters\腦海中的橡皮擦%28數位修復版%29 預告.jpg" />
+    <None Include="wwwroot\MoviePosters\蒙古英豪.jpg" />
+    <None Include="wwwroot\MoviePosters\蛇皮美人 預告.jpg" />
+    <None Include="wwwroot\MoviePosters\蛇皮美人.jpg" />
+    <None Include="wwwroot\MoviePosters\要命真相.jpg" />
+    <None Include="wwwroot\MoviePosters\角落小夥伴電影版：魔法繪本裡的新朋友%28國%29.jpg" />
+    <None Include="wwwroot\MoviePosters\角落小夥伴電影版：魔法繪本裡的新朋友%28日%29.jpg" />
+    <None Include="wwwroot\MoviePosters\貓妖奇譚 預告.jpg" />
+    <None Include="wwwroot\MoviePosters\超能追緝.jpg" />
+    <None Include="wwwroot\MoviePosters\追愛敢死隊.jpg" />
+    <None Include="wwwroot\MoviePosters\追愛首爾行.jpg" />
+    <None Include="wwwroot\MoviePosters\速食遊戲.jpg" />
+    <None Include="wwwroot\MoviePosters\鋼鐵英雄.jpg" />
+    <None Include="wwwroot\MoviePosters\順雲.jpg" />
+    <None Include="wwwroot\MoviePosters\風暴來襲：戰火蔓延 預告.jpg" />
+    <None Include="wwwroot\MoviePosters\鬼面信號 預告.jpg" />
+    <None Include="wwwroot\MoviePosters\鬼面信號.jpg" />
   </ItemGroup>
 
   <ItemGroup>

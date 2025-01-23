@@ -4,23 +4,48 @@
     ViewData["Title"] = "電影資料編輯";
 }
 
-<hr />
-<div class="container-fluid">
+<div class="container mvInfo">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="mvTitle mb-4 mt-2">電影資料編輯</h1>
+        </div>
+    </div>
 
-    <h1 class="fw-bolder mx-5">電影資料編輯</h1>
-    <div class="card m-5">
-        <div class="card-body">
-            <div class="row mx-5">
-                <div class="col-md-12">
-                    <form asp-action="Edit">
-                        @Html.AntiForgeryToken()
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <input type="hidden" asp-for="Id" />
-                        <div class="mb-3">
-                            <label class="form-label fw-bolder">Id</label>
-                            <p class="form-control-plaintext">@Model.Id</p>
-                            <input type="hidden" asp-for="Id" />
+    <form asp-action="Edit">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Id" />
+
+        <div class="row">
+            <!-- 左側電影海報+標題區塊 -->
+            <div class="col-lg-6">
+                <div class="box-card poster-card leftCard">
+                    <!-- 電影海報本地路徑輸入 -->
+                    <div class="mb-3">
+                        <label asp-for="PosterUrl" class="form-label fw-bolder"></label>
+                        <input asp-for="PosterUrl" class="form-control" />
+                        <span asp-validation-for="PosterUrl" class="text-danger"></span>
+                    </div>
+
+                    <img src="/MoviePosters/@Model.PosterUrl" alt="@Model.Title">
+
+                    <div class="rating-container">
+                        <!-- 電影標題輸入 -->
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右側電影資料區塊 -->
+            <div class="col-lg-6 info-container">
+                <div class="box-card">
+                    <div class="movie-info">
+                        <div class="rating-header">
+                            <label asp-for="Title" class="form-label fw-bolder">電影名稱</label>
+                            <input asp-for="Title" class="form-control" />
+                            <span asp-validation-for="Title" class="text-danger"></span>
                         </div>
+                        <!-- 分類選擇 -->
                         <div class="mb-3">
                             <label asp-for="GenreId" class="form-label fw-bolder"></label>
                             <select asp-for="GenreId" class="custom-select">
@@ -36,6 +61,8 @@
                             </select>
                             <span asp-validation-for="GenreId" class="text-danger"></span>
                         </div>
+
+                        <!-- 分級選擇 -->
                         <div class="mb-3">
                             <label asp-for="RatingId" class="form-label fw-bolder"></label>
                             <select asp-for="RatingId" class="custom-select">
@@ -51,73 +78,71 @@
                             </select>
                             <span asp-validation-for="RatingId" class="text-danger"></span>
                         </div>
-                        <div class="mb-3">
-                            <label asp-for="Title" class="form-label fw-bolder"></label>
-                            <input asp-for="Title" class="form-control" />
-                            <span asp-validation-for="Title" class="text-danger"></span>
-                        </div>
-                        <div class="mb-3">
-                            <label asp-for="Description" class="form-label fw-bolder"></label>
-                            <textarea asp-for="Description" class="form-control" rows="6"> </textarea>
-                            <span asp-validation-for="Description" class="text-danger"></span>
-                        </div>
-                        <div class="mb-3">
-                            <label asp-for="Director" class="form-label fw-bolder"></label>
-                            <input asp-for="Director" class="form-control" />
-                            <span asp-validation-for="Director" class="text-danger"></span>
-                        </div>
-                        <div class="mb-3">
-                            <label asp-for="Cast" class="form-label fw-bolder"></label>
-                            <textarea asp-for="Cast" class="form-control" rows="6"></textarea>
-                            <span asp-validation-for="Cast" class="text-danger"></span>
-                        </div>
+
+                        <!-- 片長設定 -->
                         <div class="mb-3">
                             <label asp-for="RunTime" class="form-label fw-bolder"></label>
                             <input asp-for="RunTime" class="form-control" />
                             <span asp-validation-for="RunTime" class="text-danger"></span>
                         </div>
+
+                        <!-- 上檔日設定 -->
                         <div class="mb-3">
                             <label asp-for="ReleaseDate" class="form-label fw-bolder"></label>
                             <input asp-for="ReleaseDate" class="form-control" />
                             <span asp-validation-for="ReleaseDate" class="text-danger"></span>
                         </div>
+                        <!-- 導演輸入 -->
                         <div class="mb-3">
-                            <label asp-for="PosterUrl" class="form-label fw-bolder"></label>
-                            <input asp-for="PosterUrl" class="form-control" />
-                            <span asp-validation-for="PosterUrl" class="text-danger"></span>
+                            <label asp-for="Director" class="form-label fw-bolder"></label>
+                            <input asp-for="Director" class="form-control" />
+                            <span asp-validation-for="Director" class="text-danger"></span>
                         </div>
-                        <div class="mb-3">
-                            <label asp-for="TrailerUrl" class="form-label fw-bolder"></label>
-                            <input asp-for="TrailerUrl" class="form-control" />
-                            <span asp-validation-for="TrailerUrl" class="text-danger"></span>
-                        </div>
-
-                        <div class="mb-3">
-                            <a asp-action="Index" class="btn btn-secondary me-4">回到電影清單</a>
-                            <input type="submit" value="保存變更" class="btn btn-primary ms-4" />
-                            <input type="button" value="刪除" class="btn btn-danger" onclick="confirmDelete()" />
-                        </div>
-                    </form>
-                    @* <form asp-action="Delete" asp-controller="Movies" method="post" onsubmit="return confirm('確定要刪除嗎？');" style="display:inline;"> *@
-                    @*     @Html.AntiForgeryToken() *@
-                    @*     <input type="hidden" name="id" value="@Model.Id" /> *@
-                    @*     <button type="submit" class="btn btn-danger"> *@
-                    @*         <i class="fa fa-trash"></i> *@
-                    @*         &nbsp 刪除 *@
-                    @*     </button> *@
-                    @* </form> *@
+                    </div>
                 </div>
             </div>
+            <!-- 電影簡介區塊 -->
+            <div class="container descInput mt-2">
+                <div class="col-lg-12">
+                    <div class="description-container">
+                        <h3 class="description-title">劇情簡介</h3>
+                        <div class="mb-3">
+                            <textarea asp-for="Description" class="form-control" rows="6"> </textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 演員區塊 -->
+            <div class="container castInput mt-2">
+                <div class="col-lg-12">
+                    <div class="description-container">
+                        <h3 class="description-title">電影演員</h3>
+                        <div class="mb-3">
+                            <textarea asp-for="Cast" class="form-control" rows="6"></textarea>
+                            <span asp-validation-for="Cast" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container mb-3">
+                <a asp-action="Index" class="btn btn-secondary me-4">回到電影清單</a>
+                <input type="submit" value="保存變更" class="btn btn-primary ms-4" />
+                <input type="button" value="刪除" class="btn btn-danger" onclick="confirmDelete()" />
+            </div>
         </div>
-    </div>
 
+
+    </form>
 </div>
 
 
 
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
 
 
@@ -174,3 +199,55 @@
             });
     }
 </script>
+
+<style>
+
+    .descInput,
+    .castInput
+    {
+        padding:0px;
+        margin:0px;
+    }
+    .mvInfo {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .poster-card img {
+        width: 100%;
+        max-height: 500px;
+        object-fit: cover;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+    }
+
+    .description-container {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        margin-top:10px;
+    }
+
+    .description-title {
+        color: #333;
+        margin-bottom: 1rem;
+    }
+
+    /* 表單樣式 */
+    .form-control, .form-select {
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 0.5rem;
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: #80bdff;
+        box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+    }
+
+    /* 按鈕樣式 */
+    .btn {
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+    }
+</style>
