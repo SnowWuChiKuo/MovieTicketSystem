@@ -30,10 +30,18 @@ namespace ClientSide.Controllers
             string account = User.Identity.Name; //豋入者的 account
             //int qty = 1; 
 
-            Add2Cart(account, ticketId, qty , seatName);
+            try
+            {
+                Add2Cart(account, ticketId, qty , seatName);
 
-            return RedirectToAction("Index");
-        }
+				return Json(new { success = true, message = "成功加入購物車" });
+			}
+            catch (Exception ex) 
+            {
+				return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
+			}
+		}
+        
 
         private void Add2Cart(string account, int ticketId, int qty, string seatName)
         {
@@ -45,6 +53,7 @@ namespace ClientSide.Controllers
 
             //將商品加入購物車
             _service.AddCartItem(cartId, ticketId, qty, seatName);
+
         }
 
         private CartVm GetCartInfo(string account)

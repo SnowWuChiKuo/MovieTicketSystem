@@ -40,6 +40,12 @@ namespace ClientSide.Models.Services
 
         public void AddCartItem(int cartId, int ticketId, int qty, string seatName)
         {
+            var cartItemTotalQty = _repo.CartItemTotalQty(cartId);
+
+            if (cartItemTotalQty == 6) throw new Exception("購物車已經有6張電影票! 請先結帳後再繼續購買!");
+
+            if (cartItemTotalQty + qty > 6) throw new Exception($"購物車有{cartItemTotalQty}張，購物車不可以超過6張票!請重新選擇票的數量!");
+
             _repo.AddCartItem(cartId, ticketId, qty, seatName);
         }
 

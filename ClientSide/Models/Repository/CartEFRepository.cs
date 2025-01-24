@@ -207,10 +207,29 @@ namespace ClientSide.Models.Repository
         }
 
         /// <summary>
-        /// 清空購物車，刪除 Cart 物件與其內 CartItems
+        /// 購物車裡面的全部票卷數量
         /// </summary>
-        /// <param name="account"></param>
-        public void EmptyCart(string account)
+        /// <param name="cartId"></param>
+        /// <returns></returns>
+		public int CartItemTotalQty(int cartId)
+        {
+            var cartItem = _db.CartItems.Where(ci => ci.CartId == cartId);
+
+            int currentQty = 0;
+
+            foreach (var item in cartItem)
+            {
+                currentQty += item.Qty;
+            }
+
+            return currentQty;
+        }
+
+		/// <summary>
+		/// 清空購物車，刪除 Cart 物件與其內 CartItems
+		/// </summary>
+		/// <param name="account"></param>
+		public void EmptyCart(string account)
         {
             var cart = _db.Carts.Include(c=>c.Member).FirstOrDefault(c => c.Member.Account == account);
 
