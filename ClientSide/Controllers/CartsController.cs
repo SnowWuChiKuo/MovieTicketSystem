@@ -34,7 +34,7 @@ namespace ClientSide.Controllers
             {
                 Add2Cart(account, ticketId, qty , seatName);
 
-				return Json(new { success = true, message = "成功加入購物車" });
+				return Json(new { success = true, message = "成功加入購物車" }, JsonRequestBehavior.AllowGet);
 			}
             catch (Exception ex) 
             {
